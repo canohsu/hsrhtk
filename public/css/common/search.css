@@ -1,0 +1,858 @@
+/* GLOBAL STYLES
+-------------------------------------------------- */
+
+body {
+/* 覆寫 - 搜尋頁面灰背景 */
+background: #f2f2f2;
+}
+
+/*
+button,
+ */
+input,
+select,
+textarea {
+font-family: Arial, Verdana, sans-serif, '新細明體';
+font-size: 13px;
+height: 30px;
+line-height: 30px;
+color: #202020;
+border: 1px solid #cccccc;
+background-color: #ffffff;
+background-image: none;
+vertical-align: middle;
+padding: 4px 8px;
+/*border-radius: 3px;*/
+display: block;
+width: 100%;
+-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+-webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+        transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+border-color: #66afe9;
+outline: 0;
+-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+textarea {
+height: auto;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+display: inline;
+display: inline-block;
+height: auto;
+line-height: auto;
+padding: 0;
+box-sizing: border-box;
+border: 0px transparent;
+background: transparent;
+-webkit-box-shadow: 0px 0px 0px rgba(0,0,0,1);
+        box-shadow: 0px 0px 0px rgba(0,0,0,1);
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+margin: 4px 0 0;
+margin-top: 1px \9;
+/* IE8-9 */
+line-height: normal;
+}
+
+input[type="file"]:focus,
+input[type="radio"]:focus,
+input[type="checkbox"]:focus {
+outline: thin dotted #333;
+outline: 5px auto -webkit-focus-ring-color;
+outline-offset: -2px;
+}
+
+
+
+
+
+
+
+
+.search-form {
+min-height: 20px;
+padding: 19px;
+margin-bottom: 20px;
+
+background-color: #ffffff;
+border: 2px solid #bfeb77;
+border-radius: 8px;
+background:rgba(255,255,255,0.85);
+background: transparent\9;
+zoom:1\8; /* required for the filters */
+-ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff, endColorstr=#ffffff)"; /* IE8 */
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff, endColorstr=#ffffff); /* IE5.5-7 */
+-webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1);
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.search-form label {
+background:url(../../images/icon/hotel/searchFormDot.png) no-repeat 0px 3px;
+height: 25px;
+
+margin: 5px 0px 5px 0px;
+padding: 0px 0px 0px 30px;
+line-height: 25px;
+vertical-align: middle;
+font-weight: bold;
+color: #202020;
+}
+
+.search-form-line {
+background:url(../../images/icon/hotel/searchFormTitleLine.png) no-repeat 152px 13px;
+}
+
+.search-form label.none{
+background-image: none;
+background-color:transparent;
+}
+
+.search-form input.none{
+border: 0px transparent;
+background: transparent;
+-webkit-box-shadow: 0px 0px 0px rgba(0,0,0,1);
+        box-shadow: 0px 0px 0px rgba(0,0,0,1);
+}
+
+.search-form input:focus.none {
+border: 0px transparent;
+background: transparent;
+-webkit-box-shadow: 0px 0px 0px rgba(0,0,0,1);
+        box-shadow: 0px 0px 0px rgba(0,0,0,1);
+}
+
+.search-form-removeRoom {
+background:url(../../images/icon/hotel/searchFormRemove.png) no-repeat 0px 0px;
+border: 0px transparent;
+height: 24px;  
+width: 24px;
+}
+
+.search-form-submit {
+background:url(../../images/icon/hotel/searchFormSearch.png) no-repeat 0px 0px;
+border: 0px transparent;
+height: 43px;  
+width: 128px;
+}
+
+/*
+.btn-green {
+*/
+#addRoom {
+margin-right: 15px;
+color: #ffffff;
+background-color: #5bc906;
+border-color: #6bc906;
+display: inline-block;
+padding: 4px 8px;
+vertical-align: middle;
+text-align: center;
+white-space: nowrap;
+cursor: pointer;
+background-image: none;
+border: 1px solid transparent;
+border-radius: 0;
+-webkit-user-select: none;
+   -moz-user-select: none;
+    -ms-user-select: none;
+     -o-user-select: none;
+        user-select: none;
+}
+
+#roomTable {
+background:#f9ffd6;
+text-align:center;
+}
+
+#roomTable div.row {
+padding: 0px 0px 10px 0px;
+font-weight: bold;
+color: #5BCB08;     /* #8dd83a */
+//border-top:1px dashed #202020;
+vertical-align: middle;
+text-align: center;
+}
+
+#roomTable hr {
+padding: 0px;
+margin: 10px 0px 0px 0px;
+border-top: 1px dashed #202020;
+color: #f9ffd6;
+background-color: #f9ffd6;
+height: 1px;
+}
+
+#trNo0 > div.hr
+{
+display: none;
+}
+
+#roomTable label {
+background-image: none;
+background-color:transparent;
+display: block;
+width: 100%;
+padding: 1px;
+margin: -1px 0 2px 0;
+text-align: center;
+color: #5BCB08;
+font-weight: bold;
+}
+
+.search-form a {
+text-decoration: none;
+color: #0066cc;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ----- Page 2 ----- */
+
+/* 搜尋條件 - HSR.HTL通用 */
+.search-result-form {
+padding: 10px 0px;
+margin-top: 10px;
+background-color: #ffffff;
+border: 4px solid #b3e85f;
+}
+
+.search-result
+{
+//padding: 0px;
+}
+
+.search-result span
+{
+padding:0px 6px 2px 6px;
+color: #FFFFFF;
+}
+
+.search-result p
+{
+padding:4px 0px 0px 0px;
+color: #202020;
+}
+
+.search-result ul {
+list-style: none;
+margin: 0;
+padding: 0px;	
+overflow: hidden; /* 超過範圍隱藏 */
+white-space: nowrap; /* 不斷行 */
+}
+
+.search-result ul li {
+padding: 0px 8px 0px 8px;
+display:inline;
+vertical-align: middle;
+}
+
+
+/* HSR 專用(Orange) */
+.search-result .hsr .title
+{
+/*
+background:url(../../images/icon/hotel/searchResultHsrLine.png) no-repeat 10px 20px;
+*/
+height: 30px;
+margin: 0px 0px 2px 15px;
+padding: 0px;
+background:url(../../images/icon/hotel/searchResultHsrLine.jpg) repeat-x 12px 23px;
+width: 90%;
+}
+
+.search-result .hsr span
+{
+background-color: #FF9046;
+}
+
+.search-result .hsr ul li {
+background:url(../../images/icon/hotel/searchResultHsrDot.png) no-repeat 0px 4px;
+}
+
+/* HTL 專用(Green) */
+.search-result .htl .title
+{
+/*
+background:url(../../images/icon/hotel/searchResultHtlLine.png) no-repeat 10px 20px;
+*/
+height: 30px;
+margin: 0px 0px 2px 15px;
+padding: 0px;
+background:url(../../images/icon/hotel/searchResultHtlLine.jpg) repeat-x 12px 23px;
+width: 90%;
+}
+
+.search-result .htl span
+{
+background-color: #5CCA04;
+}
+
+.search-result .htl ul li {
+background:url(../../images/icon/hotel/searchResultHtlDot.png) no-repeat 0px 4px;
+}
+
+@media (max-width: 768px) {
+  .search-result .hsr, .search-result .htl {
+    padding: 10px 0px 10px 30px;
+  }
+}
+
+
+
+/* 飯店資訊區塊 */
+.search-result-htlList {
+padding: 0px 15px 0px 15px;
+width:100%;
+background-color: #FFFFFF;
+border: 1px solid #cccccc;
+}
+
+/* 修正為全域規則
+.search-result-htlList a
+{
+color: #0066CB;
+text-decoration: underline;
+}
+
+.search-result-htlList a img
+{
+border: 0;
+}
+*/
+
+.search-result-htlList .htlImages
+{
+width: 100%;
+height: 100%;
+max-width: 290px;
+max-height: 220px;
+padding-bottom: 10px;
+}
+
+.search-result-htlList .title
+{
+padding:5px;
+color: #006600;
+height:32px;
+width:100%;
+font-size: 1.25em;
+font-weight: bold;
+background-color: #e9ffcd;
+}
+
+.search-result-htlList .review
+{
+padding: 10px 0px;
+border: 2px solid #e9ffcd;
+color: #006600;
+}
+
+.search-result-htlList .review span
+{
+color: #5C5C5C;
+}
+
+.search-result-htlList .review span.score
+{
+/*
+font-family: Arial, Verdana, sans-serif, '新細明體';
+*/
+font-family: Arial;
+color: #006600;
+font-size: 40px;
+font-weight: bold;
+padding-left: 12px;
+padding-right: 9px;
+}
+
+
+/*
+.search-result-htlList .stitle
+{
+color: #68d40d;
+font-weight: bold;
+}
+*/
+
+
+
+
+
+/* 價格區塊 */
+.search-result-htlList .priceDiv
+{
+color: #7d7d7d;
+}
+
+.search-result-htlList .priceDiv .saveP
+{
+text-align: right;
+}
+
+/* 最優惠方式 */
+.search-result-htlList .saveMore
+{
+color: #ff6633;
+}
+
+.search-result-htlList .saveMore span
+{
+font-family: Arial;
+font-size: 40px;
+font-weight: bold;
+}
+
+.search-result-htlList .saveMore .saveP
+{
+font-size: 16px;
+font-weight: bold;
+text-align: left;
+padding-left: 22px;
+height: 47px;
+width: 80px;
+position: absolute;
+right: 0px;
+top: 23px;
+background: url('../../images/icon/hotel/searchResultHtlListSaveBg.png') bottom right no-repeat;
+}
+
+.search-result-htlList .saveMore .saveP span
+{
+font-size: 16px;
+}
+
+.search-result-htlList .priceDiv .orderSubmit {
+background:url(../../images/icon/hotel/searchResultHtlListOrder.png) no-repeat 0px 0px;
+border: 0px transparent;
+height: 58px;  
+width: 209px;
+}
+
+
+@media (min-width: 991px) {
+    .search-result-htlList .priceDiv .saveP {
+    text-align: left;
+    position: absolute;
+    width: 80px;
+    right: 0px;
+    top: 17px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .search-result-htlList .priceDiv .saveP {
+    text-align: left;
+    }
+    .search-result-htlList .priceDiv .orderSubmit {
+    background:url(../../images/icon/hotel/searchResultHtlListOrderM.png) no-repeat 0px 0px;
+    border: 0px transparent;
+    height: 53px;  
+    width: 141px;
+    }
+    .search-result-htlList .saveMore .saveP
+    {
+    float: right;
+    position: static;
+    top: 0px;
+    margin-right: -15px;
+    }
+}
+
+
+
+
+/* 飯店下的房間列表 */
+.search-result-roomList
+{
+padding: 5px 0px;
+
+/*
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-images: url(../../images/icon/hotel/searchResultHtlListRoomBg01.png);
+
+background-position: bottom right;
+
+background: url(../../images/icon/hotel/searchResultHtlListRoomBg01.png) top left no-repeat black； 
+*/
+}
+
+.search-result-roomList > .row
+{
+padding: 2px 0px;
+}
+
+.roomDiv01
+{
+padding-top: 3px;
+padding-bottom: 5px;
+background: url('../../images/icon/hotel/searchResultHtlListRoomBg01.png') bottom right no-repeat #f4fdec;
+}
+.roomDiv02
+{
+padding-top: 3px;
+padding-bottom: 5px;
+background: url('../../images/icon/hotel/searchResultHtlListRoomBg02.png') bottom right no-repeat #f4fdec;
+}
+.roomDiv03
+{
+padding-top: 3px;
+padding-bottom: 5px;
+background: url('../../images/icon/hotel/searchResultHtlListRoomBg03.png') bottom right no-repeat #f4fdec;
+}
+
+/*
+.search-result-roomList hr
+{
+padding: 0px;
+margin: 10px;
+border-top: 1px dashed #202020;
+color: #E6FEB7;
+background-color: #E6FEB7;
+height: 1px;
+}
+*/
+
+.search-result-roomList .htitle
+{
+line-height: 30px;
+padding: 2px 0px 0px 20px;
+color: #ff6633;
+font-size: 16px;
+font-weight: bold;
+}
+
+.search-result-roomList .htitle img
+{
+padding-left: 8px;
+}
+
+
+
+.search-result-roomList .edit
+{
+line-height: 30px;
+padding-top: 2px;
+text-align: right;
+}
+
+.search-result-roomList .btitle
+{
+line-height: 23px;
+background:url(../../images/icon/hotel/searchResultHtlListHtl.png) no-repeat 20px 6px;
+padding: 2px 0px 0px 40px;
+}
+
+.search-result-roomList .ttitle
+{
+line-height: 23px;
+background:url(../../images/icon/hotel/searchResultHtlListTkt.png) no-repeat 20px 7px;
+padding: 2px 0px 0px 40px;
+color: #747474;
+}
+
+.search-result-roomList p
+{
+padding: 20px 0px 30px 0px;
+}
+
+
+
+
+
+
+
+
+
+/* 確認高鐵車次 */
+.css_table {
+display:table;
+width: 100%;
+border:1px solid #BDBDBF;
+}
+
+.css_tr {
+display: table-row;
+text-align: center;
+vertical-align: middle;
+line-height: 30px;
+height:30px;
+}
+
+.css_theadTd {
+display: table-cell;
+color: #FFFFFF;
+font-size: 13px;
+font-weight: bold;
+/*
+height:32px;
+border:1px solid #FFFFFF;
+background:url(../../images/icon/hotel/searchResultHsrListBg.png) repeat-x 1px 0px;
+*/
+background-color: #FF9046;
+}
+
+.css_orangeText {
+color: #FF9046;
+font-weight: bold;
+}
+
+.css_tbodyTd1 {
+height:30px;
+display: table-cell;
+background-color:#FFE7CD;
+}
+
+.css_tbodyTd2 {
+height:30px;
+display: table-cell;
+background-color:#FFFFFF;
+}
+
+
+
+
+
+.textEditDiv
+{
+text-align: right;
+padding-top: 10px;
+}
+
+
+/* Move To Content.css
+.dotTitle
+{
+font-weight: bold;
+margin-bottom: 5px;
+font-size: 16px;
+color: #006600;
+}
+
+.dotTitle span
+{
+margin-right: 5px;
+padding:2px 6px 2px 6px;
+color: #FFFFFF;
+background-color: #5AC31F;
+}
+*/
+
+/*
+#myModalLabel
+{
+height:32px;
+font-size: 14px;
+font-weight: bold;
+background:url(../../images/icon/hotel/searchResultHsrListBg.png) repeat-x 1px 0px;
+}
+
+#myModalLabel span
+{
+color: #ffb009;
+}
+*/
+
+
+
+/* 修改高鐵班次 Popup */
+
+.txt-darkGray
+{
+color: #747474;
+}
+
+.hsrList table
+{
+padding:0px;
+width: 100%;
+}
+
+.hsrList thead tr
+{
+background: #ebebeb;
+color: #747474;
+}
+
+.hsrList thead th
+{
+width: 22%;
+}
+
+.hsrList th, .hsrList td
+{
+text-align: center;
+vertical-align: middle;
+height:30px;
+}
+
+.hsrList div.row
+{
+padding: 5px 0px;
+margin: 0px;
+}
+
+.hsrList hr
+{
+padding: 0px;
+margin: 4px 4px;
+border-top: 1px dashed #949494;
+color: #FFFFFF;
+background-color: #FFFFFF;
+height: 1px;
+}
+
+.hsrList .checkedRow
+{
+background-color: #FFE7CD;
+}
+
+.hsrList .lightOrange
+{
+background-color: #FFE7CD;
+}
+
+.hsrList .lightOrange label
+{
+font-weight: normal;
+}
+
+.txt-lightOrange
+{
+/* color: #ffb009; */
+color: #FF9046;
+font-weight: bold;
+}
+
+
+
+
+#roomList .checkedRow
+{
+background-color: #E7FFCB;
+}
+
+#roomList th, #roomList td
+{
+text-align: left;
+}
+
+#roomList th:first-child, #roomList td:first-child
+{
+text-align: center;
+}
+
+#roomList th + th + th + th
+{
+padding-right: 15px;
+text-align: right;
+}
+
+#roomList td + td + td + td
+{
+color: #ff6633;
+padding-right: 15px;
+text-align: right;
+}
+
+
+/* ---- Popup - 選擇高鐵班次 (modal) ---- */
+
+#myModalLabel, #myModalLabel2
+{
+color: #FFFFFF;
+font-size: 16px;
+font-weight: bold;
+}
+
+/* ---- 覆寫 bootstrap-3.0.2.css 中 modal 的定義 ---- */
+.modal-header {
+/*
+background:url(../../images/icon/hotel/searchResultHsrListBg.png) repeat-x 1px 0px;
+*/
+background-color: #FF9046;
+height: 32px;
+line-height: 32px;
+padding: 0px;
+margin: 0px;
+border: 0px;
+}
+
+/* 修改其他房型 */
+#dialog-form2 .modal-header
+{
+/*
+background:url(../../images/icon/hotel/searchResultHtlListBg.png) repeat-x 1px 0px;
+*/
+background-color: #51CA0C;
+}
+
+.modal-header .close {
+margin-top: 5px;
+}
+
+.modal-title {
+height: 32px;
+line-height: 32px;
+}
+
+.modal-body {
+padding: 0px;
+}
+
+.modal-footer {
+padding: 5px 0px 5px 0px;
+margin: 0px;
+text-align: center;
+border: 0px;
+}
+
+.changeRoomNo
+{
+text-align: right;
+}
+
+#selMorePeriod2, #selMorePeriod4
+{
+text-align: right;
+}
+
+.dashedHr
+{
+padding: 0px;
+margin: 4px 4px;
+border-top: 1px dashed #949494;
+color: #FFFFFF;
+background-color: #FFFFFF;
+height: 1px;
+}
+
+.btn-checkOK {
+background:url(../../images/icon/hotel/checkOK.png) no-repeat 0px 0px;
+border: 0px transparent;
+height: 31px;  
+width: 94px;
+}

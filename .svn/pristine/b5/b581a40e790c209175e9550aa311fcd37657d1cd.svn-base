@@ -1,0 +1,114 @@
+/**
+ * 易遊網版權所有 ©2000 - 2013 ezTravel Co., Ltd. all rights reserved.
+ */
+package task.htl;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
+import tw.com.eztravel.ezlogger.Logger;
+import tw.com.eztravel.ezlogger.LoggerFactory;
+
+import com.typesafe.config.ConfigFactory;
+
+import eztravel.rest.pojo.common.RestResource;
+import eztravel.rest.pojo.htl.HotelInfo;
+
+
+/**
+ * 查詢飯店資訊
+ * 
+ * @author CJWang
+ * 
+ */
+public class RequestHotelTask implements Callable<List<HotelInfo>> {
+  public RequestHotelTask(RestTemplate restTemplate, String city, Date checkInDt, Date checkOutDt,
+      int sgl, int twn, int trp, int qud, String custType, int startIndex, int maxResults,
+      String rankBy) {
+    this.restTemplate = restTemplate;
+    this.city = city;
+    this.checkInDt = checkInDt;
+    this.checkOutDt = checkOutDt;
+    this.sgl = sgl;
+    this.twn = twn;
+    this.trp = trp;
+    this.qud = qud;
+    this.custType = custType;
+    this.startIndex = startIndex;
+    this.maxResults = maxResults;
+    this.rankBy = rankBy;
+  }
+
+  @Override
+  public List<HotelInfo> call() throws Exception {
+    String endpoint = null;
+    try {
+      endpoint = ConfigFactory.load("config.properties").getString("htl.endpoint");
+    } catch (Exception e) {
+      logger.warn(e.getMessage(), e);
+    }
+    if (null == endpoint) endpoint = ENDPOINT;
+    List<HotelInfo> list = null;
+
+    // htl日期格式為yyyyMMdd
+    String checkInDtStr = null;
+    String checkOutDtStr = null;
+    if (null != checkInDt) checkInDtStr = dateFormat.format(checkInDt);
+    if (null != checkOutDt) checkOutDtStr = dateFormat.format(checkOutDt);
+
+    logger.info("查詢飯店資訊");
+
+    Map<String, Object> uriVariables = new HashMap<String, Object>();
+    uriVariables.put("city", this.city);
+    uriVariables.put("checkInDt", checkInDtStr);
+    uriVariables.put("checkOutDt", checkOutDtStr);
+    uriVariables.put("country", "TW");
+    uriVariables.put("unionType", "HR1");
+    uriVariables.put("sgl", this.sgl);
+    uriVariables.put("twn", this.twn);
+    uriVariables.put("trp", this.trp);
+    uriVariables.put("qud", this.qud);
+    uriVariables.put("custType", this.custType);
+    uriVariables.put("startIndex", this.startIndex);
+    uriVariables.put("maxResults", this.maxResults);
+    uriVariables.put("rankBy", this.rankBy);
+
+    ParameterizedTypeReference<RestResource<HotelInfo>> responseType =
+        new ParameterizedTypeReference<RestResource<HotelInfo>>() {};
+
+    ResponseEntity<RestResource<HotelInfo>> res =
+        restTemplate.exchange(endpoint + HTL_QRY_URL, HttpMethod.GET, null, responseType,
+            uriVariables);
+    RestResource<HotelInfo> body = res.getBody();
+    if (null != body) list = body.getItems();
+    return list;
+  }
+
+  private static final String ENDPOINT = "http://localhost:8080/htl/";
+  private static final String HTL_QRY_URL =
+      "hotel?city={city}&checkInDt={checkInDt}&checkOutDt={checkOutDt}&country={country}&unionType={unionType}&sgl={sgl}&twn={twn}&trp={trp}&qud={qud}&custType={custType}&startIndex={startIndex}&maxResults={maxResults}&rankBy={rankBy}";
+  private static final Logger logger = LoggerFactory.getLogger(RequestHotelTask.class);
+  private final DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+  private RestTemplate restTemplate;
+  private String city;
+  private Date checkInDt;
+  private Date checkOutDt;
+  private int sgl;
+  private int twn;
+  private int trp;
+  private int qud;
+  private String custType;
+  private int startIndex;
+  private int maxResults;
+  private String rankBy;
+}

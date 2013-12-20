@@ -1,0 +1,85 @@
+/**
+ * 易遊網版權所有 ©2000 - 2013 ezTravel Co., Ltd. all rights reserved.
+ */
+package models;
+
+/**
+ * 房間票種對應
+ * 
+ * @author CJWang
+ * 
+ */
+public class Room {
+  /**
+   * 成人票數量
+   */
+  private int full;
+  /**
+   * 銀髮族票數量
+   */
+  private int senior;
+  /**
+   * 孩童票數量
+   */
+  private int children;
+  /**
+   * 愛心票數量
+   */
+  private int half;
+
+  /**
+   * @return 成人票數量
+   */
+  public int getFull() {
+    return full;
+  }
+
+  /**
+   * @param full 成人票數量
+   */
+  public void setFull(int full) {
+    this.full = full;
+  }
+
+  /**
+   * @return 銀髮族票數量
+   */
+  public int getSenior() {
+    return senior;
+  }
+
+  /**
+   * @param senior 銀髮族票數量
+   */
+  public void setSenior(int senior) {
+    this.senior = senior;
+  }
+
+  /**
+   * @return 孩童票數量
+   */
+  public int getChildren() {
+    return children;
+  }
+
+  /**
+   * @param children 孩童票數量
+   */
+  public void setChildren(int children) {
+    this.children = children;
+  }
+
+  /**
+   * @return 愛心票數量
+   */
+  public int getHalf() {
+    return half;
+  }
+
+  /**
+   * @param half 愛心票數量
+   */
+  public void setHalf(int half) {
+    this.half = half;
+  }
+}

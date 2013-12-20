@@ -1,0 +1,635 @@
+/**
+ * 易遊網版權所有 ©2000 - 2013 ezTravel Co., Ltd. all rights reserved.
+ */
+package models;
+
+import java.util.List;
+import java.util.Map;
+
+import eztravel.rest.pojo.hsr.HsrProductInfo;
+import eztravel.rest.pojo.hsr.HsrScheduleInfo;
+import eztravel.rest.pojo.htl.HotelInfo;
+
+/**
+ * 前端查詢條件
+ * 
+ * @author CJWang
+ * 
+ */
+public class HsrHtl {
+  // private List<HsrStation> stations;
+  /**
+   * Business Type
+   */
+  private BusinessType businessType;
+  /**
+   * 出發高鐵站
+   */
+  private String placeFrom;
+  /**
+   * 目的城市
+   */
+  private String arrCity;
+  /**
+   * 目的高鐵站
+   */
+  private String placeTo;
+  /**
+   * 車廂種類
+   */
+  private String carClass;
+  /**
+   * 出發日期
+   */
+  private String depDate;
+  /**
+   * 旅遊天數
+   */
+  private int travelDay;
+  /**
+   * 返回日期
+   */
+  private String returnDate;
+  /**
+   * 去程高鐵資訊
+   */
+  private HsrProductInfo depHsrInfo;
+  /**
+   * 去程高鐵時段
+   */
+  private String depPeriod;
+  /**
+   * 去程高鐵班次
+   */
+  private HsrScheduleInfo depSchedule;
+
+  /**
+   * 去程高鐵班次表
+   */
+  private Map<String, List<HsrScheduleInfo>> depScheduleMap;
+  /**
+   * 回程高鐵資訊
+   */
+  private HsrProductInfo returnHsrInfo;
+  /**
+   * 回程高鐵時段
+   */
+  private String returnPeriod;
+  /**
+   * 回程高鐵班次
+   */
+  private HsrScheduleInfo returnSchedule;
+
+  /**
+   * 回程高鐵班次表
+   */
+  private Map<String, List<HsrScheduleInfo>> returnScheduleMap;
+  /**
+   * 單人房
+   */
+  private int sgl;
+  /**
+   * 雙人房
+   */
+  private int twn;
+  /**
+   * 三人房
+   */
+  private int trp;
+  /**
+   * 四人房
+   */
+  private int qud;
+  /**
+   * 單人房票種
+   */
+  private List<Room> sglRooms;
+  /**
+   * 雙人房票種
+   */
+  private List<Room> twnRooms;
+  /**
+   * 三人房票種
+   */
+  private List<Room> trpRooms;
+  /**
+   * 四人房票種
+   */
+  private List<Room> qudRooms;
+
+  /**
+   * 飯店資訊
+   */
+  private List<HotelInfo> hotelList;
+
+  /**
+   * @return 出發高鐵站
+   */
+  public String getPlaceFrom() {
+    return placeFrom;
+  }
+
+  /**
+   * @param placeFrom 出發高鐵站
+   */
+  public void setPlaceFrom(String placeFrom) {
+    this.placeFrom = placeFrom;
+  }
+
+  /**
+   * @return 目的城市
+   */
+  public String getArrCity() {
+    return arrCity;
+  }
+
+  /**
+   * @param arrCity 目的城市
+   */
+  public void setArrCity(String arrCity) {
+    this.arrCity = arrCity;
+  }
+
+  /**
+   * @return 目的高鐵站
+   */
+  public String getPlaceTo() {
+    return placeTo;
+  }
+
+  /**
+   * @param placeTo 目的高鐵站
+   */
+  public void setPlaceTo(String placeTo) {
+    this.placeTo = placeTo;
+  }
+
+  /**
+   * @return 出發日期
+   */
+  public String getDepDate() {
+    return depDate;
+  }
+
+  /**
+   * @param depDate 出發日期
+   */
+  public void setDepDate(String depDate) {
+    this.depDate = depDate;
+  }
+
+  /**
+   * @return 返回日期
+   */
+  public String getReturnDate() {
+    return returnDate;
+  }
+
+  /**
+   * @param returnDate 返回日期
+   */
+  public void setReturnDate(String returnDate) {
+    this.returnDate = returnDate;
+  }
+
+  /**
+   * @return 旅遊天數
+   */
+  public int getTravelDay() {
+    return travelDay;
+  }
+
+  /**
+   * @param travelDay 旅遊天數
+   */
+  public void setTravelDay(int travelDay) {
+    this.travelDay = travelDay;
+  }
+
+  /**
+   * @return 單人房
+   */
+  public int getSgl() {
+    return sgl;
+  }
+
+  /**
+   * @param sgl 單人房
+   */
+  public void setSgl(int sgl) {
+    this.sgl = sgl;
+  }
+
+  /**
+   * @return 雙人房
+   */
+  public int getTwn() {
+    return twn;
+  }
+
+  /**
+   * @param twn 雙人房
+   */
+  public void setTwn(int twn) {
+    this.twn = twn;
+  }
+
+  /**
+   * @return 三人房
+   */
+  public int getTrp() {
+    return trp;
+  }
+
+  /**
+   * @param trp 三人房
+   */
+  public void setTrp(int trp) {
+    this.trp = trp;
+  }
+
+  /**
+   * @return 四人房
+   */
+  public int getQud() {
+    return qud;
+  }
+
+  /**
+   * @param qud 四人房
+   */
+  public void setQud(int qud) {
+    this.qud = qud;
+  }
+
+
+  /**
+   * @return 單人房票種
+   */
+  public List<Room> getSglRooms() {
+    return sglRooms;
+  }
+
+  /**
+   * @param sglRooms 單人房票種
+   */
+  public void setSglRooms(List<Room> sglRooms) {
+    this.sglRooms = sglRooms;
+  }
+
+  /**
+   * @return 雙人房票種
+   */
+  public List<Room> getTwnRooms() {
+    return twnRooms;
+  }
+
+  /**
+   * @param twnRooms 雙人房票種
+   */
+  public void setTwnRooms(List<Room> twnRooms) {
+    this.twnRooms = twnRooms;
+  }
+
+  /**
+   * @return 三人房票種
+   */
+  public List<Room> getTrpRooms() {
+    return trpRooms;
+  }
+
+  /**
+   * @param trpRooms 三人房票種
+   */
+  public void setTrpRooms(List<Room> trpRooms) {
+    this.trpRooms = trpRooms;
+  }
+
+  /**
+   * @return 四人房票種
+   */
+  public List<Room> getQudRooms() {
+    return qudRooms;
+  }
+
+  /**
+   * @param qudRooms 四人房票種
+   */
+  public void setQudRooms(List<Room> qudRooms) {
+    this.qudRooms = qudRooms;
+  }
+
+  /**
+   * 取得總票數
+   * 
+   * @return
+   */
+  public int getTotalTicketQty() {
+    int qty = 0;
+    if (null != this.sglRooms) {
+      for (Room room : this.sglRooms) {
+        qty += room.getFull();
+        qty += room.getChildren();
+        qty += room.getSenior();
+        qty += room.getHalf();
+      }
+    }
+    if (null != this.twnRooms) {
+      for (Room room : this.twnRooms) {
+        qty += room.getFull();
+        qty += room.getChildren();
+        qty += room.getSenior();
+        qty += room.getHalf();
+      }
+    }
+    if (null != this.trpRooms) {
+      for (Room room : this.trpRooms) {
+        qty += room.getFull();
+        qty += room.getChildren();
+        qty += room.getSenior();
+        qty += room.getHalf();
+      }
+    }
+    if (null != this.qudRooms) {
+      for (Room room : this.qudRooms) {
+        qty += room.getFull();
+        qty += room.getChildren();
+        qty += room.getSenior();
+        qty += room.getHalf();
+      }
+    }
+    return qty;
+  }
+
+  /**
+   * 取得成人票總數
+   * 
+   * @return
+   */
+  public int getFullTicketQty() {
+    int qty = 0;
+    if (null != this.sglRooms) {
+      for (Room room : this.sglRooms)
+        qty += room.getFull();
+    }
+    if (null != this.twnRooms) {
+      for (Room room : this.twnRooms)
+        qty += room.getFull();
+    }
+    if (null != this.trpRooms) {
+      for (Room room : this.trpRooms)
+        qty += room.getFull();
+    }
+    if (null != this.qudRooms) {
+      for (Room room : this.qudRooms)
+        qty += room.getFull();
+    }
+    return qty;
+  }
+
+  /**
+   * 取得資深公民票總數
+   * 
+   * @return
+   */
+  public int getSeniorTicketQty() {
+    int qty = 0;
+    if (null != this.sglRooms) {
+      for (Room room : this.sglRooms)
+        qty += room.getSenior();
+    }
+    if (null != this.twnRooms) {
+      for (Room room : this.twnRooms)
+        qty += room.getSenior();
+    }
+    if (null != this.trpRooms) {
+      for (Room room : this.trpRooms)
+        qty += room.getSenior();
+    }
+    if (null != this.qudRooms) {
+      for (Room room : this.qudRooms)
+        qty += room.getSenior();
+    }
+    return qty;
+  }
+
+  /**
+   * 取得愛心票總數
+   * 
+   * @return
+   */
+  public int getHalfTicketQty() {
+    int qty = 0;
+    if (null != this.sglRooms) {
+      for (Room room : this.sglRooms)
+        qty += room.getHalf();
+    }
+    if (null != this.twnRooms) {
+      for (Room room : this.twnRooms)
+        qty += room.getHalf();
+    }
+    if (null != this.trpRooms) {
+      for (Room room : this.trpRooms)
+        qty += room.getHalf();
+    }
+    if (null != this.qudRooms) {
+      for (Room room : this.qudRooms)
+        qty += room.getHalf();
+    }
+    return qty;
+  }
+
+  /**
+   * 取得兒童票總數
+   * 
+   * @return
+   */
+  public int getChildrenTicketQty() {
+    int qty = 0;
+    if (null != this.sglRooms) {
+      for (Room room : this.sglRooms)
+        qty += room.getChildren();
+    }
+    if (null != this.twnRooms) {
+      for (Room room : this.twnRooms)
+        qty += room.getChildren();
+    }
+    if (null != this.trpRooms) {
+      for (Room room : this.trpRooms)
+        qty += room.getChildren();
+    }
+    if (null != this.qudRooms) {
+      for (Room room : this.qudRooms)
+        qty += room.getChildren();
+    }
+    return qty;
+  }
+
+  /**
+   * @return Business Type
+   */
+  public BusinessType getBusinessType() {
+    return businessType;
+  }
+
+  /**
+   * @param businessType Business Type
+   */
+  public void setBusinessType(BusinessType businessType) {
+    this.businessType = businessType;
+  }
+
+  /**
+   * @return 車廂種類
+   */
+  public String getCarClass() {
+    return carClass;
+  }
+
+  /**
+   * @param carClass 車廂種類
+   */
+  public void setCarClass(String carClass) {
+    this.carClass = carClass;
+  }
+
+  /**
+   * @return 去程高鐵資訊
+   */
+  public HsrProductInfo getDepHsrInfo() {
+    return depHsrInfo;
+  }
+
+  /**
+   * @param depHsrInfo 去程高鐵資訊
+   */
+  public void setDepHsrInfo(HsrProductInfo depHsrInfo) {
+    this.depHsrInfo = depHsrInfo;
+  }
+
+  /**
+   * @return 回程高鐵資訊
+   */
+  public HsrProductInfo getReturnHsrInfo() {
+    return returnHsrInfo;
+  }
+
+  /**
+   * @param returnHsrInfo 回程高鐵資訊
+   */
+  public void setReturnHsrInfo(HsrProductInfo returnHsrInfo) {
+    this.returnHsrInfo = returnHsrInfo;
+  }
+
+  /**
+   * @return 去程高鐵班次
+   */
+  public HsrScheduleInfo getDepSchedule() {
+    return depSchedule;
+  }
+
+  /**
+   * @param depSchedule 去程高鐵班次
+   */
+  public void setDepSchedule(HsrScheduleInfo depSchedule) {
+    this.depSchedule = depSchedule;
+  }
+
+  /**
+   * @return 回程高鐵班次
+   */
+  public HsrScheduleInfo getReturnSchedule() {
+    return returnSchedule;
+  }
+
+  /**
+   * @param returnSchedule 回程高鐵班次
+   */
+  public void setReturnSchedule(HsrScheduleInfo returnSchedule) {
+    this.returnSchedule = returnSchedule;
+  }
+
+  /**
+   * @return 去程高鐵班次表
+   */
+  public Map<String, List<HsrScheduleInfo>> getDepScheduleMap() {
+    return depScheduleMap;
+  }
+
+  /**
+   * @param depScheduleMap 去程高鐵班次表
+   */
+  public void setDepScheduleMap(Map<String, List<HsrScheduleInfo>> depScheduleMap) {
+    this.depScheduleMap = depScheduleMap;
+  }
+
+  /**
+   * @return 回程高鐵班次表
+   */
+  public Map<String, List<HsrScheduleInfo>> getReturnScheduleMap() {
+    return returnScheduleMap;
+  }
+
+  /**
+   * @param returnScheduleMap 回程高鐵班次表
+   */
+  public void setReturnScheduleMap(Map<String, List<HsrScheduleInfo>> returnScheduleMap) {
+    this.returnScheduleMap = returnScheduleMap;
+  }
+
+  /**
+   * @return 去程高鐵時段
+   */
+  public String getDepPeriod() {
+    return depPeriod;
+  }
+
+  /**
+   * @param depPeriod 去程高鐵時段
+   */
+  public void setDepPeriod(String depPeriod) {
+    this.depPeriod = depPeriod;
+  }
+
+  /**
+   * @return 回程高鐵時段
+   */
+  public String getReturnPeriod() {
+    return returnPeriod;
+  }
+
+  /**
+   * @param returnPeriod 回程高鐵時段
+   */
+  public void setReturnPeriod(String returnPeriod) {
+    this.returnPeriod = returnPeriod;
+  }
+
+  /**
+   * @return 飯店資訊
+   */
+  public List<HotelInfo> getHotelList() {
+    return hotelList;
+  }
+
+  /**
+   * @param hotelList 飯店資訊
+   */
+  public void setHotelList(List<HotelInfo> hotelList) {
+    this.hotelList = hotelList;
+  }
+
+  // /**
+  // * @return the stations
+  // */
+  // public List<HsrStation> getStations() {
+  // return stations;
+  // }
+  //
+  // /**
+  // * @param stations the stations to set
+  // */
+  // public void setStations(List<HsrStation> stations) {
+  // this.stations = stations;
+  // }
+}

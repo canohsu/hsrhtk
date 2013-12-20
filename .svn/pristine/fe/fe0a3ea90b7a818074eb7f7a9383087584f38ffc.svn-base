@@ -1,0 +1,77 @@
+/**
+ * 易遊網版權所有 ©2000 - 2013 ezTravel Co., Ltd. all rights reserved.
+ */
+package controllers;
+
+import static play.mvc.Results.ok;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import models.HsrHtl;
+import models.HsrStation;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+import play.mvc.Result;
+import play.mvc.With;
+import service.HsrService;
+import tw.com.eztravel.ezlogger.Logger;
+import tw.com.eztravel.ezlogger.LoggerFactory;
+import actions.LogAction;
+
+/**
+ * 高鐵+酒店搜尋表單
+ * 
+ * @author CJWang
+ * 
+ */
+@With(LogAction.class)
+@Controller
+public class IndexController {
+  /**
+   * 組合搜尋
+   * 
+   * @return
+   */
+  public Result index() {
+    logger.info("取得所有高鐵站及都市地緣關係");
+    List<HsrStation> stations = hsrService.listStationInfo();
+
+    HsrHtl hsrHtl = new HsrHtl();
+    hsrHtl.setStations(stations);
+
+    // 去程日期 = 系統日 + 3天
+    Date date = new Date();
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(date);
+    cal.add(Calendar.DAY_OF_MONTH, 3);
+    hsrHtl.setDepDate(new SimpleDateFormat("yyyy/MM/dd").format(cal.getTime()));
+    cal.add(Calendar.DAY_OF_MONTH, 2);
+    hsrHtl.setArrDate(new SimpleDateFormat("yyyy/MM/dd").format(cal.getTime()));
+
+    return ok(views.html.search.searchForm.render(hsrHtl));
+  }
+
+  private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
+
+  @Autowired
+  private HsrService hsrService;
+
+  /**
+   * @return the hsrService
+   */
+  public HsrService getHsrService() {
+    return hsrService;
+  }
+
+  /**
+   * @param hsrService the hsrService to set
+   */
+  public void setHsrService(HsrService hsrService) {
+    this.hsrService = hsrService;
+  }
+}

@@ -1,0 +1,1 @@
+@(date: java.util.Date)@(utils.DateUtils.format(date, utils.DateUtils.PATTERN_SLASH))

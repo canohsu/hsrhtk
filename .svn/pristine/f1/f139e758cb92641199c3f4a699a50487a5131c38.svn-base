@@ -1,0 +1,60 @@
+@(titleCount: Integer, user: models.pojo.User)
+@import models.enums.BusinessType
+@if(BusinessType.B2B != user.getBusinessType()) {
+    <div class="row" id="loginTitle">
+        <div class="col-xs-12 dotTitle"><span>@titleCount</span> 會員登入：</div>
+    </div>
+
+	<div class="row" id="loginRow">
+		<div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" id="loginTable">
+			<table class="table-green">
+            <thead>
+				<tr>
+					<th colspan="2">請輸入會員帳號及密碼</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th style="width:5.5em;" id="loginIdText">
+						@if(BusinessType.WEBORDER == user.getBusinessType()) {員工編號} else {帳　　號}
+					</th>
+					<td>
+						<input name="userId" type="text" size="20" placeholder="請輸入身份證字號" id="loginId" @if(BusinessType.WEBORDER == user.getBusinessType()) {value="@user.getLoginId()"}/>
+						@if(BusinessType.WEBORDER != user.getBusinessType()) {
+							<span id="passportRemind">*外籍人士請輸入護照號碼</span>
+						}
+					</td>
+				</tr>
+				<tr>
+					<th>密　　碼</th>
+					<td>
+						<input name="userpwd" type="password" size="20" id="loginPwd" @if(BusinessType.WEBORDER == user.getBusinessType()) {value="@user.getLoginPwd()"}/>
+						@if(BusinessType.WEBORDER != user.getBusinessType()) {
+							<a href="http://www.eztravel.com.tw/ezec/member/ec_pwd_qry.jsp" target="_blank" id="loginPwdQuery">查詢密碼</a>
+						}
+					</td>
+				</tr>
+			</tbody>
+			</table>
+		</div>
+	</div>
+}
+	<div class="row" id="buttonRow">
+		<div class="col-xs-12 text-center">
+			<br>
+	@user.getBusinessType match {
+		case BusinessType.B2B => {
+			<button type="submit" class="btn btn-success btn-sm" id="nextButton">下一步</button>
+		}
+		case BusinessType.WEBORDER => {
+			<button type="submit" class="btn btn-success btn-sm" id="loginButton">客服登入</button>
+		}
+		case _ => {
+			<button type="submit" class="btn btn-success btn-sm" id="loginButton">會員登入</button>
+			<a href="http://www.eztravel.com.tw/ezec/member/ec_join.jsp" target="_blank" id="addMember">免費加入會員</a>
+		}
+	}
+		</div>
+	</div>
+	<div id="waitingRow" class="row">登入中…</div>
+	<div id="user" data-user='{"role":"@user.getBusinessType"}'></div>

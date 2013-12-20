@@ -1,0 +1,40 @@
+@* header Template File *@
+<!---- NAVBAR ---->
+<div class="navbar navbar-inverse">
+    <div class="container header">
+        <div class="member-bar">
+            <div class="member-area">
+                <img class="member-bar-icon" src="@routes.Assets.at("images/common/icon_phone.gif")"/>我的訂單
+                | <img class="member-bar-icon" src="@routes.Assets.at("images/common/icon_phone.gif")"/>我的eMoney
+                | <img class="member-bar-icon" src="@routes.Assets.at("images/common/icon_phone.gif")"/>會員服務
+            </div>
+            <div class="member-info">Hi~ 歡迎來到易遊網</div>
+        </div>
+        <a class="navbar-brand" href="#"> <img class="clogo"
+            src="@routes.Assets.at("images/common/logo_1.png")" />
+        </a>
+    </div>
+    <div class="hidden-xs">
+        <div class="container tm-area">
+            <div class="tm-bar">
+                <div class="col-md-3 col-sm-3 tm-block">
+                    <div class="tm-item col-md-6 col-sm-6">國外旅遊</div>
+                    <div class="tm-item col-md-6 col-sm-6">國際機票</div>
+                </div>
+                <div class="col-md-3 col-sm-3 tm-block">
+                    <div class="tm-item col-md-6 col-sm-6">國際訂房</div>
+                    <div class="tm-item col-md-6 col-sm-6">國內旅遊</div>
+                </div>
+                <div class="col-md-3 col-sm-3 tm-block">
+                    <div class="tm-item col-md-6 col-sm-6">國內機票</div>
+                    <div class="tm-item col-md-6 col-sm-6">國內訂房</div>
+                </div>
+                <div class="col-md-3 col-sm-3 tm-block">
+                    <div class="tm-item col-md-6 col-sm-6">高雄出發</div>
+                    <div class="tm-item tm-last-item col-md-6 col-sm-6">頂級旅遊</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="tm-last-line"></div> -->
+</div>

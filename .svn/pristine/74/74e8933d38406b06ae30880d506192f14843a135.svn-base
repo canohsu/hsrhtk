@@ -1,0 +1,31 @@
+/**
+ * 易遊網版權所有 ©2000 - 2013 ezTravel Co., Ltd. all rights reserved.
+ */
+package actions;
+
+import models.BusinessType;
+import play.libs.F.Promise;
+import play.mvc.Action.Simple;
+import play.mvc.Http.Context;
+import play.mvc.SimpleResult;
+import context.SecurityContext;
+
+/**
+ * 腳色識別
+ * 
+ * @author CJWang
+ * 
+ */
+public class IdentifyAction extends Simple {
+  @Override
+  public Promise<SimpleResult> call(Context ctx) throws Throwable {
+    try {
+      // 暫時使用b2c
+      SecurityContext.setCurrentBusinessType(BusinessType.B2C);
+      return delegate.call(ctx);
+    } finally {
+      SecurityContext.remove();
+    }
+  }
+
+}

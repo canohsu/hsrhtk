@@ -1,0 +1,31 @@
+	<div class="row">
+		<div class="col-xs-12 text-center">
+			<br>
+            <!-- 進線來源、廣告來源 應該要撈DB -->
+			進線來源：
+			<select name='order_type'>
+				<option value='PHONE'>電話</option>
+				<option value='_55678'>55678</option>
+			</select>
+			廣告來源：
+			<select name='ad_source' id='ad_source'>
+				<option value='A'>直接進入易遊網</option>
+				<option value='J'>電視廣告</option>
+				<option value='B'>愛樂廣播電台</option>
+				<option value='K'>報紙</option>
+				<option value='C'>Yahoo旅遊頻道</option>
+				<option value='D'>Yahoo引擎</option>
+				<option value='E'>Google</option>
+				<option value='F'>門市型錄DM/海報</option>
+				<option value='G'>媒體報導</option>
+				<option value='H'>親友推薦</option>
+				<option value='I'>地緣關係(門市)</option>
+				<option value='Z'>其他</option>
+				<option value='_5'>訂購需求</option>
+				<option value='_6'>特別團</option>
+				<option value='_8'>旅展</option>
+				<option value='L'>EzWeb inbound自由行</option>
+			</select>
+            <br>
+		</div>
+	</div>

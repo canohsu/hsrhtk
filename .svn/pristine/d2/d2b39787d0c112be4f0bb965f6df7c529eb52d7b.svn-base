@@ -1,0 +1,25 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /hsrhtl/index                      @controllers.IndexController.index()
+GET     /hsrhtl/searchlist                 @controllers.SearchListController.searchList(pageNo: Integer ?= 1, orderBy ?= "PRICE:ASC")
+GET     /hsrhtl/roomdesc                   @controllers.RoomDescController.getRoomDesc(hotelNo, roomNo)
+POST    /hsrhtl/login                      @controllers.LoginController.login()
+POST    /hsrhtl/orderform                  @controllers.order.OrderFormController.fillOrderForm()
+GET     /hsrhtl/order/memberinfo           @controllers.order.MemberInfoController.getMemberInfo(personId)
+GET     /hsrhtl/order/customerinfo         @controllers.order.CustomerInfoController.getCustomerInfo(personId, index)
+POST    /hsrhtl/order/addfriend            @controllers.order.AddFriendController.addFriend()
+POST    /hsrhtl/createorder   		       @controllers.order.CreateOrderController.createOrder()
+GET     /hsrhtl/order/snapshot/:orderNo    @controllers.order.SnapshotController.snapshot(orderNo)
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file                    controllers.Assets.at(path="/public", file)
+
+
+# Example
+
+GET     /ajax/index               @controllers.AjaxExampleController.index()
+
+POST    /ajax/getsomething         @controllers.AjaxExampleController.getSomething()

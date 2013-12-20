@@ -1,0 +1,37 @@
+/**
+ * 易遊網版權所有 ©2000 - 2013 ezTravel Co., Ltd. all rights reserved.
+ */
+package controllers;
+
+import static play.mvc.Results.ok;
+
+import org.springframework.stereotype.Controller;
+
+import play.mvc.Result;
+import play.mvc.With;
+import actions.LogAction;
+
+/**
+ * Ajax Example
+ * 
+ * @author TonyWang
+ * 
+ */
+@With(LogAction.class)
+@Controller
+public class AjaxExampleController {
+	/**
+	 * 組合搜尋
+	 * 
+	 * @return
+	 */
+	public Result index() {
+		return ok(views.html.ajaxexample.index.render());
+	}
+
+	public Result getSomething() {
+
+		play.mvc.Controller.response().setContentType("application/json");
+		return ok("{\"message\":\"ok\"}");
+	}
+}

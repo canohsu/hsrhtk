@@ -1,0 +1,80 @@
+/**
+ * 易遊網版權所有 ©2000 - 2013 ezTravel Co., Ltd. all rights reserved.
+ */
+package service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import models.HsrHtl;
+import models.HsrStation;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.RestTemplate;
+
+import service.HsrService;
+
+/**
+ * @author 003050
+ * 
+ */
+public class HsrServiceImpl implements HsrService {
+  @Override
+  public List<HsrStation> listStationInfo() {
+    /**
+     * TODO 1. 使用concurrency方式取得所有高鐵站<br>
+     * 2. 使用concurrency方式取得都市鄰近高鐵站
+     */
+    return new ArrayList<HsrStation>();
+  }
+
+  @Override
+  public Object search(HsrHtl hsrHtl) {
+    /**
+     * TODO 1. 使用concurrency方式查詢出發班次, 傳入:<br>
+     * 搭乘日期<br>
+     * 開始時刻(0700)<br>
+     * 結束時刻(1100)<br>
+     * 起程站<br>
+     * 到達站<br>
+     * 車廂種類<br>
+     * 全票數<br>
+     * 孩童票數<br>
+     * 愛心票數<br>
+     * 敬老票數<br>
+     * 排序方式<br>
+     * 單頁筆數<br>
+     * 頁碼<br>
+     * 2. 使用concurrency方式查詢返回班次, 傳入:<br>
+     * 搭乘日期<br>
+     * 開始時刻(1500)<br>
+     * 結束時刻(2300)<br>
+     * 起程站<br>
+     * 到達站<br>
+     * 車廂種類<br>
+     * 全票數<br>
+     * 孩童票數<br>
+     * 愛心票數<br>
+     * 敬老票數<br>
+     * 排序方式<br>
+     * 單頁筆數<br>
+     * 頁碼<br>
+     * 3. 使用concurrency方式查詢酒店資訊<br>
+     * 4. 整合查詢資訊 <br>
+     * 計算高鐵+酒店合購價<br>
+     * 計算折扣
+     */
+    return null;
+  }
+
+  @Autowired
+  private RestTemplate restTemplate;
+
+  public RestTemplate getRestTemplate() {
+    return restTemplate;
+  }
+
+  public void setRestTemplate(RestTemplate restTemplate) {
+    this.restTemplate = restTemplate;
+  }
+}

@@ -1,0 +1,17 @@
+/**
+ * 易遊網版權所有 ©2000 - 2013 ezTravel Co., Ltd. all rights reserved.
+ */
+package service;
+
+import models.BusinessType;
+import play.mvc.Http.Request;
+
+/**
+ * 判別使用者身份
+ * 
+ * @author CJWang
+ * 
+ */
+public interface IdentifyService {
+  BusinessType identifyBusinessType(Request request);
+}

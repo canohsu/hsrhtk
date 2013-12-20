@@ -1,0 +1,10 @@
+# Web Service config
+hsr.endpoint=http://localhost:8080/hsr/
+htl.endpoint=http://localhost:8080/htl/
+member.endpoint=http://localhost:8080/member/
+order.endpoint=http://localhost:8080/order/
+
+# Application config
+page.pageSize=1
+thread.corePoolSize=10
+thread.maxPoolSize=30

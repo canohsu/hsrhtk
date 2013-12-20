@@ -1,0 +1,170 @@
+/* GLOBAL STYLES
+-------------------------------------------------- */
+/*
+.content {
+    margin: 0 auto;
+    max-width:960px;
+}
+*/
+
+/* ---------- 仿本網CSS ---------- */
+/*流程步驟標題*/
+h2 {font-size:1.2em; color:#F40;margin:.4em auto;}
+
+/*標題粗體*/
+h3 {clear:both;font-size:1.2em; color:#006600;margin:1em auto .3em;}
+
+/*標題正常*/
+h4 {font-size: 1.2em; margin:.3em auto;color:#060;font-weight:normal;}
+.tag-gn{background:#5BC31F; color:#FFFFFF; padding:0 .5%;}
+
+/*有底邊框標題*/
+h5 {font-size:1em;font-weight:normal;border:1px solid #abea45;background:#e9ffcd; color:#060; padding:.4em 1em .3em;margin:.7em auto;}
+
+
+/*文字標籤*/
+.tag-or{background:#F40; color:#FFF; padding:0 .5%;}
+
+/*文字顏色*/
+.txt-bl{color: #06c;}   	/* 藍 */
+.txt-bk{color: #222;}   	/* 灰黑 */
+.txt-gr{color: #444;}   	/* 深灰 */
+.txt-or{color: #F40;}   	/* 橘紅 */
+.txt-gn{color: #060;}   	/* 深綠 */
+.txt-no-r{color:#F40;text-decoration:line-through;}
+.txt-blue{color:#0000ff;}   /* 藍 blue */
+
+/*文字迷你小中大*/
+.txt-ss{font-size:.75em;font-weight:normal;}
+.txt-s{font-size:.88em;*font-size:.8em;font-weight:normal;}
+.txt-s2{font-size:.9em;font-weight:normal;}
+.txt-m{font-size:1em;font-weight:normal;}
+.txt-L{font-size:1.1em;font-weight:normal;}
+.txt-LL{font-size:1.2em;font-weight:normal;}
+
+/*表格1*/
+.tb-1{
+	border:1px solid #abea45;
+	border-collapse:collapse;
+	padding:.3em .5em;
+	vertical-align:middle;
+}
+
+.tb-1 th{
+	border:1px solid #abea45;
+	padding:.4em; *padding:.4em .5em;
+	background:#e9ffcd;
+	color:#060;
+	font-weight:normal;
+	vertical-align:middle;
+}
+
+.tb-1 td{
+	padding:.3em .5em;
+	text-align:left;
+	vertical-align:middle;
+	border:1px solid #abea45;
+}
+.tb-1 tfoot td{
+font-size: 0.9em;  padding:.1em 1em 1em; margin-top:-.85em;
+background:url(../../images/common/bg_dn.gif) repeat-x bottom;
+}
+
+/*表格2*/
+.tb-2{
+    width:100%;
+	border:1px solid #abea45;
+	border-collapse:collapse;
+	padding:0;
+	vertical-align:middle;
+}
+
+.tb-2 th{
+    font-size: .75em;
+	border:1px solid #abea45;
+	padding:.4em; *padding:.4em .5em;
+	background:#e9ffcd;
+	color:#060;
+	font-weight:normal;
+	text-align:center;
+	vertical-align:middle;
+}
+
+.tb-2 td{
+    font-size: .75em;
+	padding:.3em .5em;
+	text-align:left;
+	vertical-align:middle;
+	border:1px solid #abea45;
+}
+
+
+/*表格3*/
+.tb-3{
+    width:100%;
+	border:1px solid #abea45;
+	border-collapse:collapse;
+	padding:.3em .5em;
+	vertical-align:middle;
+}
+
+.tb-3 th{
+	border:1px solid #abea45;
+	padding:.4em; *padding:.4em .5em;
+	background:#e9ffcd;
+	color:#060;
+	font-weight:normal;
+	vertical-align:middle;
+}
+
+.tb-3 td{
+	padding:.3em .5em;
+	text-align:left;
+	vertical-align:middle;
+	border:1px solid #abea45;
+}
+
+.tb-3 thead th{
+	border:1px solid #abea45;
+	padding:.4em; *padding:.4em .5em;
+	background:#e9ffcd;
+	color:#060;
+	font-weight:normal;
+	text-align:center;
+	vertical-align:middle;
+}
+
+.tb-3 tbody td{
+    font-size: 0.9em;
+    padding:.5em 1em 0;
+    border-bottom:none;
+}
+
+.tb-3 tfoot td{
+    font-size: 0.9em;
+    padding:.1em 1em 1em;
+    margin-top:-.85em;
+    background:url(../../images/common/bg_dn.gif) repeat-x bottom;
+    border-top:none;
+}
+
+.input-warning{
+    background-color: #E9FFCD;
+}
+
+.input-placeholder{
+    color: #999;
+}
+
+.txt-center{
+text-align:center;
+}
+.txt-right{
+text-align:right;
+}
+.txt-top{
+vertical-align:text-top;
+}
+.txt-bottom{
+vertical-align:text-bottom;
+}

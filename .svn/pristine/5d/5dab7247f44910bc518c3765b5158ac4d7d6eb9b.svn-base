@@ -1,0 +1,153 @@
+@main {
+
+<div class="well">
+	<div class="row">
+		<div class="col-xs-5">
+			<label class="control-label">高鐵往返資訊</label>
+			<div class="table-responsive">
+			<table class="table table-condensed">
+			<tbody>
+				<tr>
+					<th>出發</th>
+					<td>台北 → 左營</td>
+					<td>2013/10/08</td>
+				</tr>
+				<tr>
+					<th>返回</th>
+					<td>左營 → 台北</td>
+					<td>2013/10/11</td>
+				</tr>
+				<tr>
+					<td colspan="3">成人票 2 張　資深公民票 2 張　愛心票 1 張　兒童票 1 張</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+		</div>
+
+		<div class="col-xs-5">
+			<label class="control-label">酒店　屏東</label>
+			<div class="table-responsive">
+			<table class="table table-condensed">
+			<tbody>
+				<tr>
+					<th>入住</th>
+					<td>2013/10/08</td>
+				</tr>
+				<tr>
+					<th>退房</th>
+					<td>2013/10/11</td>
+				</tr>
+				<tr>
+					<td colspan="2">雙人房 2 間　四人房 1 間</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+		</div>
+
+		<div class="col-xs-2" style="text-align:center;vertical-align:middle;">
+			<button type="submit" class="btn btn-success btn-sm">重新搜尋</button>
+		</div>
+	</div>
+</div>
+
+
+<div class="well">
+	<div class="row">
+		<div class="col-xs-10">
+			<label class="control-label">高鐵班次</label>
+			台北 → 左營  2013-10-08 出發 2013-10-11 返回
+			<div class="table-responsive">
+			<table class="table table-condensed">
+			<tbody>
+				<tr>
+					<th>609</th>
+					<td>高鐵台北站 → 高鐵左營站</td>
+					<td>07:00-09:00</td>
+				</tr>
+				<tr>
+					<th>724</th>
+					<td>高鐵左營站 → 高鐵台北站</td>
+					<td>18:00-20:00</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+		</div>
+
+		<div class="col-xs-2" style="text-align:center;">
+			<button type="submit" class="btn btn-success btn-sm">修改班次</button>
+		</div>
+	</div>
+</div>
+
+	<div class="row">
+		<div class="col-xs-1">共50筆資料</div>
+		<div class="col-xs-8">
+			<div class="pagination pagination-centered">
+				<ul>
+					<li><a href="#">Prev</a></li>
+					<li><a href="#">1</a></li>
+					<li><a href="#">2</a></li>
+					<li><a href="#">3</a></li>
+					<li><a href="#">4</a></li>
+					<li><a href="#">5</a></li>
+					<li><a href="#">Next</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="col-xs-1">排序方式：</div>
+		<div class="col-xs-1">
+			<select id="order" name="order" class="form-control input-sm" style="width:100px;">
+					<option value="0">組合價格</option>
+					<option value="1">評分人數</option>
+					<option value="2">現省價格</option>
+					<option value="3">評鑑分數</option>
+					<option value="4">人氣</option>
+				</select>
+		</div>
+		<div class="col-xs-1"></div>
+	</div>
+
+<div class="well">
+	<div class="row">
+		<div class="col-xs-10"><b>高鐵+酒店合購價：12,000</b>　現省 3,000</div>
+		<div class="col-xs-2" style="text-align:center;">
+			<button type="submit" class="btn btn-success btn-sm">立即訂購</button>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="table-responsive">
+			<table class="table table-condensed">
+			<tbody>
+				<tr>
+					<th rowspan="2" style="width:150px;">
+					<img src="http://www.eztravel.com.tw/ss_static/images/htl/more/HTLI000002098_m02.jpg" style="max-height: 100px;">
+					</th>
+					<td>
+					福華酒店<br>
+					台北市 XXXXXXXXXXXXXXXXXXXXXXX<br>
+					<a href="#">飯店介紹</a>　
+					<a href="#">評鑑：9/10</a>　
+					<a href="#">地圖</a>
+					</td>
+				</tr>
+				<tr>
+					<td>雙人房*2　四人房*1</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+} {
+	@header()
+} {
+	@footer()
+}

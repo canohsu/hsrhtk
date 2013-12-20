@@ -1,0 +1,41 @@
+/**
+ * 易遊網版權所有 ©2000 - 2013 ezTravel Co., Ltd. all rights reserved.
+ */
+package service;
+
+import java.text.ParseException;
+import java.util.concurrent.ExecutionException;
+
+import models.HsrHtl;
+import models.Page;
+
+/**
+ * 高鐵+酒店查詢
+ * 
+ * @author 003050
+ * 
+ */
+public interface HsrService {
+  /**
+   * 高鐵站城市對應定義於js檔
+   */
+  // /**
+  // * 取得高鐵站城市資訊
+  // *
+  // * @return 高鐵站城市資訊
+  // */
+  // public List<HsrStation> listStationInfo();
+
+  /**
+   * 查詢高鐵+酒店組合
+   * 
+   * @param hsrHtl 查詢條件
+   * @param page 分頁資訊
+   * @return
+   * @throws InterruptedException
+   * @throws ExecutionException
+   * @throws ParseException
+   */
+  public HsrHtl search(HsrHtl hsrHtl, Page page) throws InterruptedException, ExecutionException,
+      ParseException;
+}

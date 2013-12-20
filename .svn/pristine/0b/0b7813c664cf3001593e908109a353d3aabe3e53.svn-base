@@ -1,0 +1,754 @@
+@(hsrHtl: pojo.HsrHtl, pageObj: pojo.Page)
+@import utils.NumberUtils
+@import models.enums.BusinessType
+@import utils.PriceUtils
+@import eztravel.rest.enums.hsr.HsrTicketType
+<script type="text/javascript">
+function showIMG(obj){
+    obj.src="http://www.eztravel.com.tw/ss_static/newSys/images/pkg.gif";
+}
+</script>
+
+<div class="container">
+    <div class="row">
+       <div class="col-xs-12"><hr class="dashedHr"></div>
+    </div>
+</div>
+
+<div class="container search-result-block">
+    <div class="row">
+        <div class="col-xs-12 dotTitle"><span>2</span> 選擇飯店房型</div>
+    </div>
+</div>
+
+<div class="container pagination-block">
+    <div class="col-xs-3 col-sm-2 col-md-1" style="padding: 5px 0px 0px 10px; color: #006600;">排序方式</div>
+	<div class="col-xs-6 col-sm-3 col-md-2">
+		<select id="order" name="order">
+			<option value="PRICE:ASC" @if(pageObj.getOrderBy().equals("PRICE:ASC")) { selected } >價格最低</option>
+			<!-- <option value="1">現省價格</option> -->
+			<option value="REVIEW_SCORE:DESC" @if(pageObj.getOrderBy().equals("REVIEW_SCORE:DESC")) { selected } >評鑑最佳</option>
+			<option value="POPULAR:DESC" @if(pageObj.getOrderBy().equals("POPULAR:DESC")) { selected } >人氣最高</option>
+		</select>
+	</div>
+    @page(pageObj)
+</div>
+
+@for(hotel <- hsrHtl.getHotelList()) {
+
+<div class="container search-result-block">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="search-result-htlList">
+                <div class="row"><div class="col-xs-12 title">@hotel.getHotelName()　@hotel.getEnglishName()</div></div>
+                <div class="row" style="padding-top: 10px;">
+                    <div class="col-xs-12 col-sm-4"><img src="@hotel.getHotelPhotoLink()" class="htlImages" onerror="showIMG(this)"></div>
+                    <div class="col-xs-12 col-sm-5">
+                        <div class="row" style="padding-bottom: 8px;">
+                        <div class="col-xs-12">
+                        <a href="http://www.eztravel.com.tw/ezec/htl_tw/htltw_htl_detail.jsp?prod_no=@hotel.getHotelCd()" target="_blank"><img src="@routes.Assets.at("images/common/icon_hotel.png")" style="padding-right: 4px;">飯店資訊</a>
+                        <a href="http://www.eztravel.com.tw/ezec/htl_tw/htltwMapQuery.jsp?sh=@hotel.getHotelCd()" target="_blank"><img src="@routes.Assets.at("images/common/icon_map.png")" style="padding: 0px 4px 0px 8px;">地圖</a>
+                        </div>
+                        </div>
+
+                        <div class="row review">
+                        <div class="col-xs-12">整體評價<span class="score">@if(hotel.getReviewScore().compareTo(java.math.BigDecimal.valueOf(6)) < 0) {--} else {@hotel.getReviewScore()}</span>/10　<span class="visible-xs visible-sm"></span><span>分數源自 302 條評鑑</span>　<a href="http://www.eztravel.com.tw/ezReview/reviewCollect/reviewViewList.do?prodNo=@hotel.getHotelCd()" target="_blank">查看評鑑</a>
+                        </div>
+                        </div>
+                        
+                        <div class="search-result-roomList" id="@hotel.getHotelCd()" data-sitePrice="@PriceUtils.calculateSitePrice(hsrHtl.getDepTicket(), hsrHtl.getReturnTicket(), hotel.getRoomList())" data-unionPrice="@PriceUtils.calculateUnionPrice(hsrHtl.getDepTicket(), hsrHtl.getReturnTicket(), hotel.getRoomList())" data-favorPrice="@PriceUtils.calculateFavorPrice(hsrHtl.getDepTicket(), hsrHtl.getReturnTicket(), hotel.getRoomList())">
+
+                        @for(i <- 0 to hotel.getRoomList().size() - 1) {
+                        <div class="row" data-prodNo="@hotel.getRoomList().get(i).getRoomInfo().getHotelCd()" data-roomType="@hotel.getRoomList().get(i).getRoomInfo().getHtlNum()" data-sitePrice="@hotel.getRoomList().get(i).getRoomInfo().getSitePrice()" data-unionPrice="@hotel.getRoomList().get(i).getRoomInfo().getUnionPrice()" data-favorPrice="@hotel.getRoomList().get(i).getRoomInfo().getFavorPrice()" data-roomCd="@hotel.getRoomList().get(i).getRoomInfo().getRoomCd()" rowCounts="@i">
+                        <div class="col-xs-12 roomDiv0@(i + 1)">
+                            <div class="row">
+                            <div class="col-xs-9 col-sm-9 col-md-10 htitle">
+                            @hotel.getRoomList().get(i).getRoomInfo().getRoomtypeDesc()
+                            <a target="_blank" href="/hsrhtl/roomdesc?hotelNo=@hotel.getRoomList().get(i).getRoomInfo().getHotelCd()&roomNo=@hotel.getRoomList().get(i).getRoomInfo().getRoomCd()">
+                            <img src="@routes.Assets.at("images/common/icon_info.png")">
+                            </a>
+                            </div>
+                            <div class="col-xs-3 col-sm-3 col-md-2 edit">
+
+                            @if(hotel.getRoomList().get(i).getRoomInfo().getHtlNum()==1) {
+                                @if(hotel.getSglCandidate().size() > 1) {
+                                <a href="#" class="changeRoomNo">修改</a>
+                                }
+                            }
+                            @if(hotel.getRoomList().get(i).getRoomInfo().getHtlNum()==2) {
+                                @if(hotel.getTwnCandidate().size() > 1) {
+                                <a href="#" class="changeRoomNo">修改</a>
+                                }
+                            }
+                            @if(hotel.getRoomList().get(i).getRoomInfo().getHtlNum()==3) {
+                                @if(hotel.getTrpCandidate().size() > 1) {
+                                <a href="#" class="changeRoomNo">修改</a>
+                                }
+                            }
+                            @if(hotel.getRoomList().get(i).getRoomInfo().getHtlNum()==4) {
+                                @if(hotel.getQudCandidate().size() > 1) {
+                                <a href="#" class="changeRoomNo">修改</a>
+                                }
+                            }
+
+                            </div>
+                            </div>
+                            <div class="row">
+                            <div class="col-xs-12 btitle">@hotel.getRoomList().get(i).getRoomInfo().getBedType()，@hotel.getRoomList().get(i).getRoomInfo().getBreakfastTypeNm()</div>
+                            </div>
+                            <div class="row">
+                            <div class="col-xs-12 ttitle">票種：
+                            @if(hotel.getRoomList().get(i).getFull() > 0) {
+                                成人 @hotel.getRoomList().get(i).getFull()　
+                            }
+                            @if(hotel.getRoomList().get(i).getSenior() > 0) {
+                                敬老 @hotel.getRoomList().get(i).getSenior()　
+                            }
+                            @if(hotel.getRoomList().get(i).getHalf() > 0) {
+                                愛心 @hotel.getRoomList().get(i).getHalf()　
+                            }
+                            @if(hotel.getRoomList().get(i).getChildren() > 0) {
+                                孩童 @hotel.getRoomList().get(i).getChildren()
+                            }</div>
+                            </div>
+                        </div>
+                        </div>
+                        }
+                            
+                        </div>
+                        
+                        
+                    </div>
+                    
+                    <div class="col-xs-12 col-sm-3 priceDiv">
+                        <div class="row @if(BusinessType.B2B != hsrHtl.getUser().getBusinessType() && BusinessType.B2E != hsrHtl.getUser().getBusinessType()) { saveMore}">
+                        <div class="col-xs-9 col-sm-12 col-md-9">組合優惠總價<br>
+                        <span title='
+高鐵去程成人票原價：@hsrHtl.getDepTicket().get(HsrTicketType.ADULT).getFullPrice()
+高鐵回程成人票原價：@hsrHtl.getReturnTicket().get(HsrTicketType.ADULT).getFullPrice()
+高鐵去程孩童票原價：@hsrHtl.getDepTicket().get(HsrTicketType.CHILDREN).getFullPrice()
+高鐵回程孩童票原價：@hsrHtl.getReturnTicket().get(HsrTicketType.CHILDREN).getFullPrice()
+高鐵去程資深公民原價：@hsrHtl.getDepTicket().get(HsrTicketType.SENIOR).getFullPrice()
+高鐵回程資深公民原價：@hsrHtl.getReturnTicket().get(HsrTicketType.SENIOR).getFullPrice()
+高鐵去程愛心票原價：@hsrHtl.getDepTicket().get(HsrTicketType.HEART).getFullPrice()
+高鐵回程愛心票原價：@hsrHtl.getReturnTicket().get(HsrTicketType.HEART).getFullPrice()
+高鐵去程成人票組合價：@hsrHtl.getDepTicket().get(HsrTicketType.ADULT).getPackagePrice()
+高鐵回程成人票組合價：@hsrHtl.getReturnTicket().get(HsrTicketType.ADULT).getPackagePrice()
+高鐵去程孩童票組合價：@hsrHtl.getDepTicket().get(HsrTicketType.CHILDREN).getPackagePrice()
+高鐵回程孩童票組合價：@hsrHtl.getReturnTicket().get(HsrTicketType.CHILDREN).getPackagePrice()
+高鐵去程資深公民組合價：@hsrHtl.getDepTicket().get(HsrTicketType.SENIOR).getPackagePrice()
+高鐵回程資深公民組合價：@hsrHtl.getReturnTicket().get(HsrTicketType.SENIOR).getPackagePrice()
+高鐵去程愛心票組合價：@hsrHtl.getDepTicket().get(HsrTicketType.HEART).getPackagePrice()
+高鐵回程愛心票組合價：@hsrHtl.getReturnTicket().get(HsrTicketType.HEART).getPackagePrice()
+' data-prodNo='@hotel.getHotelCd()' data-type='unionPrice'>@NumberUtils.groupedFormat(PriceUtils.calculateUnionPrice(hsrHtl.getDepTicket(), hsrHtl.getReturnTicket(), hotel.getRoomList()))</span> 元
+                        </div>
+                        <div class="col-xs-3 col-sm-12 col-md-3" style="position: relative;">
+                        <div class="saveP">現省 <span data-prodNo='@hotel.getHotelCd()' data-type='savePrice'>@NumberUtils.groupedFormat(PriceUtils.calculateSave(hsrHtl.getDepTicket(), hsrHtl.getReturnTicket(), hotel.getRoomList()))</span>
+                        </div>
+                        </div>
+                        </div>
+
+@if(BusinessType.B2B == hsrHtl.getUser().getBusinessType() || BusinessType.B2E == hsrHtl.getUser().getBusinessType()) {
+                        <div class="row saveMore" style="padding-top: 10px;">
+                        <div class="col-xs-9 col-sm-12 col-md-9">
+                        @if(BusinessType.B2E == hsrHtl.getUser().getBusinessType()) {企業} else {同業}優惠總價<br>
+                        <span title='
+高鐵去程成人票優惠價：@hsrHtl.getDepTicket().get(HsrTicketType.ADULT).getFinalPrice()
+高鐵回程成人票優惠價：@hsrHtl.getReturnTicket().get(HsrTicketType.ADULT).getFinalPrice()
+高鐵去程孩童票優惠價：@hsrHtl.getDepTicket().get(HsrTicketType.CHILDREN).getFinalPrice()
+高鐵回程孩童票優惠價：@hsrHtl.getReturnTicket().get(HsrTicketType.CHILDREN).getFinalPrice()
+高鐵去程資深公民優惠價：@hsrHtl.getDepTicket().get(HsrTicketType.SENIOR).getFinalPrice()
+高鐵回程資深公民優惠價：@hsrHtl.getReturnTicket().get(HsrTicketType.SENIOR).getFinalPrice()
+高鐵去程愛心票優惠價：@hsrHtl.getDepTicket().get(HsrTicketType.HEART).getFinalPrice()
+高鐵回程愛心票優惠價：@hsrHtl.getReturnTicket().get(HsrTicketType.HEART).getFinalPrice()
+' data-prodNo='@hotel.getHotelCd()' data-type='favorPrice'>@NumberUtils.groupedFormat(PriceUtils.calculateFavorPrice(hsrHtl.getDepTicket(), hsrHtl.getReturnTicket(), hotel.getRoomList()))</span> 元
+	                    </div>
+
+                        <div class="col-xs-3 col-sm-12 col-md-3" style="position: relative;">
+                        <div class="saveP">再省 <span data-prodNo='@hotel.getHotelCd()' data-type='saveMorePrice'>@NumberUtils.groupedFormat(PriceUtils.calculateSaveMore(hsrHtl.getDepTicket(), hsrHtl.getReturnTicket(), hotel.getRoomList()))</span>
+                        </div>
+                        </div>
+                        </div>
+}
+
+                        <div class="row" style="clear:both;">
+                        <div class="col-xs-12" style="padding: 10px 0px;text-align:center;">
+                        <button type="submit" class="orderSubmit" data-prodNo="@hotel.getHotelCd()"></button>
+                        </div>
+                        </div>
+
+                    </div><!-- priceDiv -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<div class="container well search-result-block" style="display:none;">
+        <div class="col-md-5 col-sm-4 col-xs-12">
+            <img style="max-height: 100%; max-width: 100%;" src="@hotel.getHotelPhotoLink()" onerror="showIMG(this)">
+        </div>
+		<div class="col-md-7 col-sm-8 col-xs-12">
+			<div class="table-responsive">
+			<table class="table table-condensed">
+			<tbody>
+				<tr>
+                    <!--
+					<th rowspan="2" style="width:150px;">
+					<img src="@hotel.getHotelPhotoLink()" style="max-height: 100px;">
+					</th>
+                    -->
+					<td>
+					@hotel.getHotelName()<br>
+					@hotel.getAddress()<br>
+					<a onclick="newWindow('1','@hotel.getHotelCd()'); return false;" href="#">飯店介紹</a>　
+					<a onclick="newWindow('2','@hotel.getHotelCd()'); return false;" href="#">
+					評鑑：
+				@if(hotel.getReviewScore().compareTo(java.math.BigDecimal.valueOf(6)) < 0) {
+					--
+				} else {
+					@hotel.getReviewScore()
+				}
+					/10
+					</a>　
+					<a onclick="newWindow('3','@hotel.getHotelCd()'); return false;" href="#">地圖</a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+
+<!-- HTL取總價  -->
+						<table id="@hotel.getHotelCd()">
+						<tbody>
+						@for(i <- 0 to hotel.getRoomList().size() - 1) {
+						<tr data-prodNo="@hotel.getRoomList().get(i).getRoomInfo().getHotelCd()" data-roomType="@hotel.getRoomList().get(i).getRoomInfo().getHtlNum()" data-sitePrice="@hotel.getRoomList().get(i).getRoomInfo().getSitePrice()" data-unionPrice="@hotel.getRoomList().get(i).getRoomInfo().getUnionPrice()" data-favorPrice="@hotel.getRoomList().get(i).getRoomInfo().getFavorPrice()" data-roomCd="@hotel.getRoomList().get(i).getRoomInfo().getRoomCd()" rowCounts="@i">
+							<td>第@(i + 1)間：</td>
+							<td>
+							@if(hotel.getRoomList().get(i).getFull() > 0) {
+								成人 @hotel.getRoomList().get(i).getFull()　
+							}
+							@if(hotel.getRoomList().get(i).getSenior() > 0) {
+								敬老 @hotel.getRoomList().get(i).getSenior()　
+							}
+							@if(hotel.getRoomList().get(i).getHalf() > 0) {
+								愛心 @hotel.getRoomList().get(i).getHalf()　
+							}
+							@if(hotel.getRoomList().get(i).getChildren() > 0) {
+								孩童 @hotel.getRoomList().get(i).getChildren()
+							}
+							</td>
+							<td>@hotel.getRoomList().get(i).getRoomInfo().getRoomtypeDesc()</td>
+							<td>@hotel.getRoomList().get(i).getRoomInfo().getBedType()，@hotel.getRoomList().get(i).getRoomInfo().getBreakfastTypeNm()</td>
+							<td>(說明)</td>
+							<td>
+                            @if(hotel.getRoomList().get(i).getRoomInfo().getHtlNum()==1) {
+                                @if(hotel.getSglCandidate().size() > 1) {
+                                <button type="submit" class="btn btn-success btn-sm changeRoomNo_bak">修改房型</button>
+                                }
+                            }
+                            @if(hotel.getRoomList().get(i).getRoomInfo().getHtlNum()==2) {
+                                @if(hotel.getTwnCandidate().size() > 1) {
+                                <button type="submit" class="btn btn-success btn-sm changeRoomNo_bak">修改房型</button>
+                                }
+                            }
+                            @if(hotel.getRoomList().get(i).getRoomInfo().getHtlNum()==3) {
+                                @if(hotel.getTrpCandidate().size() > 1) {
+                                <button type="submit" class="btn btn-success btn-sm changeRoomNo_bak">修改房型</button>
+                                }
+                            }
+                            @if(hotel.getRoomList().get(i).getRoomInfo().getHtlNum()==4) {
+                                @if(hotel.getQudCandidate().size() > 1) {
+                                <button type="submit" class="btn btn-success btn-sm changeRoomNo_bak">修改房型</button>
+                                }
+                            }
+                            <br>
+                            @hotel.getSglCandidate().size()
+                            @hotel.getTwnCandidate().size()
+                            @hotel.getTrpCandidate().size()
+                            @hotel.getQudCandidate().size()
+                            </td>
+							<!-- 右側僅供測試參考用 -->
+                            <td><small title='
+房間原價：@hotel.getRoomList().get(i).getRoomInfo().getSitePrice()
+房間組合價：@hotel.getRoomList().get(i).getRoomInfo().getUnionPrice()
+@if(BusinessType.B2B == hsrHtl.getUser().getBusinessType() || BusinessType.B2E == hsrHtl.getUser().getBusinessType()) {房間優惠價：@hotel.getRoomList().get(i).getRoomInfo().getFavorPrice() }
+' style='color:gray'><!-- 右側僅供測試參考用 -->參考價</small>
+                            </td>
+						</tr>
+						}
+						</tbody>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+		</div>
+
+        <div class="col-md-offset-5 col-md-5 col-sm-offset-4 col-sm-6">
+        <b>高鐵+酒店合購價：@NumberUtils.groupedFormat(PriceUtils.calculateUnionPrice(hsrHtl.getDepTicket(), hsrHtl.getReturnTicket(), hotel.getRoomList()))</b>　
+        現省 @NumberUtils.groupedFormat(PriceUtils.calculateSave(hsrHtl.getDepTicket(), hsrHtl.getReturnTicket(), hotel.getRoomList()))　
+        <small title='
+高鐵去程成人票原價：@hsrHtl.getDepTicket().get(HsrTicketType.ADULT).getFullPrice()
+高鐵回程成人票原價：@hsrHtl.getReturnTicket().get(HsrTicketType.ADULT).getFullPrice()
+高鐵去程孩童票原價：@hsrHtl.getDepTicket().get(HsrTicketType.CHILDREN).getFullPrice()
+高鐵回程孩童票原價：@hsrHtl.getReturnTicket().get(HsrTicketType.CHILDREN).getFullPrice()
+高鐵去程資深公民原價：@hsrHtl.getDepTicket().get(HsrTicketType.SENIOR).getFullPrice()
+高鐵回程資深公民原價：@hsrHtl.getReturnTicket().get(HsrTicketType.SENIOR).getFullPrice()
+高鐵去程愛心票原價：@hsrHtl.getDepTicket().get(HsrTicketType.HEART).getFullPrice()
+高鐵回程愛心票原價：@hsrHtl.getReturnTicket().get(HsrTicketType.HEART).getFullPrice()
+高鐵去程成人票組合價：@hsrHtl.getDepTicket().get(HsrTicketType.ADULT).getPackagePrice()
+高鐵回程成人票組合價：@hsrHtl.getReturnTicket().get(HsrTicketType.ADULT).getPackagePrice()
+高鐵去程孩童票組合價：@hsrHtl.getDepTicket().get(HsrTicketType.CHILDREN).getPackagePrice()
+高鐵回程孩童票組合價：@hsrHtl.getReturnTicket().get(HsrTicketType.CHILDREN).getPackagePrice()
+高鐵去程資深公民組合價：@hsrHtl.getDepTicket().get(HsrTicketType.SENIOR).getPackagePrice()
+高鐵回程資深公民組合價：@hsrHtl.getReturnTicket().get(HsrTicketType.SENIOR).getPackagePrice()
+高鐵去程愛心票組合價：@hsrHtl.getDepTicket().get(HsrTicketType.HEART).getPackagePrice()
+高鐵回程愛心票組合價：@hsrHtl.getReturnTicket().get(HsrTicketType.HEART).getPackagePrice()
+'><!-- 右側僅供測試參考用 -->參考價</small>
+
+        @if(BusinessType.B2B == hsrHtl.getUser().getBusinessType() || BusinessType.B2E == hsrHtl.getUser().getBusinessType()) {
+        <br><b>@if(BusinessType.B2E == hsrHtl.getUser().getBusinessType()) {企業} else {同業}優惠價：@NumberUtils.groupedFormat(PriceUtils.calculateFavorPrice(hsrHtl.getDepTicket(), hsrHtl.getReturnTicket(), hotel.getRoomList()))</b>　
+        再省 @NumberUtils.groupedFormat(PriceUtils.calculateSaveMore(hsrHtl.getDepTicket(), hsrHtl.getReturnTicket(), hotel.getRoomList()))　
+        <small title='
+高鐵去程成人票優惠價：@hsrHtl.getDepTicket().get(HsrTicketType.ADULT).getFinalPrice()
+高鐵回程成人票優惠價：@hsrHtl.getReturnTicket().get(HsrTicketType.ADULT).getFinalPrice()
+高鐵去程孩童票優惠價：@hsrHtl.getDepTicket().get(HsrTicketType.CHILDREN).getFinalPrice()
+高鐵回程孩童票優惠價：@hsrHtl.getReturnTicket().get(HsrTicketType.CHILDREN).getFinalPrice()
+高鐵去程資深公民優惠價：@hsrHtl.getDepTicket().get(HsrTicketType.SENIOR).getFinalPrice()
+高鐵回程資深公民優惠價：@hsrHtl.getReturnTicket().get(HsrTicketType.SENIOR).getFinalPrice()
+高鐵去程愛心票優惠價：@hsrHtl.getDepTicket().get(HsrTicketType.HEART).getFinalPrice()
+高鐵回程愛心票優惠價：@hsrHtl.getReturnTicket().get(HsrTicketType.HEART).getFinalPrice()
+'><!-- 右側僅供測試參考用 -->參考價</small>
+        }
+        </div>
+        <div class="col-sm-2" style="text-align:center;">
+            <button type="submit" class="btn btn-success btn-lg btn-block orderSubmit_bak" data-prodNo="@hotel.getHotelCd()">立即訂購</button>
+        </div>
+</div>
+}
+
+
+
+
+
+
+<!---- 修改其他房型 - Start ---->
+<div class="modal fade" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true" id="dialog-form2">
+
+<div class="modal-dialog">
+
+	<div class="modal-content">
+
+	<div class="modal-header">
+		<div class="row modal-title">
+			<div class="col-xs-12">
+			<!----<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="確定修改">&times;</button>---->
+			<span id="myModalLabel2">選擇房型</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal-body">
+	<form>
+		<fieldset>
+			<div class="hsrList">
+				<div class="row" style="padding:0px;">
+					<div class="col-xs-12" style="padding:0px;">
+
+		<table id="roomList">
+		<thead>
+		<tr>
+			<th style="width: 12%;">選擇</th>
+			<th style="width: 30%;">房型</th>
+			<th style="width: 40%;">說明</th>
+			<th style="width: 18%;"><span class="hidden-xs">價差/房</span><span class="visible-xs">價差</span></th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr class="empty">
+			<td colspan="5">沒有其他房型可供選擇。</td>
+		</tr>
+
+@for(hotel <- hsrHtl.getHotelList()) {
+	<!-- 單人房數量 -->
+	@if(hsrHtl.getSgl() > 0) {
+		@for(i <- 0 to hotel.getSglCandidate().size() - 1) {
+		<tr data-prodNo="@hotel.getSglCandidate().get(i).getHotelCd()" data-roomType="@hotel.getSglCandidate().get(i).getHtlNum()" data-roomCd="@hotel.getSglCandidate().get(i).getRoomCd()" data-sitePrice="@hotel.getSglCandidate().get(i).getSitePrice()" data-unionPrice="@hotel.getSglCandidate().get(i).getUnionPrice()" data-favorPrice="@hotel.getSglCandidate().get(i).getFavorPrice()">
+			<td><input type="radio" id="roomNo" name="roomNo" value="@hotel.getSglCandidate().get(i).getRoomCd()"></td>
+			<td>@hotel.getSglCandidate().get(i).getRoomtypeDesc()
+<a target="_blank" href="/hsrhtl/roomdesc?hotelNo=@hotel.getSglCandidate().get(i).getHotelCd()&roomNo=@hotel.getSglCandidate().get(i).getRoomCd()">
+<img src="@routes.Assets.at("images/common/icon_info.png")"></a>
+            </td>
+			<td>@hotel.getSglCandidate().get(i).getBedType()，@hotel.getSglCandidate().get(i).getBreakfastTypeNm()</td>
+			<td>
+				@hotel.getSglCandidate().get(i).getSitePrice()
+				@hotel.getSglCandidate().get(i).getUnionPrice()
+				@hotel.getSglCandidate().get(i).getFavorPrice()
+				/
+				@hotel.getSglCandidate().get(i).getRoomQty() 間
+			</td>
+		</tr>
+		}
+	}
+
+	<!-- 雙人房數量 -->
+	@if(hsrHtl.getTwn() > 0) {
+		@for(i <- 0 to hotel.getTwnCandidate().size() - 1) {
+		<tr data-prodNo="@hotel.getTwnCandidate().get(i).getHotelCd()" data-roomType="@hotel.getTwnCandidate().get(i).getHtlNum()" data-roomCd="@hotel.getTwnCandidate().get(i).getRoomCd()" data-sitePrice="@hotel.getTwnCandidate().get(i).getSitePrice()" data-unionPrice="@hotel.getTwnCandidate().get(i).getUnionPrice()" data-favorPrice="@hotel.getTwnCandidate().get(i).getFavorPrice()">
+			<td><input type="radio" id="roomNo" name="roomNo" value="@hotel.getTwnCandidate().get(i).getRoomCd()"></td>
+			<td>@hotel.getTwnCandidate().get(i).getRoomtypeDesc()
+<a target="_blank" href="/hsrhtl/roomdesc?hotelNo=@hotel.getTwnCandidate().get(i).getHotelCd()&roomNo=@hotel.getTwnCandidate().get(i).getRoomCd()">
+<img src="@routes.Assets.at("images/common/icon_info.png")"></a>
+			</td>
+			<td>@hotel.getTwnCandidate().get(i).getBedType()，@hotel.getTwnCandidate().get(i).getBreakfastTypeNm()</td>
+			<td>
+@hotel.getTwnCandidate().get(i).getSitePrice()
+@hotel.getTwnCandidate().get(i).getUnionPrice()
+@hotel.getTwnCandidate().get(i).getFavorPrice()
+/
+@hotel.getTwnCandidate().get(i).getRoomQty() 間
+			</td>
+		</tr>
+		}
+	}
+
+	<!-- 三人房數量 -->
+	@if(hsrHtl.getTrp() > 0) {
+		@for(i <- 0 to hotel.getTrpCandidate().size() - 1) {
+		<tr data-prodNo="@hotel.getTrpCandidate().get(i).getHotelCd()" data-roomType="@hotel.getTrpCandidate().get(i).getHtlNum()" data-roomCd="@hotel.getTrpCandidate().get(i).getRoomCd()" data-sitePrice="@hotel.getTrpCandidate().get(i).getSitePrice()" data-unionPrice="@hotel.getTrpCandidate().get(i).getUnionPrice()" data-favorPrice="@hotel.getTrpCandidate().get(i).getFavorPrice()">
+			<td><input type="radio" id="roomNo" name="roomNo" value="@hotel.getTrpCandidate().get(i).getRoomCd()"></td>
+			<td>@hotel.getTrpCandidate().get(i).getRoomtypeDesc()
+<a target="_blank" href="/hsrhtl/roomdesc?hotelNo=@hotel.getTrpCandidate().get(i).getHotelCd()&roomNo=@hotel.getTrpCandidate().get(i).getRoomCd()">
+<img src="@routes.Assets.at("images/common/icon_info.png")"></a>
+            </td>
+			<td>@hotel.getTrpCandidate().get(i).getBedType()，@hotel.getTrpCandidate().get(i).getBreakfastTypeNm()</td>
+			<td>
+@hotel.getTrpCandidate().get(i).getSitePrice()
+@hotel.getTrpCandidate().get(i).getUnionPrice()
+@hotel.getTrpCandidate().get(i).getFavorPrice()
+/
+@hotel.getTrpCandidate().get(i).getRoomQty() 間
+			</td>
+		</tr>
+		}
+	}
+
+	<!-- 四人房數量 -->
+	@if(hsrHtl.getQud() > 0) {
+		@for(i <- 0 to hotel.getQudCandidate().size() - 1) {
+		<tr data-prodNo="@hotel.getQudCandidate().get(i).getHotelCd()" data-roomType="@hotel.getQudCandidate().get(i).getHtlNum()" data-roomCd="@hotel.getQudCandidate().get(i).getRoomCd()"  data-sitePrice="@hotel.getQudCandidate().get(i).getSitePrice()" data-unionPrice="@hotel.getQudCandidate().get(i).getUnionPrice()" data-favorPrice="@hotel.getQudCandidate().get(i).getFavorPrice()">
+			<td><input type="radio" id="roomNo" name="roomNo" value="@hotel.getQudCandidate().get(i).getRoomCd()"></td>
+			<td>@hotel.getQudCandidate().get(i).getRoomtypeDesc()
+<a target="_blank" href="/hsrhtl/roomdesc?hotelNo=@hotel.getQudCandidate().get(i).getHotelCd()&roomNo=@hotel.getQudCandidate().get(i).getRoomCd()">
+<img src="@routes.Assets.at("images/common/icon_info.png")"></a>
+            </td>
+			<td>@hotel.getQudCandidate().get(i).getBedType()，@hotel.getQudCandidate().get(i).getBreakfastTypeNm()</td>
+			<td>
+@hotel.getQudCandidate().get(i).getSitePrice()
+@hotel.getQudCandidate().get(i).getUnionPrice()
+@hotel.getQudCandidate().get(i).getFavorPrice()
+/
+@hotel.getQudCandidate().get(i).getRoomQty() 間
+			</td>
+		</tr>
+		}
+	}
+}
+
+		</tbody>
+		</table>
+
+					</div>
+				</div>
+
+			</div>
+		</fieldset>
+	</form>
+	</div><!-- modal-body -->
+
+    <div class="modal-footer">
+	   <button type="button" class="btn-checkOK" data-dismiss="modal" title="確定修改"></button>
+    </div>
+
+	</div><!-- model-content -->
+</div><!-- modal-dialog-->
+
+</div>
+<!---- 修改其他房型 - End ---->
+
+
+
+<script>
+$(function() {
+    //---- 修改其他房型 ---- Start
+    var roomRowCounts = 0;
+    $("#dialog-form2").on('hidden.bs.modal', function(){
+        checkForm2();
+        cancelRoomNo();
+    });
+
+    $("#dialog-form2").on('show.bs.modal', function(){
+        //alert('open!');
+        //selChange();
+    });
+
+
+
+    /*
+    $("#dialog-form2").dialog({
+        autoOpen: false,
+        height: 500,
+        width: 740,
+        modal: true,
+        buttons: {
+            "確定": function() {
+                    var result = checkForm2();
+                    if(result == true) {
+                        $( this ).dialog("close");
+                        cancelRoomNo();
+                    }
+            },
+            "取消": function() {
+                $( this ).dialog("close");
+                cancelRoomNo();
+            }
+        },
+        close: function() {
+        	cancelRoomNo();
+        }
+    });
+
+
+$(".changeRoomNo").click(function(){
+    
+});
+    
+    */
+
+    $(".changeRoomNo")
+//        .button()
+        .click(function() {
+
+            //var butTr = $(this).parent().parent('tr');
+            //var butTr = $(this).parent().parent().parent().parent().parent('.search-result-roomList');
+            var butTr = $(this).parent().parent().parent().parent('.row');
+
+            var rowCount = butTr.attr("rowCounts");
+            roomRowCounts = rowCount;
+/*
+        	var prodNo = butTr.attr("data-prodNo");
+        	var roomType = butTr.attr("data-roomType");    //1:單人房 / 2:雙人房 / 3:三人房 / 4:四人房
+        	var roomCd = butTr.attr("data-roomCd");
+
+            alert(butTr.html());
+            alert(roomRowCounts);
+            alert(prodNo + "," + roomType + "," + roomCd);
+*/
+
+            //$("#dialog-form2").dialog("open");
+            $("#dialog-form2").modal('toggle');
+            //selRoom(prodNo, roomType, roomCd);
+            selRoom(butTr);
+        });
+    //---- 修改其他房型 ---- End
+
+	// 挑選其他房型
+    function selRoom(Obj) {
+
+        var butTr = Obj;
+    	var prodNo = butTr.attr("data-prodNo");
+    	var roomType = butTr.attr("data-roomType");    //1:單人房 / 2:雙人房 / 3:三人房 / 4:四人房
+    	var roomCd = butTr.attr("data-roomCd");
+
+        var roomTypeText = "選擇房型";
+		if ( roomType == "1" ) {roomTypeText = "單人房";}
+		else if ( roomType == "2" ) {roomTypeText = "雙人房";}
+		else if ( roomType == "3" ) {roomTypeText = "三人房";}
+		else if ( roomType == "4" ) {roomTypeText = "四人房";}
+        $("#myModalLabel2").text(roomTypeText);
+
+    	var roomUnionPrice = butTr.attr("data-unionPrice");
+    	var roomFavorPrice = butTr.attr("data-favorPrice");
+    	var unionPrice = 0;
+    	var favorPrice = 0;
+
+        var filter1 = "[data-prodNo='" + prodNo +"'][data-roomType='" + roomType +"']";
+        var filter2 = ":not([data-roomCd='" + roomCd + "'])";	// 不要自己
+        var filter3 = "([data-roomCd='" + roomCd + "'])";	// 自己
+        var filter4 = "";   // 濾數量不足的
+		//var sel_filter = $("#roomList tbody tr").filter(filter1 + filter2);
+        var sel_filter = $("#roomList tbody tr").filter(filter1);
+
+		if (sel_filter.length > 0)
+		{
+            //var counts = $("#roomList tbody tr").filter(filter1).length;
+            //alert(counts);
+
+			$("#roomList tbody tr").filter(filter1).each(function(){
+
+				unionPrice = $(this).attr('data-unionPrice');
+                favorPrice = $(this).attr('data-favorPrice');
+
+                var price1 = unionPrice - roomUnionPrice;
+                var price2 = favorPrice - roomFavorPrice;
+
+                $(this).find('td:eq(3)').text(formatNumber(price1));  // 判斷身份 呈現組合價或優惠價
+                @if("B2B".equals(hsrHtl.getUser().getBusinessType().toString()) || "B2E".equals(hsrHtl.getUser().getBusinessType().toString())) {$(this).find('td:eq(3)').text(formatNumber(price2));}
+
+                $(this).removeClass('checkedRow');
+                // alert("unionPrice: " + unionPrice + "favorPrice: " + favorPrice + "U: " + ccc + "F: " + ddd + "Int U: " + eee);
+                
+			});
+
+            // $("#roomList tbody tr").hide().filter(filter1 + filter2).show();
+			$("#roomList tbody tr").hide().filter(filter1).show();
+
+            // alert(prodNo + ", " + roomType + ", " + roomCd);
+            // 選定目前呈現的房型
+            sel_filter.find($("input:radio[id='roomNo'][value='" + roomCd + "']")).prop('checked', true);
+            sel_filter.find($("input:radio[id='roomNo'][value='" + roomCd + "']")).parent().parent('tr').addClass('checkedRow');
+        }
+		else
+		{
+            $("#roomList tbody tr").hide().filter('.empty').show();
+        }
+
+    }
+    
+    // 選擇其他房型
+    function checkForm2()
+    {
+    	var selRoomNo = $("input:radio[id='roomNo']:checked");
+        var selRoomCd = selRoomNo.val();     // data-roomCd
+        var selRoomTr = selRoomNo.parent().parent('tr');
+
+        if (selRoomNo.length > 0)
+        {
+
+			var selProdNo = selRoomTr.attr("data-prodNo");
+			var selRoomType = selRoomTr.attr("data-roomType");
+            
+			var selRoomTypeDesc = selRoomTr.find('td:eq(1)').html();
+			//var selBedBreakfast = selRoomTr.find('td:eq(2)').text();
+			//var selRoomInfo = selRoomTr.find('td:eq(3)').text();
+            var selRoomInfo = selRoomTr.find('td:eq(2)').text();
+
+//            alert(selRoomTr.find('td:eq(1)').html());
+//            alert(selRoomTypeDesc);
+
+			var nSitePrice = selRoomTr.attr('data-sitePrice');    // 新
+			var nUnionPrice = selRoomTr.attr('data-unionPrice');
+            var nFavorPrice = selRoomTr.attr('data-favorPrice');
+
+            var updateRoom = $("#" + selProdNo).find("[data-prodNo='" + selProdNo +"'][data-roomType='" + selRoomType +"'][rowCounts='" + roomRowCounts + "']");
+
+			var oSitePrice = updateRoom.attr('data-sitePrice');  // 舊
+			var oUnionPrice = updateRoom.attr('data-unionPrice');
+            var oFavorPrice = updateRoom.attr('data-favorPrice');
+
+            var htl = $("#" + selProdNo);
+            var htlSitePrice = htl.attr('data-sitePrice');      // HTL+高 (Total)
+            var htlUnionPrice = htl.attr('data-unionPrice');
+            var htlFavorPrice = htl.attr('data-favorPrice');
+
+			var sitePrice = parseInt(htlSitePrice,10) + parseInt(nSitePrice,10) - parseInt(oSitePrice,10);	   // 更新後
+			var unionPrice = parseInt(htlUnionPrice,10) + parseInt(nUnionPrice,10) - parseInt(oUnionPrice,10);
+            var favorPrice = parseInt(htlFavorPrice,10) + parseInt(nFavorPrice,10) - parseInt(oFavorPrice,10);
+
+            var savePrice = parseInt(sitePrice,10) - parseInt(unionPrice,10);
+            var saveMorePrice = parseInt(unionPrice,10) - parseInt(favorPrice,10);
+
+/*
+ * 
+
+            var aa = "prodNo: " + selProdNo
+            + "\n htlSitePrice: " + htlSitePrice 
+            + "\n htlUnionPrice: " + htlUnionPrice 
+            + "\n htlFavorPrice: " + htlFavorPrice 
+
+            + "\n nSitePrice: " + nSitePrice 
+            + "\n nUnionPrice: " + nUnionPrice 
+            + "\n nFavorPrice: " + nFavorPrice 
+            
+            + "\n oSitePrice: " + oSitePrice
+            + "\n oUnionPrice: " + oUnionPrice
+            + "\n oFavorPrice: " + oFavorPrice
+            
+            + "\n sitePrice: " + sitePrice
+            + "\n unionPrice: " + unionPrice
+            + "\n favorPrice: " + favorPrice
+
+            + "\n savePrice: " + savePrice
+            + "\n saveMorePrice: " + saveMorePrice;
+
+            alert(aa);
+*/
+
+
+/*
+            updateRoom.find('td:eq(2)').text(selRoomTypeDesc);
+            updateRoom.find('td:eq(3)').text(selBedBreakfast);
+            updateRoom.find('td:eq(4)').text(selRoomInfo);
+*/
+
+            updateRoom.find('.htitle').html(selRoomTypeDesc);
+            updateRoom.find('.btitle').text(selRoomInfo);
+            
+            updateRoom.attr("data-roomCd", selRoomCd);
+            updateRoom.attr("data-sitePrice", nSitePrice);
+            updateRoom.attr("data-unionPrice", nUnionPrice);
+            updateRoom.attr("data-favorPrice", nFavorPrice);
+
+            htl.attr('data-sitePrice', sitePrice);
+            htl.attr('data-unionPrice', unionPrice);
+            htl.attr('data-favorPrice', favorPrice);
+
+            var filter1 = "[data-prodNo='" + selProdNo +"']";
+            
+            $("span").filter(filter1 + "[data-type='unionPrice']").text(formatNumber(unionPrice));
+            $("span").filter(filter1 + "[data-type='favorPrice']").text(formatNumber(favorPrice));
+            $("span").filter(filter1 + "[data-type='savePrice']").text(formatNumber(savePrice));
+            $("span").filter(filter1 + "[data-type='saveMorePrice']").text(formatNumber(saveMorePrice));
+
+			return true;
+		}
+		else
+		{
+			alert("請選擇其他房型。");
+			return false;
+		}
+    }
+
+    function cancelRoomNo()
+    {
+    	roomRowCounts = 0;
+        var selRoomNo = $("input:radio[id='roomNo']:checked");
+        if (selRoomNo.length > 0) { selRoomNo.prop('checked', false); }
+    }
+
+
+    // 幫數值加上千分位
+	function formatNumber(number)
+	{
+        number = number.toFixed(2) + '';
+        x = number.split('.');
+        x1 = x[0];
+        //x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        }
+        //return x1 + x2;
+    	return x1;
+    }
+
+});
+</script>

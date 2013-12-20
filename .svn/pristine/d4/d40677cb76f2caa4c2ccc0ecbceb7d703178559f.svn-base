@@ -1,0 +1,43 @@
+@*******************
+* 客服用-EC會員查詢 *
+*******************@
+	<div class="row">
+		<div class="col-xs-12">
+		<h3>
+			<span class="tag-gn">&nbsp;&nbsp;</span> EC會員
+		</h3>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-xs-12" style="text-align:center;">
+			<div style="background-color:#5BC31F;padding:.5em;color:white;">
+			身分證字號：<input type="text" id="mempersonId" maxlength="10" size="10" value="" />
+			<input type="button" id="searchCustID" class="btn btn-success btn-sm" value="查詢"  />
+			<input type="hidden" name="ec_cust_no" value="" />
+			</div>
+			<br>
+		</div>
+	</div>
+	<script>
+          var $searchCustIDBtObj=$('#searchCustID');                                   @*  EC 會員身份證字號的"查詢"按鈕  *@
+          @* ★★★ 客服流程內的EC會員身份證字號"查詢"按鈕"功能（開始） ★★★ *@
+          @*  程式使用線別：全線別   *@
+          $searchCustIDBtObj.click(function(){
+            var mempersonIdVal=$.trim($('#mempersonId').val().toUpperCase());
+            if(mempersonIdVal==""){
+              alert("請輸入欲查詢會員的身分證字號");
+              $('#mempersonId').focus();
+            }else{
+              var w=900;
+              var h=200;
+              var xPos=($(window).width()-w)/2;
+              var yPos=($(window).height()-h)/2;
+              var theURL="/hsrhtl/order/memberinfo?";
+                  theURL+="personId="+mempersonIdVal;
+              var setStatus="left="+xPos+",top="+yPos+",width="+w+",height="+h+",scrollbars=yes,resizable=yes";
+              window.open(theURL,"searchCustID",setStatus);
+            }
+          }); // end $searchCustIDBtObj.click(function()
+          @* ★★★ 客服流程內的EC會員身份證字號"查詢"按鈕"功能（結束）★★★  *@
+	</script>

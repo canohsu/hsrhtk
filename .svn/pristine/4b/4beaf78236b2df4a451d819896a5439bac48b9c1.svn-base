@@ -1,0 +1,97 @@
+/**
+ * 易遊網版權所有 ©2000 - 2013 ezTravel Co., Ltd. all rights reserved.
+ */
+package task.hrs;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
+import tw.com.eztravel.ezlogger.Logger;
+import tw.com.eztravel.ezlogger.LoggerFactory;
+
+import com.typesafe.config.ConfigFactory;
+
+import eztravel.rest.enums.hsr.HsrCarClass;
+import eztravel.rest.enums.hsr.HsrFareType;
+import eztravel.rest.enums.hsr.HsrStation;
+import eztravel.rest.pojo.common.RestResource;
+import eztravel.rest.pojo.hsr.HsrProductInfo;
+
+
+/**
+ * 查詢高鐵班次
+ * 
+ * @author CJWang
+ * 
+ */
+public class RequestHsrProdInfoTask implements Callable<List<HsrProductInfo>> {
+  public RequestHsrProdInfoTask(RestTemplate restTemplate, HsrStation from, HsrStation to,
+      Date date, int ticketQty, HsrFareType hsrFareType, HsrCarClass carClass) {
+    this.restTemplate = restTemplate;
+    this.from = from;
+    this.to = to;
+    this.date = date;
+    this.ticketQty = ticketQty;
+    this.hsrFareType = hsrFareType;
+    this.carClass = carClass;
+  }
+
+  @Override
+  public List<HsrProductInfo> call() throws Exception {
+    String endpoint = null;
+    try {
+      endpoint = ConfigFactory.load("config.properties").getString("hsr.endpoint");
+    } catch (Exception e) {
+      logger.warn(e.getMessage(), e);
+    }
+    if (null == endpoint) endpoint = ENDPOINT;
+    List<HsrProductInfo> list = null;
+
+    // hsr日期格式為yyyyMMdd
+    String dateStr = null;
+    if (null != date) dateStr = dateFormat.format(date);
+
+    logger.info("查詢高鐵出發班次");
+
+    Map<String, Object> uriVariables = new HashMap<String, Object>();
+    uriVariables.put("from", this.from);
+    uriVariables.put("to", this.to);
+    uriVariables.put("date", dateStr);
+    uriVariables.put("ticketQty", this.ticketQty);
+    uriVariables.put("fareType", this.hsrFareType);
+    uriVariables.put("carClass", this.carClass);
+
+    ParameterizedTypeReference<RestResource<HsrProductInfo>> responseType =
+        new ParameterizedTypeReference<RestResource<HsrProductInfo>>() {};
+
+    ResponseEntity<RestResource<HsrProductInfo>> res =
+        restTemplate.exchange(endpoint + PROD_QRY_URL, HttpMethod.GET, null, responseType,
+            uriVariables);
+    RestResource<HsrProductInfo> body = res.getBody();
+    if (null != body) list = body.getItems();
+    return list;
+  }
+
+  private static final String ENDPOINT = "http://localhost:8080/hsr/";
+  private static final String PROD_QRY_URL =
+      "products?from={from}&to={to}&date={date}&ticketQty={ticketQty}&fareType={fareType}&carClass={carClass}";
+  private static final Logger logger = LoggerFactory.getLogger(RequestHsrProdInfoTask.class);
+  private final DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+  private RestTemplate restTemplate;
+  private HsrStation from;
+  private HsrStation to;
+  private Date date;
+  private int ticketQty;
+  private HsrFareType hsrFareType;
+  private HsrCarClass carClass;
+}

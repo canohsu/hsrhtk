@@ -1,0 +1,22 @@
+@(info: eztravel.rest.pojo.htl.RoomDescriptionInfo)
+@import org.springframework.util.StringUtils
+				<!-- proj_name-->
+			@if(StringUtils.hasText(info.getRoomtypeMark())) {
+				<p>【專案名稱】</p><p>@info.getRoomtypeMark()</p>
+			}
+				<!-- proj_desc-->
+			@if(StringUtils.hasText(info.getProjDesc())) {
+				<p>【內容說明】</p><p>
+				@Html(eztravel.rest.util.common.StringUtils.transMultiline(info.getProjDesc()))
+			}
+				<!--bed and food setup-->
+				<p>@if(!"Y".equals(info.getAddBedYn())) {不}可加床(需以飯店回覆為主)</p>
+			@if("Y".equals(info.getAddBedYn())) {
+				<p>加床@if(!"Y".equals(info.getAddbedBfsYn())) {不}附早餐</p>
+			}
+				<p>@if(!"Y".equals(info.getAddBreakfastYn())) {不}可加早餐</p>
+				<!-- equipment-->
+			@if(StringUtils.hasText(info.getRoomInstallation())) {
+				<p>【房型設備】</p>
+				<p>@info.getRoomInstallation()</p>
+			}

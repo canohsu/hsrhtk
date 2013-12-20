@@ -1,0 +1,57 @@
+@(info: eztravel.rest.pojo.htl.RoomDescriptionInfo)
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="Kiki Liu">
+	<link rel="shortcut icon" href="@routes.Assets.at("ico/favicon.png")">
+
+	<title>高鐵自主行 - 房型介紹</title>
+
+	<!-- Bootstrap core CSS -->
+	<link href="@routes.Assets.at("css/bootstrap-3.0.2.css")" rel="stylesheet">
+
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script src="@routes.Assets.at("jslib/html5shiv-3.7.0.min.js")"></script>
+	<script src="@routes.Assets.at("jslib/respond-1.3.0.min.js")"></script>
+	<![endif]-->
+
+	<!-- Custom styles for this page -->
+	<link href="@routes.Assets.at("css/common/content.css")" rel="stylesheet">
+</head>
+
+<body>
+
+	<div class="container">
+	<div class="row">
+		<div class="col-xs-12">
+
+		<br>
+
+		<table class="table-green">
+		<thead>
+			<tr>
+				<th style="width:50%;">@info.getRoomtypeDesc()</th>
+				<th>@info.getBedTypeNm()，@info.getBreakfastTypeNm()@if(info.getBreakfastQty() > 0) {@info.getBreakfastQty()客}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td colspan="2" style="border-bottom: none;">
+				@roomDescDetail(info)
+				</td>
+			</tr>
+		</tbody>
+        <tfoot><tr><td colspan="2"></td></tr></tfoot>
+		</table>
+
+		</div>
+	</div>
+    </div>
+
+</body>
+</html>

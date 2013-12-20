@@ -1,0 +1,137 @@
+@(customerList: List[pojo.Customer], index: String)
+@import eztravel.rest.util.common.DateUtils
+@if(null == customerList || customerList.size() <= 0) {
+	<script type="text/javascript" language="javascript" >
+		alert("查無此旅客基本資料");
+        window.close("searchCustVSTriID");
+    </script>
+}
+
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="Kiki Liu">
+
+	<title>旅客資料</title>
+
+	<!-- Bootstrap core CSS -->
+	<link href="@routes.Assets.at("css/bootstrap-3.0.2.css")" rel="stylesheet">
+
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script src="@routes.Assets.at("jslib/html5shiv-3.7.0.min.js")"></script>
+	<script src="@routes.Assets.at("jslib/respond-1.3.0.min.js")"></script>
+	<![endif]-->
+
+	<script src="@routes.Assets.at("jslib/jquery-1.9.1.min.js")"></script>
+
+	<!-- Custom styles for this page -->
+	<link href="@routes.Assets.at("css/carousel.css")" rel="stylesheet">
+</head>
+
+<body>
+	<div id="customerIndex" data-customer='{"customerIndex":"@index"}'></div>
+	
+	<script type="text/javascript" language="javascript" >
+	
+		// 資料回填
+		jQuery(document).ready(function(){
+
+			// customerIndex：傳入的第x位旅客、index：查詢出的第x位會員
+			var customerIndex=$("#customerIndex").data("customer").customerIndex;  
+			
+			$(':input[name="selTheCustInfo"]').each(function(index){
+				$(this).click(function(){
+					var birDTVal=$.trim($("#birthday").eq(index).text());
+					//alert("birDTVal：" + birDTVal);
+					
+					if(birDTVal.length==8){
+						/* 票種檢核
+						var yyyyVal=birDTVal.substring(0,4);
+						var mmVal=birDTVal.substring(4,6);
+						var ddVal=birDTVal.substring(6,8);
+						
+						if($.checkFriendBirthdayForCond2Type("1",yyyyVal,mmVal,ddVal))*/
+							window.opener.document.getElementsByName("tChnNameF")[customerIndex].value = $.trim($("#nameChnFirst").eq(index).text());
+							window.opener.document.getElementsByName("tChnNameL")[customerIndex].value = $.trim($("#nameChnLast").eq(index).text());
+							window.opener.document.getElementsByName("tSex")[customerIndex].value = $.trim($("#sexEng").eq(index).val());
+							window.opener.document.getElementsByName("tPersonId")[customerIndex].value = $.trim($("#personId").eq(index).text());
+							var birthday_dtVal=$.trim($("#birthday").eq(index).text());
+								
+								if(birthday_dtVal != "" && birthday_dtVal.length ){
+									window.opener.document.getElementsByName("tBirY")[customerIndex].value = birthday_dtVal.substring(0,4);
+									window.opener.document.getElementsByName("tBirM")[customerIndex].value = birthday_dtVal.substring(4,6);
+									window.opener.document.getElementsByName("tBirD")[customerIndex].value = birthday_dtVal.substring(6,8);
+								}else{
+									alert("出生日期不為8碼！！！");
+									window.opener.document.getElementsByName("tBirY")[customerIndex].value = "";
+									window.opener.document.getElementsByName("tBirM")[customerIndex].value = "";
+									window.opener.document.getElementsByName("tBirD")[customerIndex].value = "";
+								}
+							
+							window.close("searchCustVSTriID");
+							
+						/*else
+							alert("旅客年齡不符該票種\n請您重新選擇其它旅客名單！！！");
+						*/
+						
+					}else{
+						alert("出生日期不為8碼！！！");
+						window.opener.document.getElementsByName("tBirY")[0].value = "";
+						window.opener.document.getElementsByName("tBirM")[0].value = "";
+						window.opener.document.getElementsByName("tBirD")[0].value = "";
+						window.close("searchCustVSTriID");
+					}
+				}); // end $(this).click(function()
+			}); // end $':input[name="selTheCustInfo"]').each(function(index)
+
+          
+        }); // end jQuery(document).ready();
+    </script>
+    
+	<div class="row">
+		<div class="col-xs-12 text-center">
+			<table width="100%" class="tb-1">
+			<tr>
+				<th></th>
+				<th>身份證號碼</th>
+				<th>中文姓</th>
+				<th>中文名</th>
+				<th>英文姓</th>
+				<th>英文名</th>
+				<th>性別</th>
+				<th>生日</th>
+				<th>會員類別</th>
+			</tr>
+			@for(i <- 0 to customerList.size() - 1) {
+			<tr>
+				<td>@(i + 1)</td>
+				<td id="personId">
+                    @customerList(i).getPersonId()<br>
+                    <input type="button" class="btn btn-success btn-xs" name="selTheCustInfo" value="確定">
+                </td>
+				<td id="nameChnFirst">@customerList(i).getNameChnFirst()</td>
+				<td id="nameChnLast">@customerList(i).getNameChnLast()</td>
+				<td id="nameEngFirst">@customerList(i).getNameEngFirst()</td>
+				<td id="nameEngLast">@customerList(i).getNameEngLast()</td>
+				<td id="sex">@customerList(i).getSex().getName()</td>
+				<input type="hidden" id="sexEng" value="@customerList(i).getSex()"/>
+				<td id="birthday"><span>@DateUtils.date2Str(customerList(i).getBirthday().getTime(), "yyyyMMdd")</span></td>
+				<td>
+					@customerList(i).getCustType()<br>
+					<!-- 會員類別回傳值 -->
+					<input type='hidden' class='css_isB2Emember' value='@if(customerList(i).getCustType().startsWith("企業會員")) {Y} else {N}'   />
+				</td>
+			</tr>
+			}
+			</table>
+			<br>
+			<input type="button" class="btn btn-success btn-sm" value="取消" onclick="window.close();">
+		</div>
+	</div>
+</body>

@@ -1,0 +1,19 @@
+@(page: pojo.Page)
+
+<div class="col-xs-12 col-sm-7 col-md-9" style="margin-bottom: 15px; text-align:right;">
+	<div class="pagination pagination-centered">
+		<ul style="">
+			<li><a href="javascript: void(0);"@if(page.getPageNo() > 1) { onclick="javascript: setPage('1');"}>&lt;&lt;</a></li>
+            <li><a href="javascript: void(0);"@if(page.getPageNo() > 1) { onclick="javascript: setPage('@(page.getPageNo() - 1)');"}>&lt;</a></li>
+            @defining(if(page.getTotalPage() < 5 || page.getPageNo() - 2 < 1) 1 else if(page.getPageNo() + 2 > page.getTotalPage()) page.getTotalPage() - 4 else page.getPageNo() - 2) { from =>
+            	@defining(if(page.getTotalPage() < 5 || page.getPageNo() + 2 > page.getTotalPage()) page.getTotalPage() else if(page.getPageNo() + 2 < 5) 5 else page.getPageNo() + 2) { end =>
+					@for(i <- from to end) {
+						<li><a href="javascript: void(0);"@if(page.getPageNo() != i) { onclick="javascript: setPage('@i');"} else { style="font-weight:bold"}>@i</a></li>
+					}
+            	}
+            }
+            <li><a href="javascript: void(0);"@if(page.getPageNo() < page.getTotalPage()){ onclick="javascript: setPage('@(page.getPageNo() + 1)');"}>&gt;</a></li>
+            <li><a href="javascript: void(0);"@if(page.getPageNo() < page.getTotalPage()){ onclick="javascript: setPage('@page.getTotalPage()');"}>&gt;&gt;</a></li>
+		</ul>
+	</div>
+</div>

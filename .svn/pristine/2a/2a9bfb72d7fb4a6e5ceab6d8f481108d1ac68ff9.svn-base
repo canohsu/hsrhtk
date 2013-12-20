@@ -1,0 +1,34 @@
+@(titleCount: Integer)
+	<div class="row">
+		<div class="col-xs-12">
+		<h3>
+			<span class="tag-gn">@titleCount</span> 是否使用公務人員國民旅遊卡：
+		</h3>
+		</div>
+	</div>
+	
+	<div class="row">
+	  <div class="col-xs-12">
+	   <table width="100%" border="0" cellspacing="0" class="tb-1">
+          <tr>
+              <td colspan="2" align="left" valign="top" class="txt-gn line-dn" >
+                  <h4><input type="radio" name="travelCardRd" value="不使用國旅卡" checked /> 不使用</h4>
+              </td>
+          </tr>
+          <tr>
+              <td width="32%" align="left" valign="top" class="txt-gn">
+                    <h4><input type="radio" name="travelCardRd" value="使用國旅卡" /> 使用，要申請『強制休假補助費用』</h4>
+              </td>
+              <td align="left">
+                   <p>
+                     <span class="txt-s2 txt-or">(訂單交易資料轉入聯信中心之檢核系統時間為旅遊行程出發日後3天內)</span><br>
+                     <a href="" target="_blank"><u>玉山銀行國民旅遊卡暨教師卡2%優惠說明。</u></a>
+                   </p>
+               </td>
+          </tr>
+	   </table>
+	    <input type="hidden" name="travelCard" value='N' /> 
+	  </div>
+	</div>
+		
+		

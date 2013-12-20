@@ -1,0 +1,859 @@
+@(hsrHtl: pojo.HsrHtl)(pageObj: pojo.Page)
+@main {
+
+<!-- 麵包屑 -->
+<div class="breadcrumbs">
+<div class="container crumb">
+    <div class="col-xs-12 col-sm-6">
+        <a href="http://www.eztravel.com.tw/"><img src="@routes.Assets.at("images/common/icon_home.png")" style="padding-right: 4px;">首頁</a> &gt; 
+        <a href="http://www.eztravel.com.tw/package1/index.htm?in=tb4">國內旅遊</a> &gt; 
+        <a href="/hsrhtl/index">高鐵自主遊</a> &gt; 
+        @hsrHtl.getArrCityName
+    </div>
+    <div class="hidden-xs col-sm-6" style="text-align: right; padding-right: 0px;">
+<a href="javascript:window.print();"><img src="@routes.Assets.at("images/common/icon_print.png")">列印本頁</a> | 
+<img src="@routes.Assets.at("images/common/icon_help.png")">同步溝通
+    </div>
+</div>
+</div>
+
+
+
+<!-- 搜尋條件 - Start -->
+<div class="container search-result-block">
+
+    <div class="row">
+        <div class="col-xs-12">
+            <img src="@routes.Assets.at("images/icon/hotel/searchResultTitle.png")">
+        </div>
+    </div>
+
+    <div class="search-result-form">
+
+    <div class="row search-result-form-bg">
+        <div class="col-xs-12 col-sm-10 col-sm-offset-1 search-result">
+
+
+    <div class="row">
+
+<!-- HSR - Start -->
+        <div class="col-xs-12 col-sm-6 hsr">
+
+        <div class="row"><div class="col-xs-12 title"><img src="@routes.Assets.at("images/icon/hotel/searchResultHsr.png")"></div></div>
+
+        <div class="row">
+            <div class="col-xs-12">
+        
+            <div class="row">
+                <div class="col-xs-12 col-md-4">
+                    <span>起訖</span><p>@hsrHtl.getDepHsrInfo().getFrom().getName() <img src="@routes.Assets.at("images/icon/hotel/searchResultHsrArrow.png")"> @hsrHtl.getDepHsrInfo().getTo().getName()</p>
+                </div>
+                <div class="col-xs-6 col-md-4">
+                    <span>去程</span><p>@dateSrtW(hsrHtl.getDepDate())</p>
+                </div>
+                <div class="col-xs-6 col-md-4">
+                    <span>回程</span><p>@dateSrtW(hsrHtl.getReturnDate())</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12"><span>票種</span>
+                    <ul>
+                    @if(hsrHtl.getFullTicketQty() > 0) {
+                        <li>成人 @hsrHtl.getFullTicketQty() 人</li>
+                    }
+                    @if(hsrHtl.getSeniorTicketQty() > 0) {
+                        <li>敬老 @hsrHtl.getSeniorTicketQty() 人</li>
+                    }
+                    @if(hsrHtl.getHalfTicketQty() > 0) {
+                        <li>愛心 @hsrHtl.getHalfTicketQty() 人</li>
+                    }
+                    @if(hsrHtl.getChildrenTicketQty() > 0) {
+                        <li>孩童 @hsrHtl.getChildrenTicketQty() 人</li>
+                    }
+                    </ul>
+                </div>
+            </div>
+
+            </div>
+        
+        </div>
+
+        </div>
+<!-- HSR - End -->
+
+
+<!-- HTL - Start -->
+        <div class="col-xs-12 col-sm-6 htl">
+
+        <div class="row"><div class="col-xs-12 title"><img src="@routes.Assets.at("images/icon/hotel/searchResultHtl.png")"></div></div>
+
+        <div class="row">
+            <div class="col-xs-12">
+        
+            <div class="row">
+                <div class="col-xs-12 col-md-3"><span>區域</span><p>@hsrHtl.getArrCityName</p></div>
+                <div class="col-xs-6 col-md-4"><span>入住</span><p>@dateSrtW(hsrHtl.getDepDate())</p></div>
+                <div class="col-xs-6 col-md-4"><span>退房</span><p>@dateSrtW(hsrHtl.getReturnDate())</p></div>
+            </div>
+            <div class="row">
+	           <div class="col-xs-12"><span>房型</span>
+                    <ul>
+					@if(hsrHtl.getSgl() > 0) {
+						<li>單人 @hsrHtl.getSgl() 間</li>
+					}
+					@if(hsrHtl.getTwn() > 0) {
+						<li>雙人 @hsrHtl.getTwn() 間</li>
+					}
+					@if(hsrHtl.getTrp() > 0) {
+						<li>三人 @hsrHtl.getTrp() 間</li>
+					}
+					@if(hsrHtl.getQud() > 0) {
+						<li>四人 @hsrHtl.getQud() 間</li>
+					}
+                    </ul>
+	           </div>
+            </div>
+
+        </div>
+        </div>
+
+        </div>
+<!-- HTL - End -->
+    </div>
+
+
+
+        </div>
+    </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-xs-12 textEditDiv"><a href="javascript:history.go(-1);">修改</a></div>
+    </div>
+
+</div>
+<!-- 搜尋條件 - End -->
+
+
+
+
+
+<!-- 搜尋條件(原本的) - Start -->
+<div class="container well search-result-block" style="display:none;">
+	<div class="col-md-5 col-sm-5">
+		<label class="control-label">高鐵往返資訊</label>
+		<div class="table-responsive">
+		<table class="table table-condensed">
+		<tbody>
+			<tr>
+				<th>出發</th>
+				<td>@hsrHtl.getDepHsrInfo().getFrom().getName() → @hsrHtl.getDepHsrInfo().getTo().getName()</td>
+				<td>@dateSlash(hsrHtl.getDepDate())</td>
+			</tr>
+			<tr>
+				<th>返回</th>
+				<td>@hsrHtl.getReturnHsrInfo().getFrom().getName() → @hsrHtl.getReturnHsrInfo().getTo().getName()</td>
+				<td>@dateSlash(hsrHtl.getReturnDate())</td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					@if(hsrHtl.getFullTicketQty() > 0) {
+						成人票 @hsrHtl.getFullTicketQty() 張　
+					}
+					@if(hsrHtl.getSeniorTicketQty() > 0) {
+						資深公民票 @hsrHtl.getSeniorTicketQty() 張　
+					}
+					@if(hsrHtl.getHalfTicketQty() > 0) {
+						愛心票 @hsrHtl.getHalfTicketQty() 張　
+					}
+					@if(hsrHtl.getChildrenTicketQty() > 0) {
+						兒童票 @hsrHtl.getChildrenTicketQty() 張
+					}
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</div>
+	</div>
+
+	<div class="col-md-5 col-sm-5">
+		<label class="control-label">酒店　@hsrHtl.getArrCityName</label>
+		<div class="table-responsive">
+		<table class="table table-condensed">
+		<tbody>
+			<tr>
+				<th>入住</th>
+				<td>@dateSlash(hsrHtl.getDepDate())</td>
+			</tr>
+			<tr>
+				<th>退房</th>
+				<td>@dateSlash(hsrHtl.getReturnDate())</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					@if(hsrHtl.getSgl() > 0) {
+						單人房 @hsrHtl.getSgl() 間　
+					}
+					@if(hsrHtl.getTwn() > 0) {
+						雙人房 @hsrHtl.getTwn() 間　
+					}
+					@if(hsrHtl.getTrp() > 0) {
+						三人房 @hsrHtl.getTrp() 間　
+					}
+					@if(hsrHtl.getQud() > 0) {
+						四人房 @hsrHtl.getQud() 間
+					}
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</div>
+	</div>
+
+	<div class="col-md-2 col-sm-2" style="text-align:center;">
+		<button type="submit" class="btn btn-success btn-lg btn-block">重新搜尋</button>
+	</div>
+</div>
+<!-- 搜尋條件(原本的) - End -->
+
+
+
+<div class="container">
+    <div class="row">
+       <div class="col-xs-12"><hr class="dashedHr"></div>
+    </div>
+</div>
+
+
+<!-- 高鐵班次資訊 - Start -->
+<div class="container search-result-block">
+    <div class="row">
+        <div class="col-xs-12 dotTitle"><span>1</span> 確認高鐵車次</div>
+    </div>
+
+    <!-- 高鐵車次 - 中大版用 -->
+    <div class="hidden-xs">
+    <div class="css_table">
+        <div class="row css_tr">
+        <div class="col-xs-2 col-md-1 css_theadTd">去回程</div>
+        <div class="col-xs-2 col-md-3 css_theadTd">起訖站</div>
+        <div class="col-xs-2 css_theadTd">車次</div>
+        <div class="col-xs-2 css_theadTd">日期</div>
+        <div class="col-xs-2 css_theadTd">出發時間</div>
+        <div class="col-xs-2 css_theadTd">抵達時間</div>
+        </div>
+        <div class="row css_tr">
+            <div class="col-xs-2 col-md-1 css_tbodyTd1 css_orangeText">去程</div>
+            <div class="col-xs-2 col-md-3 css_tbodyTd1">@hsrHtl.getDepHsrInfo().getFrom().getName() → @hsrHtl.getDepHsrInfo().getTo().getName()</div>
+            <div class="col-xs-2 css_tbodyTd1" id="selDTrainNoDiv">@hsrHtl.getDepSchedule().getTrainNo()</div>
+            <div class="col-xs-2 css_tbodyTd1">@dateSrtW(hsrHtl.getDepDate())</div>
+            <div class="col-xs-2 css_tbodyTd1" id="selDTrainTime01Div">@String.format("%1$02d:%2$02d", Integer.valueOf(hsrHtl.getDepSchedule().getDepTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(hsrHtl.getDepSchedule().getDepTime().get(Calendar.MINUTE)))</div>
+            <div class="col-xs-2 css_tbodyTd1" id="selDTrainTime02Div">@String.format("%1$02d:%2$02d", Integer.valueOf(hsrHtl.getDepSchedule().getArrTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(hsrHtl.getDepSchedule().getArrTime().get(Calendar.MINUTE)))</div>
+        </div>
+        <div class="row css_tr">
+            <div class="col-xs-2 col-md-1 css_tbodyTd2 css_orangeText">回程</div>
+            <div class="col-xs-2 col-md-3 css_tbodyTd2">@hsrHtl.getDepHsrInfo().getTo().getName() → @hsrHtl.getDepHsrInfo().getFrom().getName()</div>
+            <div class="col-xs-2 css_tbodyTd2" id="selRTrainNoDiv">@hsrHtl.getReturnSchedule().getTrainNo()</div>
+            <div class="col-xs-2 css_tbodyTd2">@dateSrtW(hsrHtl.getReturnDate())</div>
+            <div class="col-xs-2 css_tbodyTd2" id="selRTrainTime01Div">@String.format("%1$02d:%2$02d", Integer.valueOf(hsrHtl.getReturnSchedule().getDepTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(hsrHtl.getReturnSchedule().getDepTime().get(Calendar.MINUTE)))</div>
+            <div class="col-xs-2 css_tbodyTd2" id="selRTrainTime02Div">@String.format("%1$02d:%2$02d", Integer.valueOf(hsrHtl.getReturnSchedule().getArrTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(hsrHtl.getReturnSchedule().getArrTime().get(Calendar.MINUTE)))</div>
+        </div>
+    </div>
+    </div>
+    
+    <!-- 高鐵車次 - 小版用 -->
+    <div class="visible-xs">
+    <div class="css_table">
+        <div class="row css_tr">
+            <div class="col-xs-4 css_theadTd">去回程</div>
+            <div class="col-xs-4 css_tbodyTd1 css_orangeText">去程</div>
+            <div class="col-xs-4 css_tbodyTd2 css_orangeText">回程</div>
+        </div>
+        <div class="row css_tr">
+            <div class="col-xs-4 css_theadTd">起訖站</div>
+            <div class="col-xs-4 css_tbodyTd1">@hsrHtl.getDepHsrInfo().getFrom().getName() → @hsrHtl.getDepHsrInfo().getTo().getName()</div>
+            <div class="col-xs-4 css_tbodyTd2">@hsrHtl.getDepHsrInfo().getTo().getName() → @hsrHtl.getDepHsrInfo().getFrom().getName()</div>
+        </div>
+        <div class="row css_tr">
+            <div class="col-xs-4 css_theadTd">車次</div>
+            <div class="col-xs-4 css_tbodyTd1" id="selDTrainNoDivS">@hsrHtl.getDepSchedule().getTrainNo()</div>
+            <div class="col-xs-4 css_tbodyTd2" id="selRTrainNoDivS">@hsrHtl.getReturnSchedule().getTrainNo()</div>
+        </div>
+        <div class="row css_tr">
+            <div class="col-xs-4 css_theadTd">日期</div>
+            <div class="col-xs-4 css_tbodyTd1">@dateSrtW(hsrHtl.getDepDate())</div>
+            <div class="col-xs-4 css_tbodyTd2">@dateSrtW(hsrHtl.getReturnDate())</div>
+        </div>
+        <div class="row css_tr">
+            <div class="col-xs-4 css_theadTd">出發時間</div>
+            <div class="col-xs-4 css_tbodyTd1" id="selDTrainTime01DivS">@String.format("%1$02d:%2$02d", Integer.valueOf(hsrHtl.getDepSchedule().getDepTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(hsrHtl.getDepSchedule().getDepTime().get(Calendar.MINUTE)))</div>
+            <div class="col-xs-4 css_tbodyTd2" id="selRTrainTime01DivS">@String.format("%1$02d:%2$02d", Integer.valueOf(hsrHtl.getReturnSchedule().getDepTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(hsrHtl.getReturnSchedule().getDepTime().get(Calendar.MINUTE)))</div>
+        </div>
+        <div class="row css_tr">
+            <div class="col-xs-4 css_theadTd">抵達時間</div>
+            <div class="col-xs-4 css_tbodyTd1" id="selDTrainTime02DivS">@String.format("%1$02d:%2$02d", Integer.valueOf(hsrHtl.getDepSchedule().getArrTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(hsrHtl.getDepSchedule().getArrTime().get(Calendar.MINUTE)))</div>
+            <div class="col-xs-4 css_tbodyTd2" id="selRTrainTime02DivS">@String.format("%1$02d:%2$02d", Integer.valueOf(hsrHtl.getReturnSchedule().getArrTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(hsrHtl.getReturnSchedule().getArrTime().get(Calendar.MINUTE)))</div>
+        </div>
+    </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 textEditDiv"><a href="#" id="changeTrainNo">更換車次</a></div>
+    </div>
+</div>
+<!-- 高鐵班次資訊 - End -->
+
+
+
+
+<!-- 高鐵班次資訊(原本的) - Start -->
+<div class="container well search-result-block" style="display:none;">
+	<div class="col-md-10 col-sm-10">
+		<label class="control-label">高鐵班次</label></br>
+@hsrHtl.getDepHsrInfo().getFrom().getName() → @hsrHtl.getDepHsrInfo().getTo().getName()
+@dateSlash(hsrHtl.getDepDate()) 出發
+@dateSlash(hsrHtl.getReturnDate()) 返回
+		<div class="table-responsive">
+		<table class="table table-condensed">
+		<tbody>
+			<tr>
+				<th id="selDTrainNoDiv_bak">@hsrHtl.getDepSchedule().getTrainNo()</th>
+				<td>高鐵@hsrHtl.getDepHsrInfo().getFrom().getName()站 → 高鐵@hsrHtl.getDepHsrInfo().getTo().getName()站</td>
+				<td id="selDTrainTimeDiv_bak">
+					@String.format("%1$02d:%2$02d", Integer.valueOf(hsrHtl.getDepSchedule().getDepTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(hsrHtl.getDepSchedule().getDepTime().get(Calendar.MINUTE)))
+					-
+					@String.format("%1$02d:%2$02d", Integer.valueOf(hsrHtl.getDepSchedule().getArrTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(hsrHtl.getDepSchedule().getArrTime().get(Calendar.MINUTE)))
+				</td>
+			</tr>
+			<tr>
+				<th id="selRTrainNoDiv_bak">@hsrHtl.getReturnSchedule().getTrainNo()</th>
+				<td>高鐵@hsrHtl.getReturnHsrInfo().getFrom().getName()站 → 高鐵@hsrHtl.getReturnHsrInfo().getTo().getName()站</td>
+				<td id="selRTrainTimeDiv_bak">
+					@String.format("%1$02d:%2$02d", Integer.valueOf(hsrHtl.getReturnSchedule().getDepTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(hsrHtl.getReturnSchedule().getDepTime().get(Calendar.MINUTE)))
+					-
+					@String.format("%1$02d:%2$02d", Integer.valueOf(hsrHtl.getReturnSchedule().getArrTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(hsrHtl.getReturnSchedule().getArrTime().get(Calendar.MINUTE)))
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</div>
+	</div>
+
+	<div class="col-md-2 col-sm-2" style="text-align:center;">
+		<!--<button id="changeTrainNo" type="submit" class="btn btn-success btn-lg btn-block">修改班次</button>-->
+		<button id="changeTrainNo_bak" class="btn btn-success btn-lg btn-block" type="button">修改班次</button>
+	</div>
+</div>
+
+<!-- 高鐵班次資訊(原本的) - End -->
+
+
+
+
+
+<!-- <div id="loadingIMG">飯店資料載入中…</div> -->
+@hotelList(hsrHtl, pageObj)
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" id="dialog-form">
+
+<div class="modal-dialog">
+
+<div class="modal-content">
+
+	<div class="modal-header">
+    	<div class="row modal-title">
+        	<div class="col-xs-12">
+	        <!--
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="確定修改">&times;</button>
+            -->
+    	    <span id="myModalLabel">選擇高鐵班次</span>
+            </div>
+    	</div>
+	</div>
+
+    <div class="modal-body">
+    <form>
+        <fieldset>
+
+					<div class="hsrList">
+
+						<div class="row lightOrange">
+							<div class="col-xs-6">
+							<label>選擇去程時間</label>
+							<select id="depPeriod" name="depPeriod">
+							@for(period <- hsrHtl.getDepScheduleMap().keySet().iterator) {
+								<option value="[data-val='@period']">@period</option>
+							}
+							</select>
+							</div>
+							<div class="col-xs-6">
+							<label>選擇回程時間</label>
+							<select id="returnPeriod" name="returnPeriod">
+							@for(period <- hsrHtl.getReturnScheduleMap().keySet().iterator){
+								<option value="[data-val='@period']">@period</option>
+							}
+							</select>
+							</div>
+						</div>
+                        
+						<div class="row">
+							<div class="col-xs-3 col-sm-3"><span class="txt-lightOrange">去程</span></div>
+                            <div class="col-xs-9 col-sm-3">@hsrHtl.getDepHsrInfo().getFrom().getName()站 - @hsrHtl.getDepHsrInfo().getTo().getName()站</div>
+                            <div class="visible-xs col-xs-3"></div>
+                            <div class="col-xs-9 col-sm-6"><span class="txt-darkGray">@dateLnW(hsrHtl.getDepDate())</span></div>
+						</div>
+
+                        <div class="row">
+                            <div class="col-xs-6"><a href="javascript:selMorePeriod('1');"><img src="@routes.Assets.at("images/icon/hotel/searchResultHsrMore01.png")" id="selMorePeriod1"></a></div>
+                            <div class="col-xs-6 text-right"><a href="javascript:selMorePeriod('2');"><img src="@routes.Assets.at("images/icon/hotel/searchResultHsrMore02.png")" id="selMorePeriod2"></a></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12" style="padding:0px;">
+
+								<table id="depPeriodList">
+								<thead>
+									<tr>
+										<th style="width: 12%;">選擇</th>
+										<th>班次</th>
+										<th>出發</th>
+										<th>抵達</th>
+										<th>行車時間</th>
+									</tr>
+								</thead>
+								<tbody>
+			                    @for(period <- hsrHtl.getDepScheduleMap().keySet().iterator) {
+									@for(schedule <- hsrHtl.getDepScheduleMap().get(period)) {
+									<tr data-val="@period">
+										<td><input type="radio" id="depTrainNo" name="depTrainNo" value="@schedule.getTrainNo()"></td>
+										<td>@schedule.getTrainNo()</td>
+										<td>@String.format("%1$02d:%2$02d", Integer.valueOf(schedule.getDepTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(schedule.getDepTime().get(Calendar.MINUTE)))</td>
+										<td>@String.format("%1$02d:%2$02d", Integer.valueOf(schedule.getArrTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(schedule.getArrTime().get(Calendar.MINUTE)))</td>
+										<td>@String.format("%1$02d:%2$02d", Integer.valueOf(schedule.getDuration().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(schedule.getDuration().get(Calendar.MINUTE)))</td>
+									</tr>
+									}
+			                    }
+									<tr class="depPeriod empty">
+										<td colspan="5">沒有資料</td>
+									</tr>
+								</tbody>
+								</table>
+
+							</div>
+						</div>
+
+                        <div class="row">
+                            <div class="col-xs-12"><hr></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-3 col-sm-3"><span class="txt-lightOrange">回程</span></div>
+                            <div class="col-xs-9 col-sm-3">@hsrHtl.getDepHsrInfo().getTo().getName()站 - @hsrHtl.getDepHsrInfo().getFrom().getName()站</div>
+                            <div class="visible-xs col-xs-3"></div>
+                            <div class="col-xs-9 col-sm-6"><span class="txt-darkGray">@dateLnW(hsrHtl.getReturnDate())</span></div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-xs-6"><a href="javascript:selMorePeriod('3');"><img src="@routes.Assets.at("images/icon/hotel/searchResultHsrMore03.png")" id="selMorePeriod3"></a></div>
+                            <div class="col-xs-6 text-right"><a href="javascript:selMorePeriod('4');"><img src="@routes.Assets.at("images/icon/hotel/searchResultHsrMore04.png")" id="selMorePeriod4"></a></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12" style="padding:0px;">
+
+                                <table id="returnPeriodList">
+			                    <thead>
+			                        <tr>
+			                            <th style="width: 12%;">選擇</th>
+										<th>班次</th>
+										<th>出發</th>
+										<th>抵達</th>
+										<th>行車時間</th>
+			                        </tr>
+			                    </thead>
+			                    <tbody>
+			                    @for(period <- hsrHtl.getReturnScheduleMap().keySet().iterator) {
+									@for(schedule <- hsrHtl.getReturnScheduleMap().get(period)) {
+									<tr data-val="@period">
+										<td><input type="radio" id="returnTrainNo" name="returnTrainNo" value="@schedule.getTrainNo()"></td>
+										<td>@schedule.getTrainNo()</td>
+										<td>@String.format("%1$02d:%2$02d", Integer.valueOf(schedule.getDepTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(schedule.getDepTime().get(Calendar.MINUTE)))</td>
+										<td>@String.format("%1$02d:%2$02d", Integer.valueOf(schedule.getArrTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(schedule.getArrTime().get(Calendar.MINUTE)))</td>
+										<td>@String.format("%1$02d:%2$02d", Integer.valueOf(schedule.getDuration().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(schedule.getDuration().get(Calendar.MINUTE)))</td>
+									</tr>
+									}
+			                    }
+									<tr class="returnPeriod empty">
+										<td colspan="5">沒有資料</td>
+									</tr>
+								</tbody>
+								</table>
+
+							</div>
+						</div>
+
+					</div>
+				</fieldset>
+			</form>
+		</div><!-- modal-body -->
+
+	<div class="modal-footer">
+        <button type="button" class="btn-checkOK" data-dismiss="modal" id="editTrainNo" title="確定修改"></button>
+    </div>
+
+</div><!-- model-content -->
+</div><!-- modal-dialog-->
+
+</div>
+
+<input type='hidden' id='pageNo' value='1'>
+<input type='hidden' id='pageOrderBy' value='PRICE:ASC'>
+
+<form method="post" action="/hsrhtl/login" id="orderForm">
+<input type="hidden" name="placeFrom" value="@hsrHtl.getPlaceFrom()">
+<input type="hidden" name="arrCity" value="@hsrHtl.getArrCity()">
+<input type="hidden" name="placeTo" value="@hsrHtl.getPlaceTo()">
+<input type="hidden" name="carClass" value="@hsrHtl.getCarClass()">
+<input type="hidden" name="hotelNo" value="@hsrHtl.getHotelNo()">
+<input type="hidden" name="depDate" value="@dateSlash(hsrHtl.getDepDate())">
+<input type="hidden" name="travelDay" value="@hsrHtl.getTravelDay()">
+<input type="hidden" name="returnDate" value="@dateSlash(hsrHtl.getReturnDate())">
+@for(i <- 0 to hsrHtl.getRooms().size() - 1) {
+<input type="hidden" name="rooms[@i].roomType" value="@hsrHtl.getRooms().get(i).getRoomType()">
+<input type="hidden" name="rooms[@i].full" value="@hsrHtl.getRooms().get(i).getFull()">
+<input type="hidden" name="rooms[@i].children" value="@hsrHtl.getRooms().get(i).getChildren()">
+<input type="hidden" name="rooms[@i].half" value="@hsrHtl.getRooms().get(i).getHalf()">
+<input type="hidden" name="rooms[@i].senior" value="@hsrHtl.getRooms().get(i).getSenior()">
+<input type="hidden" name="rooms[@i].roomInfo.roomCd" id="roomsInfo@i">
+}
+<input type='hidden' id='selDTrainNo' name="depSchedule.trainNo" value='@hsrHtl.getDepSchedule().getTrainNo()' data-dtime='@String.format("%1$02d:%2$02d", Integer.valueOf(hsrHtl.getDepSchedule().getDepTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(hsrHtl.getDepSchedule().getDepTime().get(Calendar.MINUTE)))' data-atime='@String.format("%1$02d:%2$02d", Integer.valueOf(hsrHtl.getDepSchedule().getArrTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(hsrHtl.getDepSchedule().getArrTime().get(Calendar.MINUTE)))' data-period='@hsrHtl.getDepPeriod()'>
+<input type='hidden' id='selRTrainNo' name="returnSchedule.trainNo" value='@hsrHtl.getReturnSchedule().getTrainNo()' data-dtime='@String.format("%1$02d:%2$02d", Integer.valueOf(hsrHtl.getReturnSchedule().getDepTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(hsrHtl.getReturnSchedule().getDepTime().get(Calendar.MINUTE)))' data-atime='@String.format("%1$02d:%2$02d", Integer.valueOf(hsrHtl.getReturnSchedule().getArrTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(hsrHtl.getReturnSchedule().getArrTime().get(Calendar.MINUTE)))' data-period='@hsrHtl.getReturnPeriod()'>
+</form>
+
+<script>
+
+//---- 立即訂購 ---- Start
+$(".orderSubmit")
+.button()
+.click(function() {
+    var hotelNo = $(this).attr("data-prodNo");
+    $("input[name=hotelNo]").val(hotelNo);
+
+    var dataTr = $('#'+hotelNo + ' > div');
+    var counts = dataTr.length;
+    for (i=0; i<counts; i++)
+    {	$("#roomsInfo" + i ).val(dataTr.eq(i).attr("data-roomCd"));	
+    alert(dataTr.eq(i).attr("data-roomCd"));
+    }
+    $('#orderForm').submit();
+});
+//---- 立即訂購 ---- End
+
+
+/*
+function getURLParameter(name){
+    name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+    var regexS = "[\\?&]"+name+"=([^&#]*)";
+    var regex = new RegExp( regexS );
+    var results = regex.exec( window.location.href );
+    if( results == null ){
+        return "";
+    }else{
+        return decodeURI(results[1]);
+    }
+}
+*/
+
+
+//---- 修改排序 ---- Start
+$('#order').on('change', function() {
+	setPage('1');
+});
+//---- 修改排序 ---- End
+
+var	tmpUrl = "/hsrhtl/searchlist?placeFrom=@hsrHtl.getPlaceFrom()&arrCity=@hsrHtl.getArrCity()&placeTo=@hsrHtl.getPlaceTo()";
+    tmpUrl = tmpUrl + "&carClass=@hsrHtl.getCarClass()&depDate=@dateSlash(hsrHtl.getDepDate())&travelDay=@hsrHtl.getTravelDay()&returnDate=@dateSlash(hsrHtl.getReturnDate())";
+
+@for(i <- 0 to hsrHtl.getRooms().size() - 1) {
+	tmpUrl = tmpUrl + "&rooms[@i].roomType=@hsrHtl.getRooms().get(i).getRoomType()&rooms[@i].full=@hsrHtl.getRooms().get(i).getFull()&rooms[@i].children=@hsrHtl.getRooms().get(i).getChildren()&rooms[@i].half=@hsrHtl.getRooms().get(i).getHalf()&rooms[@i].senior=@hsrHtl.getRooms().get(i).getSenior()";
+}
+
+	function setPage(pageNo){
+        var orderBy = $('#order').val();
+		var goUrl = tmpUrl + "&depSchedule.trainNo=" + $('#selDTrainNo').val() + "&returnSchedule.trainNo=" + $('#selRTrainNo').val() + "&pageNo=" + pageNo + "&orderBy=" + orderBy;
+		location.href = goUrl;
+/*
+		var request = $.ajax({
+			url: goUrl,
+			type: "get",
+			dataType: "html",
+		    success: function(msg){
+		    	$("#hotelList").html(msg);
+		    },
+		    beforeSend:function(){
+		        $('#loadingIMG').show();
+		        $('#hotelList').html("");
+		    },
+		    complete:function(){
+		        $('#loadingIMG').hide();
+		    }
+		});
+*/
+	}
+
+	// setPage('1','PRICE:ASC');
+
+//$(function() {
+
+	//---- 修改高鐵班次 ---- Start
+
+    // 動態判定：去或回程，要更早或更晚的班次。
+    function selMorePeriod(x) {
+
+        var periodId = "depPeriod";
+        var indexPlus = 1;
+
+        if ((x == "3") || (x == "4")) { periodId = "returnPeriod"; }
+        if ((x == "1") || (x == "3")) { indexPlus = -1; }
+
+        var selIndex = $('#' + periodId + ' option:selected').index() + indexPlus;
+
+    	$('#' + periodId + ' option').eq(selIndex).prop('selected', true);
+    	$('#' + periodId).trigger('change');
+
+	}
+
+    // 過濾時段
+	$('#depPeriod, #returnPeriod').on('change', function() {
+		var sel = $(this).val();
+		var selid = $(this).attr("id");
+		var sel_filter = $("#" + selid + "List tbody tr").filter($(this).val());
+
+		if (sel_filter.length > 0)
+		{	$("#" + selid + "List tbody tr").hide().filter($(this).val()).show();	}
+		else
+		{	$("#" + selid + "List tbody tr").hide().filter('.empty').show();	}
+
+		// 動態隱藏：去或回程，更早或更晚的班次Icon。
+        var dPeriod = $('#depPeriod option:selected').index();
+        var dPeriodMax = $('#depPeriod option').length-1;
+        var rPeriod = $('#returnPeriod option:selected').index();
+        var rPeriodMax = $('#returnPeriod option').length-1;
+
+        if (dPeriod == 0) {$('#selMorePeriod1').hide();} else {$('#selMorePeriod1').show();}
+        if (dPeriod == dPeriodMax) {$('#selMorePeriod2').hide();} else {$('#selMorePeriod2').show();}
+        if (rPeriod == 0) {$('#selMorePeriod3').hide();} else {$('#selMorePeriod3').show();}
+        if (rPeriod == rPeriodMax) {$('#selMorePeriod4').hide();} else {$('#selMorePeriod4').show();}
+
+	});
+
+	// 預選推薦班次
+	function selChange() {
+		var dPeriod = $("#selDTrainNo").attr("data-period");
+		var rPeriod = $("#selRTrainNo").attr("data-period");
+		var dTrainNo = $("#selDTrainNo").val();
+		var rTrainNo = $("#selRTrainNo").val();
+
+		$("#depPeriodList tbody tr").each(function(){
+            $(this).removeClass('checkedRow');
+		});
+        $("#returnPeriodList tbody tr").each(function(){
+            $(this).removeClass('checkedRow');
+        });
+
+		$("#depPeriod").val("[data-val='" + dPeriod + "']").trigger('change');
+		$("#returnPeriod").val("[data-val='" + rPeriod + "']").trigger('change');
+		$("input:radio[id='depTrainNo'][value='" + dTrainNo + "']").prop('checked', true);
+		$("input:radio[id='depTrainNo'][value='" + dTrainNo + "']").parent().parent('tr').addClass('checkedRow');
+		$("input:radio[id='returnTrainNo'][value='" + rTrainNo + "']").prop('checked', true);
+		$("input:radio[id='returnTrainNo'][value='" + rTrainNo + "']").parent().parent('tr').addClass('checkedRow');
+
+    }
+
+	// 選擇高鐵班次
+	function checkForm()
+	{
+		var depTrainNoVal = $("input:radio[id=depTrainNo]:checked");
+		var returnTrainNoVal = $("input:radio[id=returnTrainNo]:checked");
+
+		if ( (depTrainNoVal.length > 0) && (returnTrainNoVal.length > 0) ) {
+
+			depTrainNoVal.parent().parent('tr').removeClass('checkedRow');
+			returnTrainNoVal.parent().parent('tr').removeClass('checkedRow');
+            
+			var dperiod = depTrainNoVal.parent().parent('tr').attr("data-val");
+			var ddtime = depTrainNoVal.parent().parent('tr').find('td:eq(2)').text(); // 出發
+			var datime = depTrainNoVal.parent().parent('tr').find('td:eq(3)').text(); // 抵達
+			var rperiod = returnTrainNoVal.parent().parent('tr').attr("data-val");
+			var rdtime = returnTrainNoVal.parent().parent('tr').find('td:eq(2)').text(); // 出發
+			var ratime = returnTrainNoVal.parent().parent('tr').find('td:eq(3)').text(); // 抵達
+
+			$("#selDTrainNo").val(depTrainNoVal.val()).attr("data-period", dperiod).attr("data-dtime", ddtime).attr("data-atime", datime);
+			$("#selRTrainNo").val(returnTrainNoVal.val()).attr("data-period", rperiod).attr("data-dtime", rdtime).attr("data-atime", ratime);
+            /*
+            $("#selDTrainNoDiv").html(depTrainNoVal.val());
+			$("#selRTrainNoDiv").html(returnTrainNoVal.val());
+			$("#selDTrainTime01Div").html(ddtime);
+			$("#selDTrainTime02Div").html(datime);
+			$("#selRTrainTime01Div").html(rdtime);
+			$("#selRTrainTime02Div").html(ratime);
+            */
+			$("div[id^='selDTrainNoDiv'").html(depTrainNoVal.val());
+			$("div[id^='selRTrainNoDiv'").html(returnTrainNoVal.val());
+			$("div[id^='selDTrainTime01Div'").html(ddtime);
+			$("div[id^='selDTrainTime02Div'").html(datime);
+			$("div[id^='selRTrainTime01Div'").html(rdtime);
+			$("div[id^='selRTrainTime02Div'").html(ratime);
+			return true;
+		}
+		else
+		{
+			alert("請選擇高鐵班次。");
+			return false;
+		}
+	}
+
+	//---- 確定修改班次 ---- Start
+    /*
+	$("#editTrainNo")
+	.button()
+	.click(function() {
+		var result = checkForm();
+		if(result == true) {
+			alert("OKOK");
+		}
+		alert(result);
+
+        
+	});
+    */
+	//---- 確定修改班次 ---- End
+
+	$("#dialog-form").on('hidden.bs.modal', function(){
+		//alert('modal close');
+
+		var result = checkForm();
+		if(result == true) {
+			//alert("OKOK");
+		}
+		//alert(result);
+	});
+
+	$("#dialog-form").on('show.bs.modal', function(){
+		//alert('open!!!!!');
+		selChange();
+	});
+
+	$("#changeTrainNo").click(function(){
+		$("#dialog-form").modal('toggle');
+//	$('#dialog-form').modal('show');
+	});
+
+
+
+
+	/*
+	$("#dialog-form").dialog({
+		autoOpen: false,
+		height: 500,
+		width: 740,
+		modal: true,
+		buttons: {
+			"確定": function() {
+					var result = checkForm();
+					if(result == true) {
+						$( this ).dialog("close");
+					}
+			},
+			"取消": function() {
+				$( this ).dialog("close");
+			}
+		},
+		close: function() {
+
+		}
+    });
+
+	$("#changeTrainNo")
+		.click(function() {
+			$("#dialog-form").dialog("open");
+			selChange();
+		});
+	*/
+    //---- 修改高鐵班次 ---- End
+
+//});
+
+
+
+
+
+/* 為手持式裝置，不使用window.open語法，已改為<a href="" target="_blank">。
+
+//---- 靜態超連結 ---- Start
+var win = null;
+function newWindow(mypage,prodNo) {
+    var winl = (screen.width-w)/2;
+    var wint = (screen.height-h)/2;
+    var gopage = "";
+    var myname = "";
+    var w = 0;
+    var h = 0;
+    var features = "scrollbars=yes,menubar=no,resizable=yes";
+
+    if (winl < 0) winl = 0;
+    if (wint < 0) wint = 0;
+
+    if ( mypage == '1')
+    {
+        gopage = "http://www.eztravel.com.tw/ezec/htl_tw/htltw_htl_detail.jsp?prod_no=" + prodNo;
+        myname = "htlinfo";
+        w = 670;h = 600;
+    }
+    else if ( mypage == '2')
+    {
+        gopage = "http://www.eztravel.com.tw/ezReview/reviewCollect/reviewViewList.do?prodNo=" + prodNo;
+        myname = "review";
+        w = 760;h = 600;
+    }
+    else if ( mypage == '3')
+    {
+        gopage = "http://www.eztravel.com.tw/ezec/htl_tw/htltwMapQuery.jsp?sh=" + prodNo;
+        myname = "htlmap";
+        w = 600;h = 455;
+    }
+
+    var settings = 'height=' + h + ',';
+    settings += 'width=' + w + ',';
+    settings += 'top=' + wint + ',';
+    settings += 'left=' + winl + ',';
+    settings += features;
+
+    win = window.open(gopage,myname,settings);
+    win.window.focus();
+}
+//---- 靜態超連結 ---- End
+*/
+
+</script>
+} {
+   <link href="@routes.Assets.at("css/common/search.css")" rel="stylesheet">
+} {
+	@header()
+} {
+	@footer()
+}

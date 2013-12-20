@@ -1,0 +1,12 @@
+/**
+ * 易遊網版權所有 ©2000 - 2013 ezTravel Co., Ltd. all rights reserved.
+ */
+package models;
+
+/**
+ * @author CJWang
+ *
+ */
+public class HsrStation {
+
+}

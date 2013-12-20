@@ -1,0 +1,228 @@
+/**
+ * 易遊網版權所有 ©2000 - 2013 ezTravel Co., Ltd. all rights reserved.
+ */
+package models;
+
+import java.util.List;
+
+/**
+ * 前端查詢條件
+ * 
+ * @author CJWang
+ * 
+ */
+public class HsrHtl {
+  private List<HsrStation> stations;
+  /**
+   * 出發高鐵站
+   */
+  private String placeFrom;
+  /**
+   * 目的城市
+   */
+  private String arrCity;
+  /**
+   * 目的高鐵站
+   */
+  private String placeTo;
+  /**
+   * 出發日期
+   */
+  private String depDate;
+  /**
+   * 旅遊天數
+   */
+  private int travelDay;
+  /**
+   * 返回日期
+   */
+  private String arrDate;
+  /**
+   * 單人房
+   */
+  private int sgl;
+  /**
+   * 雙人房
+   */
+  private int twn;
+  /**
+   * 三人房
+   */
+  private int trp;
+  /**
+   * 四人房
+   */
+  private int qud;
+  /**
+   * 房間票種
+   */
+  private List<Room> rooms;
+
+  /**
+   * @return 出發高鐵站
+   */
+  public String getPlaceFrom() {
+    return placeFrom;
+  }
+
+  /**
+   * @param placeFrom 出發高鐵站
+   */
+  public void setPlaceFrom(String placeFrom) {
+    this.placeFrom = placeFrom;
+  }
+
+  /**
+   * @return 目的城市
+   */
+  public String getArrCity() {
+    return arrCity;
+  }
+
+  /**
+   * @param arrCity 目的城市
+   */
+  public void setArrCity(String arrCity) {
+    this.arrCity = arrCity;
+  }
+
+  /**
+   * @return 目的高鐵站
+   */
+  public String getPlaceTo() {
+    return placeTo;
+  }
+
+  /**
+   * @param placeTo 目的高鐵站
+   */
+  public void setPlaceTo(String placeTo) {
+    this.placeTo = placeTo;
+  }
+
+  /**
+   * @return 出發日期
+   */
+  public String getDepDate() {
+    return depDate;
+  }
+
+  /**
+   * @param depDate 出發日期
+   */
+  public void setDepDate(String depDate) {
+    this.depDate = depDate;
+  }
+
+  /**
+   * @return 返回日期
+   */
+  public String getArrDate() {
+    return arrDate;
+  }
+
+  /**
+   * @param arrDate 返回日期
+   */
+  public void setArrDate(String arrDate) {
+    this.arrDate = arrDate;
+  }
+
+  /**
+   * @return 旅遊天數
+   */
+  public int getTravelDay() {
+    return travelDay;
+  }
+
+  /**
+   * @param travelDay 旅遊天數
+   */
+  public void setTravelDay(int travelDay) {
+    this.travelDay = travelDay;
+  }
+
+  /**
+   * @return 單人房
+   */
+  public int getSgl() {
+    return sgl;
+  }
+
+  /**
+   * @param sgl 單人房
+   */
+  public void setSgl(int sgl) {
+    this.sgl = sgl;
+  }
+
+  /**
+   * @return 雙人房
+   */
+  public int getTwn() {
+    return twn;
+  }
+
+  /**
+   * @param twn 雙人房
+   */
+  public void setTwn(int twn) {
+    this.twn = twn;
+  }
+
+  /**
+   * @return 三人房
+   */
+  public int getTrp() {
+    return trp;
+  }
+
+  /**
+   * @param trp 三人房
+   */
+  public void setTrp(int trp) {
+    this.trp = trp;
+  }
+
+  /**
+   * @return 四人房
+   */
+  public int getQud() {
+    return qud;
+  }
+
+  /**
+   * @param qud 四人房
+   */
+  public void setQud(int qud) {
+    this.qud = qud;
+  }
+
+  /**
+   * @return 房間票種
+   */
+  public List<Room> getRooms() {
+    return rooms;
+  }
+
+  /**
+   * @param rooms 房間票種
+   */
+  public void setRooms(List<Room> rooms) {
+    this.rooms = rooms;
+  }
+
+  /**
+   * @return the stations
+   */
+  public List<HsrStation> getStations() {
+    return stations;
+  }
+
+  /**
+   * @param stations the stations to set
+   */
+  public void setStations(List<HsrStation> stations) {
+    this.stations = stations;
+  }
+}

@@ -1,0 +1,87 @@
+@(titleCount: Integer, role: models.enums.BusinessType)
+@import models.enums.BusinessType
+	<div class="row">
+		<div class="col-xs-12">
+		<h3>
+			<span class="tag-gn">@titleCount</span> 取件方式：
+		</h3>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<table width="100%" class="tb-1">
+			<tr>
+				<td>
+					<h4>
+					<input type="radio" name="pickUpMode" value="POST" checked /> 郵寄
+					</h4>
+				</td>
+				<td>
+					與主要聯絡人地址相同
+					<span class="txt-blue">（所訂商品內容包含"實體票券"時才需郵寄或門市取件，電子票券則一律以Email提供）</span>
+				</td>
+			</tr>
+			<!-- 同業流程(B2B) -->
+			@if(BusinessType.B2B == role){
+			<input type="hidden" name="pickUpMode" value="POST" />
+			<!-- pickUpMode: 1:門市取市 、2:郵寄 -->
+			<input type="hidden" name="store_id" value="X" />
+			<!-- store_id: 門市取市:某門市 -->
+			} else {
+			<!-- 易遊網流程(B2C、B2E、WebOrder) -->
+			<tr>
+				<td>
+					<h4>
+					<input type="radio" name="pickUpMode" value="STORE" /> 門市取件
+					</h4>
+				</td>
+				<td>				  
+					<select name="store_id" id="store_id" disabled>
+						<option selected="" value="X">請選擇</option>
+  						<option value="TAIPEI">台北車站門市</option>
+						<option value="BANQIAO">板橋車站門市</option>
+						<option value="TAOYUAN">桃園高鐵站取件櫃檯</option> 
+						<option value="HSINCHU">新竹高鐵站取件櫃檯</option>
+						<option value="TAICHUNG">台中烏日高鐵門市</option> 
+						<option value="CHIAYI">嘉義高鐵站取件櫃檯</option> 
+						<option value="TAINAN">台南高鐵站取件櫃檯</option>
+						<option value="ZUOYING">高雄左營高鐵門市</option>
+					</select>
+					<input type="button" class="btn btn-success btn-sm" name="storeAddrBtn" value="查詢各店位置" disabled />
+				</td>
+			</tr>
+			}
+			</table>
+		</div>
+	</div>
+
+<script type="text/javascript">
+//<!--
+
+var storeLocation = function() {
+    var storeUrl = location.protocol + "//www.eztravel.com.tw/service/eztravel/office.htm";
+    window.open(storeUrl);
+};
+
+var radioChecked = function() {
+	var pickUpModeVal = $('input[type=radio][name=pickUpMode]:checked').val();
+	if (pickUpModeVal == 2)
+	{	<!-- 郵寄 -->
+		$(':input[name="store_id"]').val('X');
+		$(':input[name="storeAddrBtn"]').prop('disabled', true);
+		$('#store_id').selectedIndex=0;
+		$('#store_id').prop('disabled', true);
+	}
+	else
+	{	<!-- 門市取市 -->
+		$(':input[name="storeAddrBtn"]').prop('disabled', false);
+		$('#store_id').prop('disabled', false);
+	}
+};
+
+$('input[type=radio][name=pickUpMode]').on("click",radioChecked);
+$('input[type=button][name=storeAddrBtn]').on("click",storeLocation);
+
+//-->
+</script>

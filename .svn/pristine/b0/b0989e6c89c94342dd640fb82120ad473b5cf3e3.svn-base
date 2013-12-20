@@ -1,0 +1,66 @@
+package configs;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.client.RestTemplate;
+
+import tw.com.eztravel.ezlogger.Logger;
+import tw.com.eztravel.ezlogger.LoggerFactory;
+import actions.IdentifyAction;
+import actions.LogAction;
+
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+
+@Configuration
+@ComponentScan({"controllers"})
+public class AppConfig {
+
+  @Bean
+  public RestTemplate restTemplate() {
+    RestTemplate restTemplate = new RestTemplate();
+    List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+    messageConverters.add(new MappingJackson2HttpMessageConverter());
+    restTemplate.setMessageConverters(messageConverters);
+    return restTemplate;
+  }
+
+  @Bean
+  public ThreadPoolTaskExecutor taskExecutor() {
+    ThreadPoolTaskExecutor pool = new ThreadPoolTaskExecutor();
+    try {
+      pool.setCorePoolSize(config.getInt("thread.corePoolSize"));
+    } catch (Exception e) {
+      logger.warn(e.getMessage(), e);
+      pool.setCorePoolSize(10);
+    }
+    try {
+      pool.setMaxPoolSize(config.getInt("thread.maxPoolSize"));
+    } catch (Exception e) {
+      logger.warn(e.getMessage(), e);
+      pool.setMaxPoolSize(30);
+    }
+    pool.setWaitForTasksToCompleteOnShutdown(true);
+    return pool;
+  }
+
+  @Bean
+  public LogAction logAction() {
+    return new LogAction();
+  }
+
+  @Bean
+  public IdentifyAction identifyAction() {
+    return new IdentifyAction();
+  }
+
+  private static final Logger logger = LoggerFactory.getLogger(AppConfig.class);
+  private Config config = ConfigFactory.load("config.properties");
+}

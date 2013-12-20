@@ -1,0 +1,673 @@
+@(titleCount: Integer, role: models.enums.BusinessType, member: pojo.Member, customer: pojo.Customer, order: pojo.Order)
+@import models.enums.BusinessType
+@import eztravel.rest.util.common.DateUtils
+@star = {
+    <span class='txt-or'>*</span>
+}
+	<div class="row">
+		<div class="col-xs-12">
+		<h3>
+			<span class="tag-gn">@titleCount</span> 填寫住宿旅客資料：
+			<span class="txt-or txt-s">*為必填</span> 
+			<span class="txt-s">若您欲修改任何會員資料時，請先至「會員中心」修改後再進行訂購。</span>
+		</h3>
+		</div>
+	</div>
+
+
+	<div class="row">
+	<!---------- 第i間房 - Start ---------->
+    @for(i <- 1 to order.getRooms().size()) {
+		<div class="col-xs-12 col-sm-6">
+		<table class="tb-3">
+		<thead>
+		<tr>
+			<th>第 @i 間，景觀客房雙人房</th>
+		</tr>
+		</thead>
+		@for(j <- 1 to order.getTotalTicketQtyForRoom(i-1)) {
+		    <tbody>
+		    <tr>
+		    	<td>
+		    		<p>使用   <!-- 原select name="friend" -->
+		    			<select name="passengerUseType" @if(BusinessType.WEBORDER == role) { disabled}>
+		    				<option value="" selected>我的旅客資料</option>
+		    				@for(k <- 0 to customer.getFriendInfoList().size()-1 ) {
+		    					<!-- value範例：測試&成人01&19840101&MALE&B123456789 -->
+		    					<option value='@customer.getFriendInfoList().get(k).getNameChnFirst()&@customer.getFriendInfoList().get(k).getNameChnLast()&nameEngFirst&nameEngLast&@DateUtils.date2Str(customer.getFriendInfoList().get(k).getBirthday().getTime(), "yyyyMMdd")&@customer.getFriendInfoList().get(k).getSex()&@customer.getFriendInfoList().get(k).getPersonId()' >
+                            		@customer.getFriendInfoList().get(k).getNameChnFirst() @customer.getFriendInfoList().get(k).getNameChnLast()
+                          		</option>
+		    				}
+		    			</select>
+		    		</p>
+		    		<p>
+		    			@star 旅客中文： 
+		    			姓<input type="text" name="tChnNameF" style="width:3em" maxlength="20" value="" />
+		    			名<input type="text" name="tChnNameL" style="width:3em" maxlength="20" value="" />
+		    			<span class="txt-or" style="margin-left:2.3em;">*</span> 性別：
+		    			<select name="tSex" >
+		    				<option value="" selected >請選擇</option>
+		    				<option value="MALE">男</option>
+		    				<option value="FEMALE">女</option>
+		    			</select>
+		    		</p>
+		    		<p>
+		    			@star 身份證字號：
+		    			<input type="text" name="tPersonId" style="width:7em" value="" size="14" />
+		    			@if(BusinessType.WEBORDER == role) {
+		    			<input type="button" class="button-b" name="tSearchCustVSTripperID" value="查詢" />
+		    			} else {
+		    			<a class="JQ-addFriend">加入好友名單</a>
+		    			}
+		    			<p style="margin:-.5em 0 0 6em;">(非本國人可輸入護照號碼，勿輸入中文字)</p>
+		    		</p>
+		    		<p>
+		    			@star 出生日期：
+		    			<input type="text" name="tBirY" size="5" maxlength="4" value=""/>
+		    			 /
+		    			<input type="text" name="tBirM" size="5" maxlength="2" value=""/>
+		    			 /
+		    			<input type="text" name="tBirD" size="5" maxlength="2" value=""/>
+		    			（例：1970/01/01）
+		    		</p>
+		    		<p style="display:none;">
+		    			<span class="txt-or">*</span> 飲食限制：
+		    			<select name="eat">
+		    				<option value="0" selected>無限制</option>
+		    			</select>
+		    		</p>
+                    
+		    		@if(BusinessType.B2E == role) {
+		    		<!----
+		    		B2E 企業補助款用 Div
+		    		---->
+		    			<p id="b2eGrantsTo" class="b2eGrantsTo">
+		    				@star
+		    				員工/眷屬<span style="margin-left:10px;"/>： 
+		    				<select id="grantsToSelect" name="grantsToSelect" style="width:100px">
+		    					<option value="" selected>請選擇</option>
+		    					<option value="01">員工本人</option>
+		    					<option value="06">眷屬</option>
+		    					<option value="05">其它</option>
+		    				</select>
+		    			</p>
+		    			
+		    			<div id="divForEmp" class="divForEmp" style="display:none">
+		    				<p id="b2eGrantsEmp" class="b2eGrantsEmp">
+		    					@star
+		    					員工編號<span style="margin-left:13px;"/>： 
+		    					<input type="text" id="grantsEmpId" name="grantsEmpId" style="width:7em" value="" size="14" />
+		    				</p>
+		    				
+		    				<p id="b2eGrantsUse" class="b2eGrantsUse">
+		    					@star
+		    					旅遊補助<span style="margin-left:13px;"/>： 
+		    					<select id="grantsUseSelect" name="grantsUseSelect" style="width:100px">
+		    						<option value="" selected>請選擇</option>
+		    						<option value="Y">使用</option>
+		    						<option value="N">不使用</option>
+		    					</select>
+		    				</p>
+		    				
+		    				<p id="b2eGrantsAmt" class="b2eGrantsAmt" style="display:none">
+		    					@star
+		    					補助金額<span style="margin-left:13px;"/>： 
+		    					<input type="text" id="grantsAmt" name="grantsAmt" style="width:7em" value="" size="14" />
+		    				</p>
+		    				
+		    			</div>
+		    		}
+		    	</td>
+		    </tr>
+		    </tbody>
+		}
+        <tfoot>
+        <tr><td></td></tr>
+        </tfoot>
+		</table>
+		<br>
+		</div>
+	<!---------- 第i間房 - End   ---------->
+        }
+
+	</div>
+	<!-- 非客服人員才查詢旅客資料 -->
+	<div id="member" data-member='{"custNo":"@member.getCustNo()"}'></div>
+	<div id="roleDataId" data-role='{"role":"@role", "webOrder":"@BusinessType.WEBORDER"}'></div>
+	@if( !BusinessType.WEBORDER.equals(role) ){
+		<div id="customerDataId" data-customer='{"customerNameChnFirst":"@customer.getNameChnFirst()",
+										     "customerNameChnLast":"@customer.getNameChnLast()",
+										     "customerPersonId":"@customer.getPersonId()",
+										     "customerSex":"@customer.getSex().toString()",
+										     "customerBirthday":"@DateUtils.date2Str(customer.getBirthday().getTime(), "yyyyMMdd")"}'>
+		</div>
+	}
+	
+<script type="text/javascript">
+
+@**◆◆◆◆◆◆◆           定義《旅客名單》內的各旅客所使用欄位的物件(開始)           ◆◆◆◆◆◆◆ **@
+var $friendObj=$("select[name=passengerUseType]");							 // 好友名單下拉選單 --%>
+var $tChnNameFObj=$(":input[name='tChnNameF']");                             @** 該旅客中文姓 **@
+var $tChnNameLObj=$(":input[name='tChnNameL']");                             @** 該旅客中文名 **@
+var $tEngNameFObj=$(":input[name='tEngNameF']");                             @** 該旅客英文姓 **@
+var $tEngNameLObj=$(":input[name='tEngNameL']");                             @** 該旅客英文名 **@
+var $tPersonIdObj=$(":input[name='tPersonId']");                             @** 該旅客身份證字號 **@
+var $tBirYObj=$(":input[name='tBirY']");                                     @** 該旅客出生日期【年】 **@
+var $tBirMObj=$(":input[name='tBirM']");                                     @** 該旅客出生日期【月】 **@
+var $tBirDObj=$(":input[name='tBirD']");                                     @** 該旅客出生日期【日】 **@
+var $tSexObj=$("select[name='tSex']");                                       @** 該旅客性別 **@
+var $tPassportNoObj=$(":input[name='tPassportNo']");                         @** 國內外機票 - 該旅客護照號碼**@
+var $tEndPassDtObj=$(":input[name='tPassportDt']");                          @** 國內外機票 - 該旅客護照日期 **@
+var $tMTPTypeObj=$("select[name='tMTPType']");                               @** 國內外機票 - 該旅客其他證照類別 **@
+var $tMTPNoObj=$(":input[name='tMTPNo']");                                   @** 國內外機票 - 該旅客證照號碼 **@
+var $tEndMTPDtObj=$(":input[name='tMTPDt']");                                @** 國內外機票 - 該旅客證照日期 **@
+var $tFareObj=$("select[name='fare']");                                      @** 國內機票 - 去程票種  **@
+var $tBackFareObj=$("select[name='backFare']");                              @** 國內機票 - 回程票種  **@
+var prodSubType = "ODT";
+
+
+
+
+//◆◆◆◆◆◆◆ 此為定義要檢核的旅客名單欄位名稱及要呈現的ALERT訊息內容(開始) ◆◆◆◆◆◆◆ --%>
+//for 國外線別 (FRN)【B2C、B2B、WebOrder 流程】--%>
+var abroadTravelFieldArr={"tChnNameF":"中文姓",
+                      "tChnNameL":"中文名",
+                      "tEngNameF":"英文姓",
+                      "tEngNameL":"英文名",
+                      "tSex":"性別",
+                      "tPersonId":"身分證字號",
+                      "tBirY":"出生日期【年】",
+                      "tBirM":"出生日期【月】",
+                      "tBirD":"出生日期【日】",
+                      "eat":"飲食限制"};
+
+
+//for 國內線別【B2C、B2B、WebOrder 流程】 --%>
+var internalTravelFieldArr={"tChnNameF":"中文姓",
+                        "tChnNameL":"中文名",
+                        "tSex":"性別",
+                        "tPersonId":"身分證字號",
+                        "tBirY":"出生日期【年】",
+                        "tBirM":"出生日期【月】",
+                        "tBirD":"出生日期【日】",
+                        "eat":"飲食限制"};
+
+
+//for 國外線別 (FRN)【B2E流程】--%>
+var abroadTravelFieldArrB2E={"tChnNameF":"中文姓",
+                         "tChnNameL":"中文名",
+                         "tEngNameF":"英文姓",
+                         "tEngNameL":"英文名",
+                         "tSex":"性別",
+                         "tPersonId":"身分證字號",
+                         "tB2E_grants_man":"補助對象",
+                         "tB2E_empID":"申請補助者之員工編號",
+                         "tBirY":"出生日期【年】",
+                         "tBirM":"出生日期【月】",
+                         "tBirD":"出生日期【日】",
+                         "eat":"飲食限制"};
+
+
+//for 國內線別(GRP、GRT、ODT)【B2E流程】 --%>
+var internalTravelFieldArrB2E={"tChnNameF":"中文姓",
+                           "tChnNameL":"中文名",
+                           "tSex":"性別",
+                           "tPersonId":"身分證字號",
+                           "tB2E_grants_man":"補助對象",
+                           "tB2E_empID":"申請補助者之員工編號",
+                           "tBirY":"出生日期【年】",
+                           "tBirM":"出生日期【月】",
+                           "tBirD":"出生日期【日】",
+                           "eat":"飲食限制"};
+
+//for (FRN、GRP、GRT、FTK、HTL、TKD)【B2E流程】增加新補助款欄位 20121103 by MaxBai--%>
+var b2eGrantsFieldArr={"grantsToSelect":"補助款對象",
+           		 "grantsDepartment":"補助款對象所屬部門",
+           		 "grantsEmpId":"補助款對象員編",
+           		 "grantsUseSelect":"是否使用補助款",
+           		 "grantsAmt":"補助款金額"};
+
+
+/*
+                        參數說明：
+(1)isB2EGRANTS_MAN:true ,(FRN、GRP、GRT及ODT 等線別有增加【補助對象】和【申請補助者之員工編號】兩個欄位，故須檢核 )。
+(2)isB2EAvailableCustNo = true ,此為 B2E 流程。
+(3)prodSubType => 線別。
+(4)isAbroadInfo:true 表示該線別《有》【英文姓名】欄位，反之則反。
+*/
+//var travelFieldArr=<%= isAbroadInfo %>?abroadTravelFieldArr:internalTravelFieldArr;
+//travelFieldArr=<%= isB2EGRANTS_MAN %>?(<%= isAbroadInfo%>?abroadTravelFieldArrB2E:internalTravelFieldArrB2E):travelFieldArr;
+var travelFieldArr=internalTravelFieldArr;
+//◆◆◆◆◆◆◆ 此為定義要檢核的旅客名單欄位名稱及要呈現的ALERT訊息內容(結束) ◆◆◆◆◆◆◆ --%>
+
+
+
+//自動將今天日期的【年】【月】【日】不足位數的補足(開始) --%>
+jQuery.fillDateForToday=function(yyyy,mm,dd){
+var yyyyInfo=(!isNaN(yyyy))?(yyyy <=999? (parseInt(new Date().getFullYear(),10)):yyyy):(parseInt(new Date().getFullYear(),10));
+var mmInfo=(!isNaN(mm))?(mm >=1 && mm <=9?"0"+mm:((mm <=0 || mm >=13)?(parseInt(new Date().getMonth(),10)+1):mm )):parseInt(new Date().getMonth(),10)+1;
+var ddInfo=(!isNaN(dd))?(dd >=1 && dd <=9?"0"+dd:((dd <=0 || dd >=31)?(parseInt(new Date().getDate(),10)):dd )):parseInt(new Date().getDate(),10);
+var today=yyyyInfo+mmInfo.toString()+ddInfo.toString();
+return {'today':today,'yyyy':yyyy,'mm':mmInfo,'dd':ddInfo};
+}; // end jQuery.fillDateForToday=function(yyyy,mm,dd)
+//自動將今天日期的【年】【月】【日】不足位數的補足(結束) --%>
+
+
+
+
+//◆◆◆◆◆◆◆ 取得目前的系統時間 (ex. 20100823 -> Mon Aug 23 00:00:00 UTC+0800 2010)) ◆◆◆◆◆◆◆ --%>
+var dateObj=new Date();
+var nowYear=parseInt(dateObj.getFullYear(),10);
+var nowMonth=parseInt(dateObj.getMonth(),10)+1;
+var nowDate=parseInt(dateObj.getDate(),10);
+var todayInfo=$.fillDateForToday(nowYear,nowMonth,nowDate);   // 自動將今天日期的【年】【月】【日】不足位數的補足 --%>
+var todayObj=new Date(nowYear,nowMonth-1,nowDate);            // 系統日期物件-時間的格式(ex. 20100823 -> Mon Aug 23 00:00:00 UTC+0800 2010)--%>
+
+
+
+//檢核旅客的出生年月日是否正確(開始) --%>
+jQuery.checkFriendBirthdayInfo=function(index,selType){
+var isBirthdayOk=true;
+var dateInfo=$.fillDateInfo(index);
+var yyyyVal=parseInt(dateInfo.yyyy,10);
+var mmVal=parseInt(dateInfo.mm,10);
+var ddVal=parseInt(dateInfo.dd,10);
+if(!(yyyyVal >= (nowYear-100) && yyyyVal <= nowYear)){  //  檢核出生日期的【年】是否為正確範圍的值--%>
+alert((selType=="send"?"第 "+(index+1)+"位旅客 ":"")+"請輸入西元年( "+(nowYear-100)+" ~ "+nowYear+" ) 的值");
+$tBirYObj.eq(index).css('background-color','#E9FFCD').val('').focus();
+isBirthdayOk=false;
+}else if(!(mmVal >= 1 && mmVal <= 12)){                //  檢核出生日期的【月】是否為正確範圍的值 --%>
+alert((selType=="send"?"第 "+(index+1)+"位旅客 ":"")+"請輸入月份( 01 ～ 12 )的值");
+$tBirMObj.eq(index).css('background-color','#E9FFCD').val('').focus();
+isBirthdayOk=false;
+}else if(!(ddVal >= 1 && ddVal <= 31)){                 //  檢核出生日期的【日】是否為正確範圍的值 --%>
+alert((selType=="send"?"第 "+(index+1)+"位旅客 ":"")+"請輸入天數( 01 ～ 31 )的值");
+$tBirDObj.eq(index).css('background-color','#E9FFCD').val('').focus();
+isBirthdayOk=false;
+}else{
+var checkFebruaryForDaysResult=$.checkFebruaryForDays(yyyyVal,mmVal,ddVal); //  檢核該旅客的出生日期的【年】【月】【日】的天數是否符合潤月及大小月規則 --%>
+if(!checkFebruaryForDaysResult.result){ //   檢核該旅客的出生日期的【年】【月】【日】的天數是否符合潤月規則 --%>
+ alert((selType=="send"?"第 "+(index+1)+"位旅客 ":"")+"天數不符,正確值為 (01 ～ "+checkFebruaryForDaysResult.rangDays+")");
+ $tBirDObj.eq(index).val('').focus();
+ isBirthdayOk=false;
+}else if(!$.checkBirthdayGreateToday(yyyyVal,mmVal,ddVal)){  //  檢核該旅客的出生日期是否大於今日 --%>
+ alert((selType=="send"?"第 "+(index+1)+"位旅客 ":"")+"出生日期不能大於現在的日期");
+ $tBirYObj.eq(index).val('').focus();
+ $tBirMObj.eq(index).val('');
+ $tBirDObj.eq(index).val('');
+ isBirthdayOk=false;
+}else{
+ isBirthdayOk=true;
+}
+}
+return isBirthdayOk;
+}; // end jQuery.checkFriendBirthdayInfo=function(index,selType)
+//檢核旅客的出生年月日是否正確(結束)--%>
+
+
+
+//自動將出生日期的【年】【月】【日】不足位數的補足（開始） --%>
+jQuery.fillDateInfo=function(index){
+var tBirYVal=$.trim($tBirYObj[index]['value']);             //  該旅客出生日期【年】 --%>
+var tBirMVal=$.trim($tBirMObj[index]['value']);             //  該旅客出生日期【月】 --%>
+ tBirMVal=tBirMVal.length==1?"0"+tBirMVal:tBirMVal;      //  如果要輸入1月份的資料，卻輸入1-> 系統自動補上"0" -> 01 --%>
+ $tBirMObj[index]['value']=tBirMVal;
+var tBirDVal=$.trim($tBirDObj[index]['value']);             //  該旅客出生日期【日】 --%>
+ tBirDVal=tBirDVal.length==1?"0"+tBirDVal:tBirDVal;      //  如果要輸入2日的資料，卻輸入2-> 系統自動補上"0" -> 02 --%>
+ $tBirDObj[index]['value']=tBirDVal;
+return {'yyyy':tBirYVal,'mm':tBirMVal,'dd':tBirDVal};
+}; // end jQuery.fillDateInfo=function(index)
+//自動將出生日期的【年】【月】【日】不足位數的補足（結束） --%>
+
+    
+
+//檢核該旅客的出生日期的【年】【月】【日】的天數是否符合潤月及大小月規則（開始） --%>
+jQuery.checkFebruaryForDays=function(yyyyVal,mmVal,ddVal){
+var dd=31;
+switch(mmVal){
+case 2:
+dd=(yyyyVal%4==0 && yyyyVal%100!=0 || yyyyVal%400==0)?29:28;
+break;
+case 4:
+case 6:
+case 9:
+case 11:
+dd=30;
+break;
+} // end switch(mmVal)
+var bolResult=(ddVal > dd)?false:true;
+return {'result':bolResult,'rangDays':dd};
+}; // end jQuery.checkFebruaryForDays=function(yyyyVal,mmVal,ddVal)
+//檢核該旅客的出生日期的【年】【月】【日】的天數是否符合潤月及大小月規則（結束） --%>
+
+
+
+//檢核該旅客的出生日期是否大於今日（開始） --%>
+jQuery.checkBirthdayGreateToday=function(yyyyVal,mmVal,ddVal){
+var isBirthdayOk=true;
+var birDTObj=new Date(yyyyVal,mmVal-1,ddVal);
+if(birDTObj > todayObj){
+isBirthdayOk=false;
+}
+return isBirthdayOk;
+}; // end jQuery.checkBirthdayGreateToday=function(yyyyVal,mmVal,ddVal)
+//檢核該旅客的出生日期是否大於今日（結束） --%>
+
+
+
+//檢核下拉好友名單時，即時檢核旅客各欄位資訊內容是否為空白（開始） --%>
+jQuery.checkFriendFieldEmpty=function(index){
+var isFieldEmptyOk=true;
+$.each(travelFieldArr,function(eleName,errorInfo){
+var checkField=":input[name='"+eleName+"']";
+var $checkObj=$(checkField).eq(index);
+if($.trim($checkObj.val())==""){
+  $checkObj.css({'background-color':'#E9FFCD'});
+  isFieldEmptyOk=false;
+}else{
+  $checkObj.css({'background-color':'white'});
+}
+// ○○○ 處理當客人填寫欄位資訊時，如果未填寫資料則呈現淺綠色背景(開始) ○○○--%>
+$checkObj.focus(function(){
+  $(this).css({'background-color':'white'});
+}).blur(function(){
+  if($.trim($(this).val())==''){
+    $(this).css({'background-color':'#E9FFCD'});
+  }else{
+    $(this).css({'background-color':'white'});
+  }
+});
+// ○○○ 處理當客人填寫欄位資訊時，如果未填寫資料則呈現淺綠色背景(結束) ○○○--%>
+}); // end $.each(travelFieldArr,function(eleName,errorInfo)
+return isFieldEmptyOk;
+} // end jQuery.checkFriendFieldEmpty=function(index)
+//檢核下拉好友名單時，即時檢核旅客各欄位資訊內容是否為空白（結束） --%>
+
+
+
+//檢核下拉好友名單時，即時檢核旅客身份證是否重覆（開始） --%>
+jQuery.checkFriendPersonIDExits=function(selType,selIndex,selChnName,selPersonId){
+var isPersonIDOK=true;
+var $friendObj=$("select[name=passengerUseType]");							 // 好友名單下拉選單（不知為何要重新宣告） 
+$tPersonIdObj.each(function(index){
+ if(selIndex!=index){
+   if($.trim($(this).val().toUpperCase())==selPersonId.toUpperCase()){
+     alert(selChnName+" 與第 "+(index+1)+" 位 旅客 身份證重覆");
+     if(selType=="changeFriendSel"){  //  當改變下拉式選單時的動作 --%>
+       $friendObj.eq(selIndex).val(0);
+       $friendObj.eq(selIndex).triggerHandler('change'); // 要觸發才會改變選單內容
+       isPersonIDOK=false;
+       return false;
+     }else if(selType=="inputPerson"){  //  身份證字號手動填入時的動作--%>
+       $tPersonIdObj.eq(selIndex).val('');
+       isPersonIDOK=false;
+     }else{}
+   } // end if($.trim($(this).val().toUpperCase())==selPersonId.toUpperCase())
+ } // end if(selIndex!=index)
+}); // end $tPersonIdObj.each(function(index)
+return isPersonIDOK;
+}; // end jQuery.checkFriendPersonIDExits=function(selType,selIndex,selChnName,selPersonId)
+//檢核下拉好友名單時，即時檢核旅客身份證是否重覆（結束） --%>
+
+    
+    
+    
+    
+    
+
+
+
+@**★★★ 加入好友名單的連結(開始) ★★★**@
+          @** 程式使用線別：全線別 **@
+          $('a.JQ-addFriend').each(function(index){
+            $(this).click(function(event){
+              var custNo=$("#member").data("member").custNo;                                           @** 會員編號 **@
+              var tChnNameFVal=$.trim($tChnNameFObj[index]['value']);                       @** 該旅客中文姓 **@
+              var tChnNameLVal=$.trim($tChnNameLObj[index]['value']);                       @** 該旅客中文名 **@
+              var tEngNameFVal=(typeof tEngNameFObj === "undefined" || typeof tEngNameFObj[index] === "undefined") ? "" : $.trim($tEngNameFObj[index]['value']);  @** 該旅客英文姓 **@
+              var tEngNameLVal=(typeof tEngNameLObj === "undefined" || typeof tEngNameLObj[index] === "undefined") ? "" : $.trim($tEngNameLObj[index]['value']);  @** 該旅客英文名 **@
+              var tPersonIdVal=$.trim($tPersonIdObj[index]['value']).toUpperCase();         @** 該旅客身份證字號 **@
+
+              @** 出生日期【年】、【月】、【日】(開始) **@
+              var tBirYVal=$.trim($tBirYObj[index]['value']);                               @** 該旅客出生日期【年】 **@
+              var tBirMVal=$.trim($tBirMObj[index]['value']);                               @** 該旅客出生日期【月】 **@
+                  tBirMVal=tBirMVal.length==1?"0"+tBirMVal:tBirMVal;                        @** 如果要輸入1月份的資料，卻輸入1-> 系統自動補上"0" -> 01 **@
+                  $tBirMObj[index]['value']=tBirMVal;
+              var tBirDVal=$.trim($tBirDObj[index]['value']);                               @** 該旅客出生日期【日】 **@
+                  tBirDVal=tBirDVal.length==1?"0"+tBirDVal:tBirDVal;                        @** 如果要輸入2日的資料，卻輸入2-> 系統自動補上"0" -> 02 **@
+                  $tBirDObj[index]['value']=tBirDVal;
+              var tBirVal=tBirYVal+tBirMVal+tBirDVal;  @**  (ex.19780202 <- 須為8碼) **@
+              @** 出生日期【年】、【月】、【日】(結束) **@
+
+              var tSexVal=$.trim($tSexObj[index]['value']);                                 @** 檢核該旅客性別 **@
+
+              var tPassportNoVal="";                   @** 該旅客護照號碼**@
+              var tEndPassDtVal="";                    @** 該旅客護照日期 **@
+              var tMTPTypeVal="";                      @** 該旅客其他證照類別 **@
+              var tMTPNoVal="";                        @** 該旅客證照號碼 **@
+              var tEndMTPDtVal="";                     @** 該旅客證照日期  **@
+              
+              @** 國際機票線別 且 為大陸線別 (開始) **@
+              if (typeof $tPassportNoObj !== 'undefined' && typeof $tPassportNoObj[index] !== 'undefined')
+              	tPassportNoVal=$.trim($tPassportNoObj[index]['value']);     @** 該旅客護照號碼**@
+              if (typeof $tEndPassDtObj !== 'undefined' && typeof $tEndPassDtObj[index] !== 'undefined')
+              	tEndPassDtVal=$.trim($tEndPassDtObj[index]['value']);       @** 該旅客護照日期 **@
+              if (typeof $tMTPTypeObj !== 'undefined' && typeof $tMTPTypeObj[index] !== 'undefined')
+              	tMTPTypeVal=$.trim($tMTPTypeObj[index]['value']);           @** 該旅客其他證照類別 **@
+              if (typeof $tMTPNoObj !== 'undefined' && typeof $tMTPNoObj[index] !== 'undefined')
+              	tMTPNoVal=$.trim($tMTPNoObj[index]['value']);               @** 該旅客證照號碼 **@
+              if (typeof $tEndMTPDtObj !== 'undefined' && typeof $tEndMTPDtObj[index] !== 'undefined')
+              	tEndMTPDtVal=$.trim($tEndMTPDtObj[index]['value']);         @** 該旅客證照日期  **@
+              @** 國際機票線別 且 為大陸線別 (結束) **@
+
+              if (typeof tPersonIdVal === "undefined" || tPersonIdVal == "") {
+                  alert("請先輸入身份證字號");
+                  $tPersonIdObj[index].focus();
+              } else if(typeof tChnNameFVal === "undefined" || tChnNameFVal == ""){
+                  alert("請先輸入旅客中文姓");
+                  $tChnNameFObj[index].focus();
+              } else if(typeof tChnNameLVal === "undefined" || tChnNameLVal == ""){
+                  alert("請先輸入旅客中文名");
+                  $tChnNameLObj[index].focus();
+              } else if(typeof tBirYVal === "undefined" || tBirYVal == ""){
+                  alert("請先輸入出生日期【年】");
+                  $tBirYObj[index].focus();
+              } else if(typeof tBirMVal === "undefined" || tBirMVal == ""){
+                  alert("請先輸入出生日期【月】");
+                  $tBirMObj[index].focus();
+              } else if(typeof tBirDVal === "undefined" || tBirDVal == ""){
+                  alert("請先輸入出生日期【日】");
+                  $tBirDObj[index].focus();
+              } else if(tSexVal==""){
+                alert("請選擇性別");
+                $tSexObj[index].focus();
+              }else{
+                $.post('/hsrhtl/order/addfriend',
+                      {'custNo':encodeURIComponent(custNo),
+                       'personId':encodeURIComponent(tPersonIdVal),
+                       'nameChnFirst':encodeURIComponent(tChnNameFVal),
+                       'nameChnLast':encodeURIComponent(tChnNameLVal),
+                       'nameEngFirst':tEngNameFVal == "" ? "" : encodeURIComponent(tEngNameFVal),
+                       'nameEngLast':tEngNameLVal == "" ? "" : encodeURIComponent(tEngNameLVal),
+                       'birthday':encodeURIComponent(tBirVal),
+                       'sex':encodeURIComponent(tSexVal)
+                       // 'passno':encodeURIComponent(tPassportNoVal),
+                       // 'passdt':encodeURIComponent(tEndPassDtVal),
+                       // 'mtp':encodeURIComponent(tMTPTypeVal),
+                       // 'mtpno':encodeURIComponent(tMTPNoVal),
+                       // 'mtpnodt':encodeURIComponent(tEndMTPDtVal)
+                      },
+                      function(data){
+			            alert($.trim(data));
+			        });
+              }
+              event.preventDefault(); @** 預防觸發到原先<a href="$" ></a> 的動作 **@
+            }); // end $(this).click();
+          }); // end $('a.JQ-addFriend').each();
+          @**★★★ 加入好友名單的連結(結束) ★★★**@
+
+
+
+// ★★★ 改變下拉好友名單的選項(開始) ★★★--%>
+/*
+                             好友名單選項下拉時檢核
+    (1)檢核下拉好友名單時，即時檢核旅客各欄位資訊內容是否為空白;
+    (2)檢核下拉好友名單時，即時檢核旅客身份是否重覆;
+    (3)檢核旅客的出生年月日是否正確;
+    (4)檢核旅客出生年月日是否符合該旅客型別是否正確;
+    (5)如果有選擇旅遊平安險選項時，則檢核該選項的保險金額上限是否符合該年齡所投保金額的範圍;
+    (6)檢核旅客的英文姓名內是否有其它非英文字母的字元;
+*/
+//  程式使用線別：全線別  --%>
+$friendObj.each(function(index){
+
+   $(this).bind("change",function(event){
+     var optInfo=$.trim($(this).val());
+     var frInfoArr=optInfo.split("&");
+      /*
+         frInfoArr[0]: 中文姓(ex.素)
+         frInfoArr[1]: 中文名(ex.還真)
+         frInfoArr[2]: 英文姓(ex.TEST)
+         frInfoArr[3]: 英文名(ex.PG)
+         frInfoArr[4]: 出生日期:【西元年】(ex.19780303)
+         frInfoArr[5]: 性別
+         frInfoArr[6]: 身份證字號
+         frInfoArr[7]: 飲食限制
+         frInfoArr[8]: 護照號碼
+         frInfoArr[9]: 護照日期
+         frInfoArr[10]:其他證照類別
+         frInfoArr[11]:證照號碼
+         frInfoArr[12]:證照日期
+      */
+     if(optInfo==""){ //  如果選擇預選->"我的旅客資料時" --%>
+       $tChnNameFObj.eq(index).val('中文姓');
+       $tChnNameLObj.eq(index).val('中文名');
+       //  isAbroadInfo:true 表示該線別《有》【英文姓名】欄位，反之則反 --%>
+         //$tEngNameFObj.eq(index).val('英文姓');
+         //$tEngNameLObj.eq(index).val('英文名');
+       $tBirYObj.eq(index).val('');
+       $tBirMObj.eq(index).val('');
+       $tBirDObj.eq(index).val('');
+       $tSexObj[index].selectedIndex=0;
+       $tPersonIdObj.eq(index).val('');
+       $eatObj[index].selectedIndex=0;
+
+       //  該線別為 "FTK" 且為目地的國家為"中國"(開始)  --%>
+
+     }else{  //  如果選擇非預選->"我的旅客資料時"的選項時(開始) --%>
+       $tChnNameFObj[index]["value"]=frInfoArr[0];              //  中文姓(ex.素)  --%>
+       $tChnNameLObj[index]["value"]=frInfoArr[1];              //  中文名(ex.還真) --%>
+  	   //  isAbroadInfo:true 表示該線別《有》【英文姓名】欄位，反之則反 --%>
+         //$tEngNameFObj[index]["value"]=frInfoArr[2];            //  英文姓(ex.TEST) --%>
+         //$tEngNameLObj[index]["value"]=frInfoArr[3];            //  英文名(ex.PG)   --%>
+       $tBirYObj.eq(index).val(frInfoArr[4].substring(0,4)).css({'color':'black'});   //  出生日期:【西元年】(ex.1978)--%>
+       $tBirMObj.eq(index).val(frInfoArr[4].substring(4,6)).css({'color':'black'});   //  出生日期:【月】(ex.01)--%>
+       $tBirDObj.eq(index).val(frInfoArr[4].substring(6,8)).css({'color':'black'});   //  出生日期:【日】(ex.01)--%>
+
+       //  處理旅客性別(開始) --%>
+       $tSexObj[index].selectedIndex=0;
+       $tSexObj.eq(index).children().each(function(sexIndex){
+         if($(this).val()==frInfoArr[5]){
+      	 $tSexObj[index].selectedIndex=sexIndex;
+           return false;
+         }
+       }); // end $tSexObj.eq(index).children().each(function()
+       //  處理旅客性別(結束) --%>
+
+       $tPersonIdObj[index]["value"]=frInfoArr[6].toUpperCase();         //  身份證字號--%>
+
+       //  處理旅客飲食限制(開始) --%>
+       //  該線別為 "FTK" 且為目地的國家為"中國"(開始)  --%>
+
+       //  檢核下拉好友名單時，即時檢核旅客各欄位資訊內容是否為空白(開始) --%>
+       if(!$.checkFriendFieldEmpty(index)){  // 只將空白欄位的背景變成淺綠色處理
+       }
+       //  檢核下拉好友名單時，即時檢核旅客各欄位資訊內容是否為空白(結束) --%>
+
+       //  檢核下拉好友名單時，即時檢核旅客身份是否重覆(開始) --%>
+       //  程式使用線別：全線別 --%>
+       if(("FRN,FRT,GRP,GRT,ODT,AIT,PTK,HTF,HTL,ETK,TKD".indexOf(prodSubType)!=-1) || ("FTK".equals(prodSubType) && ckFTKRDID)){
+           var selChnName=frInfoArr[0]+frInfoArr[1];                //  中文姓名(ex.素還真)  --%>
+           var selPersonId=$.trim(frInfoArr[6]).toUpperCase();      //  身份證字號 --%>
+           if(!$.checkFriendPersonIDExits("changeFriendSel",index,selChnName,selPersonId)){ return false; }
+       } // end if(("FRN,FRT,GRP,GRT,ODT,AIT,PTK,HTF,HTL,ETK,TKD".indexOf(prodSubType)!=-1) || ("FTK".equals(prodSubType) && ckFTKRDID)) %>
+       //  檢核下拉好友名單時，即時檢核旅客身份是否重覆(結束) --%>
+
+       //  檢核旅客的出生年月日是否正確(開始) --%>
+       if(!$.checkFriendBirthdayInfo(index,'')){ return false; }
+       //  檢核旅客的出生年月日是否正確(結束) --%>
+
+       //  檢核旅客出生年月日是否符合該旅客型別是否正確(開始) --%>
+       //  有選擇旅遊平安險選項時，則檢核該選項的保險金額上限是否符合該年齡所投保金額的範圍(開始) --%>
+       //  檢核英文姓名是否為非英文字母及空白字元(開始)  --%>
+       //  該線別為 國際機票"FTK" 且有加購國際訂房，則檢核"填寫住宿旅客代表人"是否原先已有勾選(有的話，則將該選項改為預設值)(開始)  --%>
+       //  程式使用線別：(1)國內機票《商務年票》(ETK); --%>
+       
+
+     } // else  //  如果選擇非預選->"我的旅客資料時"的選項時(結束) --%>
+   }); // end $(this).bind("change",function()
+}); // end $('select[name="friend"]').each(function(index)
+// ★★★ 改變下拉好友名單的選項(結束) ★★★--%>
+
+
+          
+          
+          
+// ★★★填寫住宿旅客代表人	身份證字號的"查詢"按鈕 ★★★
+var $tSearchCustVSTriIDBtObj=$(":input[name='tSearchCustVSTripperID']");                                  
+// ★★★ 客服流程內，填寫住宿旅客代表人	身份證字號的"查詢"按鈕"功能（開始） ★★★ 
+//  程式使用線別：全線別   
+$tSearchCustVSTriIDBtObj.each(function(index){
+	$(this).click(function(){
+		var tPersonIdVal=$.trim($tPersonIdObj.eq(index).val().toUpperCase());
+		if(tPersonIdVal==""){
+	  		alert("請輸入欲查詢「住宿旅客代表人」的身分證字號");
+	  		$tPersonIdObj.eq(index).focus();
+    	}else{
+      		var w=900;
+      		var h=200;
+      		var xPos=($(window).width()-w)/2;
+      		var yPos=($(window).height()-h)/2;
+      		var theURL="/hsrhtl/order/customerinfo?";
+          	theURL += "personId=" + tPersonIdVal + "&index=" + index;
+      		var setStatus="left="+xPos+",top="+yPos+",width="+w+",height="+h+",scrollbars=yes,resizable=yes";
+      		window.open(theURL,"searchCustID",setStatus);
+    	}
+  	}); // end $(this).click(function()
+}); // end $tSearchCustVSTriIDBtObj.each(function(index)
+// ★★★  客服流程內，填寫住宿旅客代表人	身份證字號的"查詢"按鈕"功能（結束）★★★  
+
+
+
+// ★★★ 旅客資料帶入預設值（「登入會員」之基本資料）★★★
+var role = $("#roleDataId").data("role").role;
+var webOrder = $("#roleDataId").data("role").webOrder;
+//alert("旅客頁\n角色：" + role + "\nwebOrder：" + webOrder);
+
+if( role!=webOrder ){
+	var customerNameChnFirst = $("#customerDataId").data("customer").customerNameChnFirst;
+	var customerNameChnLast = $("#customerDataId").data("customer").customerNameChnLast;
+	var customerPersonId = $("#customerDataId").data("customer").customerPersonId;
+	var customerSex = $("#customerDataId").data("customer").customerSex;
+	var customerBirthday = $("#customerDataId").data("customer").customerBirthday;
+	//alert("旅客預設資料：\n\n姓：" + customerNameChnFirst + "\n名：" + customerNameChnLast + "\nID：" + customerPersonId + "\nsex：" + customerSex + "\n生日：" + customerBirthday);
+	
+	// 帶入旅客資料
+	$tChnNameFObj.eq(0).val(customerNameChnFirst);
+	$tChnNameLObj.eq(0).val(customerNameChnLast);
+	$tPersonIdObj.eq(0).val(customerPersonId);
+	$tSexObj.eq(0).val(customerSex);
+	// 第一位旅客帶入預設值
+	$tBirYObj.eq(0).val(customerBirthday.substring(0,4));
+	$tBirMObj.eq(0).val(customerBirthday.substring(4,6));
+	$tBirDObj.eq(0).val(customerBirthday.substring(6,8));
+	// 其他旅客預設YYYYMMDD
+	$("[name=tBirY]:gt(0)").attr("placeholder", "YYYY");
+	$("[name=tBirM]:gt(0)").attr("placeholder", "MM");
+	$("[name=tBirD]:gt(0)").attr("placeholder", "DD");
+}
+		 
+
+
+          
+</script>

@@ -1,0 +1,507 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 200;
+  line-height: 1.1;
+  color: inherit;
+}
+
+h1,
+.h1 {
+  font-size: 26px;
+}
+
+h2,
+.h2 {
+  font-size: 22px;
+}
+
+h3,
+.h3 {
+  font-size: 18px;
+}
+
+h4,
+.h4 {
+  font-size: 14px;
+}
+
+h5,
+.h5 {
+  font-size: 12px;
+}
+
+h6,
+.h6 {
+  font-size: 12px;
+}
+/* Del By Kiki
+th {
+    font-weight: 200;
+}
+
+.table-responsive {
+    border: 0;
+}
+*/
+.content {
+    /* Del By Kiki
+    color: #333;
+    font-size: 1.1em;
+    font-weight: 200;
+    */
+}
+
+.search-area {
+    max-height: 640px;
+    background-image: url(../../images/common/sample01.jpg);
+    padding-top: 20px;
+    font-size: 1em;
+}
+
+.control-label {
+    font-weight: normal;
+}
+
+/* Del By Kiki
+.search-form {
+    min-height: 20px;
+    padding: 19px;
+    margin-bottom: 20px;
+    background: rgba(245, 245, 245, 0.75);
+}
+*/
+
+.crumb {
+    /* Del By Kiki
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-bottom: 10px;
+    */
+    padding: 6px 0px 6px 0px;
+}
+
+.search-result-block {
+    margin-left: 12px;
+    margin-right: 12px;
+    padding: 19px 3px 19px 3px;
+}
+
+/* event-area */
+.event-area {
+    padding-bottom: 25px;
+    border-bottom: 1px solid #EAEAEA; 
+}
+
+.event-row {
+    padding-top: 25px;
+}
+
+.event-row > div > img {
+    max-height:100%;
+    max-width:100%;
+}
+
+@media (min-width: 768px) {
+    .content {
+        /* Del By Kiki
+        font-size: 1em;
+        */
+    }
+    .search-result-block {
+        margin-right: auto;
+        margin-left: auto;
+        padding: 19px 3px 19px 3px;
+    }
+    .crumb {
+        padding-left: 0px;
+    }
+    h1,
+    .h1 {
+      font-size: 36px;
+    }
+
+    h2,
+    .h2 {
+      font-size: 30px;
+    }
+
+    h3,
+    .h3 {
+      font-size: 24px;
+    }
+
+    h4,
+    .h4 {
+      font-size: 18px;
+    }
+
+    h5,
+    .h5 {
+      font-size: 14px;
+    }
+
+    h6,
+    .h6 {
+      font-size: 12px;
+    }
+}
+
+@media (min-width: 992px) {
+}
+
+
+
+
+
+
+
+
+
+/* ---- Kiki ---- */
+
+@media (min-width: 992px) {
+  .container {
+	/* 覆寫
+	width: 970px; */
+    margin: 0 auto;
+    max-width:960px;
+  }
+}
+
+
+body {
+font-family: Arial, Verdana, sans-serif, '新細明體';
+font-size: 13px;
+color: #202020;
+/* background: #f2f2f2; */
+background: #FFFFFF;
+}
+
+a {
+color: #0066cc;
+text-decoration: underline;
+}
+
+a img {
+border: 0;
+}
+
+/* 麵包屑 */
+.breadcrumbs {
+/* background-color: #F3F3F3; */
+color: #060;
+text-align: left;
+}
+
+.breadcrumbs a:link, .breadcrumbs a:visited {
+color: #060;
+text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+color: #06C;
+}
+
+.breadcrumbs a img {
+border:none;
+}
+
+hr {
+margin: 15px 0px 5px 0px;
+padding: 0px;
+border: 0;
+height: 1px;
+line-height: 1px;
+background-color: #d4d4d4;
+color: #d4d4d4;
+}
+
+
+
+
+/* ---------- 仿本網CSS ---------- */
+
+/* 步驟流程 - Green */
+.dotTitle
+{
+font-weight: bold;
+margin-bottom: 5px;
+font-size: 16px;
+color: #006600;
+}
+
+.dotTitle span
+{
+margin-right: 5px;
+padding:0px 5px;
+color: #FFFFFF;
+background-color: #5BC31F;
+}
+
+/* 步驟流程 - Orange */
+.dotTitleOrange
+{
+font-weight: bold;
+margin-bottom: 5px;
+font-size: 16px;
+color: #F40;
+}
+
+.dotTitleOrange span
+{
+margin-right: 5px;
+padding:0px 5px;
+color: #FFF;
+background-color: #F40;
+}
+
+.txt-sGreen {
+clear: both;
+font-size: 13px;
+font-weight:normal;
+color: #006600;
+}
+
+
+/* ---------- 仿本網CSS ---------- */
+/*流程步驟標題*/
+h2 {font-size:1.2em; color:#F40;margin:.4em auto;}
+
+/*標題粗體*/
+h3 {clear:both;font-size:1.2em; color:#006600;margin:1em auto .3em;}
+
+/*標題正常*/
+h4 {font-size: 1.2em; margin:.3em auto;color:#060;font-weight:normal;}
+.tag-gn {background:#5BC31F; color:#FFFFFF; padding:0 .5%;}
+
+/*有底邊框標題*/
+h5 {font-size:1em;font-weight:normal;border:1px solid #abea45;background:#e9ffcd; color:#060; padding:.4em 1em .3em;margin:.7em auto;}
+
+
+/*文字標籤*/
+.tag-or{background:#F40; color:#FFF; padding:0 .5%;}
+
+/*文字顏色*/
+.txt-bl{color: #06c;}   	/* 藍 */
+.txt-bk{color: #222;}   	/* 灰黑 */
+.txt-gr{color: #444;}   	/* 深灰 */
+.txt-or{color: #F40;}   	/* 橘紅 */
+.txt-gn{color: #060;}   	/* 深綠 */
+.txt-no-r{color:#F40;text-decoration:line-through;}
+.txt-blue{color:#0000ff;}   /* 藍 blue */
+
+/*文字迷你小中大*/
+.txt-ss{font-size:.75em;font-weight:normal;}
+.txt-s{font-size:.88em;*font-size:.8em;font-weight:normal;}
+.txt-s2{font-size:.9em;font-weight:normal;}
+.txt-m{font-size:1em;font-weight:normal;}
+.txt-L{font-size:1.1em;font-weight:normal;}
+.txt-LL{font-size:1.2em;font-weight:normal;}
+
+/*表格1*/
+.tb-1{
+	border:1px solid #abea45;
+	border-collapse:collapse;
+	padding:.3em .5em;
+	vertical-align:middle;
+}
+
+.tb-1 th{
+	border:1px solid #abea45;
+	padding:.4em; *padding:.4em .5em;
+	background:#e9ffcd;
+	color:#060;
+	font-weight:normal;
+	vertical-align:middle;
+}
+
+.tb-1 td{
+	padding:.3em .5em;
+	text-align:left;
+	vertical-align:middle;
+	border:1px solid #abea45;
+}
+.tb-1 tfoot td{
+font-size: 0.9em;  padding:.1em 1em 1em; margin-top:-.85em;
+background:url(../../images/common/bg_dn.gif) repeat-x bottom;
+}
+
+/*表格2*/
+.tb-2{
+    width:100%;
+	border:1px solid #abea45;
+	border-collapse:collapse;
+	padding:0;
+	vertical-align:middle;
+}
+
+.tb-2 th{
+    font-size: .75em;
+	border:1px solid #abea45;
+	padding:.4em; *padding:.4em .5em;
+	background:#e9ffcd;
+	color:#060;
+	font-weight:normal;
+	text-align:center;
+	vertical-align:middle;
+}
+
+.tb-2 td{
+    font-size: .75em;
+	padding:.3em .5em;
+	text-align:left;
+	vertical-align:middle;
+	border:1px solid #abea45;
+}
+
+
+/*表格3*/
+.tb-3{
+    width:100%;
+	border:1px solid #abea45;
+	border-collapse:collapse;
+	padding:.3em .5em;
+	vertical-align:middle;
+}
+
+.tb-3 th{
+	border:1px solid #abea45;
+	padding:.4em; *padding:.4em .5em;
+	background:#e9ffcd;
+	color:#060;
+	font-weight:normal;
+	vertical-align:middle;
+}
+
+.tb-3 td{
+	padding:.3em .5em;
+	text-align:left;
+	vertical-align:middle;
+	border:1px solid #abea45;
+}
+
+.tb-3 thead th{
+	border:1px solid #abea45;
+	padding:.4em; *padding:.4em .5em;
+	background:#e9ffcd;
+	color:#060;
+	font-weight:normal;
+	text-align:center;
+	vertical-align:middle;
+}
+
+.tb-3 tbody td{
+    font-size: 0.9em;
+    padding:.5em 1em 0;
+    border-bottom:none;
+}
+
+.tb-3 tfoot td{
+    font-size: 0.9em;
+    padding:.1em 1em 1em;
+    margin-top:-.85em;
+    background:url(../../images/common/bg_dn.gif) repeat-x bottom;
+    border-top:none;
+}
+
+.input-warning{
+    background-color: #E9FFCD;
+}
+
+.input-placeholder{
+    color: #999;
+}
+
+.txt-center{
+text-align:center;
+}
+.txt-right{
+text-align:right;
+}
+.txt-top{
+vertical-align:text-top;
+}
+.txt-bottom{
+vertical-align:text-bottom;
+}
+
+
+/* ---- Green 表格 (for 會員登入) ---- */
+.table-green {
+	border:1px solid #abea45;
+	border-collapse:collapse;
+	padding:.3em .5em;
+	vertical-align:middle;
+	width: 100%;
+}
+
+.table-green thead th{
+	border:1px solid #abea45;
+	padding:.4em; *padding:.4em .5em;
+	background:#e9ffcd;
+	color:#060;
+	font-weight:normal;
+	vertical-align:middle;
+	text-align: center;
+}
+
+.table-green tbody th{
+	border:1px solid #abea45;
+	padding:.4em; *padding:.4em .5em;
+/*	background: #FFFFFF;*/
+	font-weight:normal;
+	vertical-align:middle;
+	text-align: center;
+}
+
+.table-green tbody td{
+	padding:.3em .5em;
+	text-align:left;
+	vertical-align:middle;
+	border:1px solid #abea45;
+}
+
+.table-green tfoot td{
+    font-size: 0.9em;
+    padding:.1em 1em 1em;
+    margin-top:-.85em;
+    background:url(../../images/common/bg_dn.gif) repeat-x bottom;
+    border-top:none;
+}
+
+
+/* ---- Green 表格 (for 訂購明細、訂購需知) ---- */
+.table-green2 {
+	border:1px solid #abea45;
+	border-collapse:collapse;
+	padding:.3em .5em;
+	vertical-align:middle;
+	width: 100%;
+}
+
+.table-green2 tbody th{
+	border:1px solid #abea45;
+	padding:.4em; *padding:.4em .5em;
+    background:#e9ffcd;
+    color:#060;
+	font-weight:normal;
+	vertical-align:middle;
+}
+
+.table-green2 tbody td{
+	padding:.3em .5em;
+	background: #FFFFFF;
+	vertical-align:middle;
+	border:1px solid #abea45;
+}

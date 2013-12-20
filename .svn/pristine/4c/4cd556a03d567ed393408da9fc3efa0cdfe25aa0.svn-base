@@ -1,0 +1,441 @@
+@main {
+<!---- Forms ---->
+<section id="forms">
+<div class="row">
+	<div class="hidden-xs col-sm-4 col-md-6" style="text-align: center;overflow: hidden;">
+		<img src="@routes.Assets.at("images/index_130909.jpg")" style="max-height: 270px;">
+	</div>
+	<div class="col-xs-12 col-sm-8 col-md-6">
+		<form class="form-horizontal well" method="post" action="/hsrhtl/searchlist">
+		<fieldset>
+			<!----<legend>高鐵 + 飯店</legend>---->
+			<div class="row">
+				<div class="control-group col-sm-4">
+					<label class="control-label" for="placeFrom">出發高鐵站</label>
+					<div class="controls">
+						<select class="form-control input-sm" id="placeFrom" name="placeFrom">
+						</select>
+					</div>
+				</div>
+				<div class="control-group col-sm-4">
+					<label class="control-label" for="arrCity">目的城市</label>
+					<div class="controls">
+						<select class="form-control input-sm" id="arrCity" name="arrCity">
+						</select>
+					</div>
+				</div>
+				<div class="control-group col-sm-4">
+					<label class="control-label" for="placeTo">目的高鐵站</label>
+					<div class="controls">
+						<select class="form-control input-sm" id="placeTo" name="placeTo">
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="control-group col-sm-4">
+					<label class="control-label" for="depDate">出發日期</label>
+					<div class="controls">
+						<div class="input-append date">
+							<input class="form-control input-sm" type="text" id="depDate" name="depDate">
+						</div>
+					</div>
+				</div>
+				<div class="control-group col-sm-4">
+					<label class="control-label" for="travelDay">旅遊天數</label>
+					<div class="controls">
+						<select class="form-control input-sm" id="travelDay" name="travelDay">
+							<option value="2" selected>2</option>
+							<option value="3">3</option>
+						</select>
+					</div>
+				</div>
+				<div class="control-group col-sm-4">
+					<label class="control-label" for="arrDate">返回日期</label>
+					<div class="controls">
+						<input class="form-control input-sm" type="text" id="arrDate" name="arrDate" readonly>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="control-group col-sm-3">
+					<label class="control-label" for="sgl">單人房</label>
+					<div class="controls">
+						<select class="form-control input-sm selectroom" id="sgl" name="sgl">
+							<option value="0">0</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+						</select>
+					</div>
+				</div>
+				<div class="control-group col-sm-3">
+					<label class="control-label" for="twn">雙人房</label>
+					<div class="controls">
+						<select class="form-control input-sm selectroom" id="twn" name="twn">
+							<option value="0">0</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+						</select>
+					</div>
+				</div>
+				<div class="control-group col-sm-3">
+					<label class="control-label" for="trp">三人房</label>
+					<div class="controls">
+						<select class="form-control input-sm selectroom" id="trp" name="trp">
+							<option value="0">0</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+						</select>
+					</div>
+				</div>
+				<div class="control-group col-sm-3">
+					<label class="control-label" for="qud">四人房</label>
+					<div class="controls">
+						<select class="form-control input-sm selectroom" id="qud" name="qud">
+							<option value="0">0</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="form-actions col-xs-12">
+					<div id="sglRooms"></div>
+					<div id="twnRooms"></div>
+					<div id="trpRooms"></div>
+					<div id="qudRooms"></div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="form-actions col-xs-12" style="text-align:center;">
+					<br>
+					<button type="submit" class="btn btn-success btn-sm">搜尋</button>
+				</div>
+			</div>
+		</fieldset>
+		</form>
+	</div>
+</div>
+</section>
+
+
+
+<script type="text/javascript">
+
+// 檢核
+/*
+placeFrom
+placeTo
+
+
+
+高鐵出發站與目的站不得相同。
+
+depDate
+出發日期
+
+*/
+
+
+
+
+// ---- 出發高鐵站 ---- Start
+    var hsr = {
+        "station" : [ 
+			{ "TAIPEI" : ["台北站"] },
+			{ "BANQIAO" : ["板橋站"] },
+			{ "TAOYUAN" : ["桃園站"] },
+			{ "HSINCHU" : ["新竹站"] },
+			{ "TAICHUNG" : ["台中站"] },
+			{ "CHIAYI" : ["嘉義站"] },
+			{ "TAINAN" : ["台南站"] },
+			{ "ZUOYING" : ["左營站"] }
+		]
+    }
+
+    var i = 0;
+	var appendStr = "";
+
+    for ( var i = 0; i < hsr.station.length; i++) {
+        var obj = hsr.station[i];
+        var stationName;
+        var stationValue;
+
+        for ( var key in obj) {
+            stationValue = key;
+            stationName = obj[key].toString();
+			appendStr = appendStr + "<option value='" + stationValue + "'>" + stationName + "</option>";
+        }
+    }
+
+	$(appendStr).appendTo($('#placeFrom'));
+	
+// ---- 出發高鐵站 ---- End
+
+
+// ---- 目的城市與目的高鐵站連動 ---- Start
+
+$(function(){
+	// 設定連動選單的參數
+	var options = {
+		preselectFirst : "TP1",		// 預設先選擇"台北市(TP1)"
+		preselectSecond : 999,
+		emptyOption: false
+	};
+
+	// 設定連動選單的選項資料
+	var selectOptions = {
+		"基隆": {
+			"key" : "KEE",
+			"values" : {
+				"台北站": "TAIPEI",
+				"板橋站": "BANQIAO"
+			}
+		},
+		"台北市": {
+			"key" : "TP1",
+			"values" : {
+				"台北站": "TAIPEI",
+				"板橋站": "BANQIAO"
+			}
+		},
+		"新北市": {
+			"key" : "TP2",
+			"values" : {
+				"台北站": "TAIPEI",
+				"板橋站": "BANQIAO"
+			}
+		},
+		"宜蘭": {
+			"key" : "YI0",
+			"values" : {
+				"台北站": "TAIPEI",
+				"板橋站": "BANQIAO"
+			}
+		},
+		"花蓮": {
+			"key" : "HUN",
+			"values" : {
+				"台北站": "TAIPEI",
+				"板橋站": "BANQIAO"
+			}
+		},
+		"桃園": {
+			"key" : "TA1",
+			"values" : {
+				"桃園站": "TAOYUAN"
+			}
+		},
+		"新竹": {
+			"key" : "HSZ",
+			"values" : {
+				"新竹站": "HSINCHU"
+			}
+		},
+		"苗栗": {
+			"key" : "MI1",
+			"values" : {
+				"新竹站": "HSINCHU"
+			}
+		},
+		"台中": {
+			"key" : "TXG",
+			"values" : {
+				"台中站": "TAICHUNG"
+			}
+		},
+		"南投": {
+			"key" : "NA0",
+			"values" : {
+				"台中站": "TAICHUNG"
+			}
+		},
+		"彰化": {
+			"key" : "ZH1",
+			"values" : {
+				"台中站": "TAICHUNG"
+			}
+		},
+		"雲林": {
+			"key" : "YU1",
+			"values" : {
+				"嘉義站": "CHIAYI"
+			}
+		},
+		"嘉義": {
+			"key" : "CYI",
+			"values" : {
+				"嘉義站": "CHIAYI"
+			}
+		},
+		"台南": {
+			"key" : "TNN",
+			"values" : {
+				"台南站": "TAINAN"
+			}
+		},
+		"高雄": {
+			"key" : "KHH",
+			"values" : {
+				"左營站": "ZUOYING"
+			}
+		},
+		"屏東": {
+			"key" : "PIF",
+			"values" : {
+				"左營站": "ZUOYING"
+			}
+		},
+		"台東": {
+			"key" : "TTT",
+			"values" : {
+				"左營站": "ZUOYING"
+			}
+		}		
+	};
+
+	// 產生連動選單的功能
+	$('#arrCity').doubleSelect('placeTo', selectOptions, options);
+});
+
+// ---- 目的城市與目的高鐵站連動 ---- End
+
+
+// ---- 日期選擇器、旅遊日期連動 ---- Start
+
+function dateToYMD(date) {
+	// 格式：2013/05/05
+    var d = date.getDate();
+    var m = date.getMonth() + 1;
+    var y = date.getFullYear();
+    return '' + y + '/' + (m<=9 ? '0' + m : m) + '/' + (d <= 9 ? '0' + d : d);
+}
+
+var nowTemp = new Date();
+var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+var nowplus3d = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate()+3, 0, 0, 0, 0);
+var nowplus5d = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate()+5, 0, 0, 0, 0);
+
+var checkin = $('#depDate').datepicker({
+	language: "zh-TW",
+	format: 'yyyy/mm/dd',
+	startDate: '+3d',
+	autoclose: true
+}).datepicker('setDate', nowplus3d)		//出發日期預設初始值
+	.on('changeDate', function(ev) {
+	if (ev.date.valueOf() > now.valueOf()) {
+		var newDate = new Date(ev.date)
+		newDate.setDate(newDate.getDate() + parseInt($("#travelDay").val()));
+		$("#arrDate").val(dateToYMD(newDate));
+	}
+}).data('datepicker');
+
+$("#arrDate").val(dateToYMD(nowplus5d));	//返回日期預設初始值
+
+$("#travelDay").change(function() {
+	var ev = $('#depDate').val();
+	if (ev.length != 0)
+	{
+		var newDate = new Date(ev)
+		newDate.setDate(newDate.getDate() + parseInt($("#travelDay").val()));
+		$("#arrDate").val(dateToYMD(newDate));
+	}
+});
+
+// ---- 日期選擇器、旅遊日期連動 ---- End
+
+
+// ---- 房型與票種連動 ---- Start
+
+$(".selectroom").each(function(){
+	$(this).bind("change",function(){
+		var roomType = $(this).attr("id");
+		var roomName = "";
+		var roomNo = 0;
+		var roomDiv = $('#' + roomType + 'Rooms');
+		var rname = "";
+		var tname = "";
+        var i = $('#' + roomType + 'Rooms span').size();
+		var si = $(this).val();
+		var appendStr = "";
+
+		if ( roomType == "sgl" )
+		{	roomName="單人房";roomNo=1;}
+		else if ( roomType == "twn" )
+		{	roomName="雙人房";roomNo=2;}
+		else if ( roomType == "trp" )
+		{	roomName="三人房";roomNo=3;}
+		else if ( roomType == "qud" )
+		{	roomName="四人房";roomNo=4;}
+
+		var tMax = '';	// 判斷票種數量上限
+		for (k=0; k<=roomNo; k++)
+		{	tMax = tMax + '<option>' + k + '</option>';	}
+
+		/* 房數增加 */
+		if ( si > i )
+		{
+			for (j=i; j<=si-1; j++)
+			{
+				rname = roomType + "Rooms_" + j;
+				tname = roomType + "Rooms[" + j + "].";
+
+				if (j == 0)
+				{	appendStr = "<hr>";	}
+				else
+				{	appendStr = "";	}
+
+				appendStr = '<span>' + appendStr + '<font style="font-size:1.2em;color:green;">第' + (j+1) + '間 ' + roomName + '</font><div id="' + rname +'" name="' + rname +'"><div class="row">';
+				appendStr = appendStr + '<div class="control-group col-sm-3"><label class="control-label" for="' + tname +'full">全票</label><small style="color:red;"> 12-64歲</small><div class="controls"><select id="' + tname +'full" class="form-control input-sm">' + tMax + '</select></div></div>';
+				//暫定 孩童票只能選擇0-2張
+				appendStr = appendStr + '<div class="control-group col-sm-3"><label class="control-label" for="' + tname +'children">孩童票</label><small style="color:red;"> 6-11歲</small><div class="controls"><select id="' + tname +'children" class="form-control input-sm"><option>0</option><option>1</option><option>2</option></select></div></div>';
+				appendStr = appendStr + '<div class="control-group col-sm-3"><label class="control-label" for="' + tname +'half">愛心票</label><div class="controls"><select id="' + tname +'half" class="form-control input-sm">' + tMax + '</select></div></div>';
+				appendStr = appendStr + '<div class="control-group col-sm-3"><label class="control-label" for="' + tname +'senior">敬老票</label><small style="color:red;"> 65歲以上</small><div class="controls"><select id="' + tname +'senior" class="form-control input-sm">' + tMax + '</select></div></div></div></div><br></span>';
+
+				$(appendStr).appendTo(roomDiv);
+			}
+		}
+
+		/* 房數減少 */
+		if ( i > si )
+		{
+			for (j=i-1; j>=si; j--)
+			{
+				rname = roomType + "Rooms_" + j;
+				$('#' + rname).parent('span').remove();
+			}
+		}
+
+	});
+});
+
+// 預選雙人房1間
+$("#twn option[value='1']").attr('selected', true);
+$("#twn").trigger("change");
+
+// ---- 房型與票種連動 ---- End
+
+</script>
+
+} {
+	@header()
+} {
+	@footer()
+}

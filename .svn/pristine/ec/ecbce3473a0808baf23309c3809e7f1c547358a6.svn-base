@@ -1,0 +1,93 @@
+/**
+ * 易遊網版權所有 ©2000 - 2013 ezTravel Co., Ltd. all rights reserved.
+ */
+package models;
+
+/**
+ * 分頁
+ * 
+ * @author CJWang
+ * 
+ */
+public class Page {
+  /**
+   * 
+   * @return startIndex
+   */
+  public int getStartIndex() {
+    return 1 + (pageNo - 1) * pageSize;
+  }
+
+  /**
+   * 頁數
+   */
+  private int pageNo;
+  /**
+   * 每頁筆數
+   */
+  private int pageSize;
+  /**
+   * 總數
+   */
+  private int total;
+  /**
+   * 排序
+   */
+  private String orderBy;
+
+  /**
+   * @return 頁數
+   */
+  public int getPageNo() {
+    return pageNo;
+  }
+
+  /**
+   * @param pageNo 頁數
+   */
+  public void setPageNo(int pageNo) {
+    this.pageNo = pageNo;
+  }
+
+  /**
+   * @return 每頁筆數
+   */
+  public int getPageSize() {
+    return pageSize;
+  }
+
+  /**
+   * @param pageSize 每頁筆數
+   */
+  public void setPageSize(int pageSize) {
+    this.pageSize = pageSize;
+  }
+
+  /**
+   * @return 總數
+   */
+  public int getTotal() {
+    return total;
+  }
+
+  /**
+   * @param total 總數
+   */
+  public void setTotal(int total) {
+    this.total = total;
+  }
+
+  /**
+   * @return 排序
+   */
+  public String getOrderBy() {
+    return orderBy;
+  }
+
+  /**
+   * @param orderBy 排序
+   */
+  public void setOrderBy(String orderBy) {
+    this.orderBy = orderBy;
+  }
+}

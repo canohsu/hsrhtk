@@ -1,0 +1,54 @@
+@(content: Html)(pagecssjs: Html)(header: Html)(footer: Html)
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+	<meta name="description" content="">
+	<meta name="author" content="Kiki Liu">
+	<link rel="shortcut icon" href="@routes.Assets.at("images/common/logo.jpg")">
+
+	<title>高鐵自主遊</title>
+
+	<!-- Bootstrap core CSS -->
+	<link href="@routes.Assets.at("css/bootstrap-3.0.2.css")" rel="stylesheet">
+
+
+	<!-- EZ Header , Content-->
+	<link href="@routes.Assets.at("css/common/header.css")" rel="stylesheet">
+	<link href="@routes.Assets.at("css/common/content.css")" rel="stylesheet">
+	<link href="@routes.Assets.at("css/common/paging.css")" rel="stylesheet">
+	
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script src="@routes.Assets.at("jslib/html5shiv-3.7.0.min.js")"></script>
+	<script src="@routes.Assets.at("jslib/respond-1.3.0.min.js")"></script>
+	<![endif]-->
+
+	<script src="@routes.Assets.at("jslib/jquery-1.9.1.min.js")"></script>
+	<script src="@routes.Assets.at("jslib/bootstrap-3.0.2.min.js")"></script>
+
+	<!-- For datepicker (日期選擇器套件) -->
+	<script src="@routes.Assets.at("jslib/bootstrap-datepicker.js")"></script>
+	<script src="@routes.Assets.at("jslib/bootstrap-datepicker.zh-TW.js")" charset="UTF-8"></script>
+	<link href="@routes.Assets.at("css/datepicker.css")" rel="stylesheet">
+
+	<!-- For doubleSelect (下拉式選單套件) -->
+	<script src="@routes.Assets.at("jslib/jquery.doubleSelect-1.2.js")"></script>
+
+	@pagecssjs
+	
+</head>
+
+<body>
+	@header
+
+	<div class="content">
+		@content
+		<!-- <hr class="featurette-divider"> -->
+		@footer
+	</div><!-- /.content -->
+
+</body>
+</html>

@@ -1,0 +1,213 @@
+	<div class="row">
+		<div class="col-xs-12">
+		<h3>
+			<span class="tag-gn">+</span> 加購票券商品：
+		</h3>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-xs-12">
+        
+<table width="100%" class="tb-1" style="margin-bottom:.5em">
+<tr>
+	<th colspan="4" >
+		<img id="tktCheck0" height="11" alt="展開" style="margin-right:5px;" src="http://www.eztravel.com.tw/ss_static/images/icon_s_plus.gif" width="12" name="tktCheck0" onclick="data_display('tktProd0',this.name,'tktChoice0')"	/>
+		南投日月潭遊湖船票 - 200 元起
+		<input type="hidden" name="tktProdNo" value="TKAI000002328" />
+		<input type="hidden" name="tktChoice0" value="0" />
+        <a onclick="newWindow('4','TKAI000002328'); return false;" href="#">
+		<img src="http://www.eztravel.com.tw/ss_static/images/listmore.gif" alt="詳細內容" width="11" height="12" hspace="5" border="0" />詳細說明
+		</a>
+		<input type="hidden" name="knowhow0" value="0" />
+	</th>
+</tr>
+
+<tr id="tktProd0" name="tktProd0" style="display:none">
+	<td> 
+		<p style="text-indent:20px;" >
+			<span class="showTktDesc" >成人券（二張）</span>
+			<input type="checkbox" class="jqKnowShow" name="iknowhow0" onclick="setKnowhow(this);" />
+			<a onclick="newWindow('4','TKAI000002328'); return false;" href="#" class="blue" ><u> 我已閱讀詳細說明</u></a>
+		</p>
+	</td>
+	<td width="15%">市價：<s>600元</s></td>
+	<td width="15%">價格：200元</td>
+	<td width="15%">購買數量 
+		<select name="fare" onchange="upd_choice('tktChoice0',this.selectedIndex)" >
+			<option value="0" selected >0</option>
+			<option value='1,00001,200,TKAI000002328'>1</option>
+			<option value='2,00001,400,TKAI000002328'>2</option>
+			<option value='3,00001,600,TKAI000002328'>3</option>
+			<option value='4,00001,800,TKAI000002328'>4</option>
+			<option value='5,00001,1000,TKAI000002328'>5</option>
+			<option value='6,00001,1200,TKAI000002328'>6</option>
+			<option value='7,00001,1400,TKAI000002328'>7</option>
+			<option value='8,00001,1600,TKAI000002328'>8</option>
+			<option value='9,00001,1800,TKAI000002328'>9</option>
+			<option value='10,00001,2000,TKAI000002328'>10</option>
+		</select>
+	</td>
+</tr>
+
+<tr id="tktProd0" name="tktProd0" style="display:none">
+	<td> 
+		<p style="text-indent:20px;" >
+			<span class="showTktDesc" >成人券（三張）</span>
+			<input type="checkbox" class="jqKnowShow" name="iknowhow0" onclick="setKnowhow(this);" />
+			<a onclick="newWindow('4','TKAI000002328'); return false;" href="#" class="blue" ><u> 我已閱讀詳細說明</u></a>
+		</p>
+	</td>
+	<td width="15%">市價：<s>900元</s></td>
+	<td width="15%">價格：300元</td>
+	<td width="15%">購買數量 
+		<select name="fare" onchange="upd_choice('tktChoice0',this.selectedIndex)" >
+			<option value="0" selected >0</option>
+			<option value='1,00002,300,TKAI000002328'>1</option>
+			<option value='2,00002,600,TKAI000002328'>2</option>
+			<option value='3,00002,900,TKAI000002328'>3</option>
+			<option value='4,00002,1200,TKAI000002328'>4</option>
+			<option value='5,00002,1500,TKAI000002328'>5</option>
+			<option value='6,00002,1800,TKAI000002328'>6</option>
+			<option value='7,00002,2100,TKAI000002328'>7</option>
+			<option value='8,00002,2400,TKAI000002328'>8</option>
+			<option value='9,00002,2700,TKAI000002328'>9</option>
+			<option value='10,00002,3000,TKAI000002328'>10</option>
+		</select>
+	</td>
+</tr>
+</table>
+        
+        
+        </div>
+	</div>
+
+
+<script type="text/javascript" language="javascript" >
+//<!--
+
+var imgPlus = 'http://www.eztravel.com.tw/ss_static/images/icon_s_plus.gif';
+var imgMinus = 'http://www.eztravel.com.tw/ss_static/images/icon_s_minus2.gif';
+
+function upd_choice(index,selValue){
+    if(selValue != 0){
+        window.document.getElementsByName(index)[0].value = 1;
+    }else{
+        window.document.getElementsByName(index)[0].value = 0;
+    }
+} // end function upd_choice(index,selValue)
+
+function data_display(index,chkbox_nm,choice_value){
+    var img = document.getElementById(chkbox_nm).src;
+    var temp = index.substring(7,index.length);
+    if(img == imgPlus){ // 展開
+        for(var i=0;i<window.document.getElementsByName(index).length;i++){
+            window.document.getElementsByName(index)[i].style.display = '';
+        }
+
+        document.getElementById(chkbox_nm).src=imgMinus;
+        document.getElementById(chkbox_nm).alt='關閉';
+    }else {//關閉
+        if(window.document.getElementsByName(choice_value)[0].value == 0){
+            for(var i=0;i<window.document.getElementsByName(index).length;i++){
+                window.document.getElementsByName(index)[i].style.display = 'none';
+                document.getElementsByName('iknowhow'+temp)[i].checked=false;
+              }
+              document.getElementsByName('knowhow'+temp)[0].value=0;
+              document.getElementById(chkbox_nm).src=imgPlus;
+              document.getElementById(chkbox_nm).alt='展開'
+            } // end if(window.document.getElementsByName(choice_value)[0].value == 0)
+          }
+        } // end function data_display(index,chkbox_nm,choice_value)
+            
+        function setTkt(){
+          var order = window.document.order;
+          for(i=0;i<window.document.order.length;i++){
+            if(order.elements[i].name.substring(0,7)=='knowhow'||order.elements[i].name.substring(0,9)=='tktChoice'){
+              if(order.elements[i].value==1){
+                if(order.elements[i].name.substring(0,7)=='knowhow'){
+                  var obj = order.elements[i].name.substring(7,order.elements[i].name.length);
+                }else if(order.elements[i].name.substring(0,9)=='tktChoice'){
+                  var obj = order.elements[i].name.substring(9,order.elements[i].name.length);
+                }   
+                data_display('tktProd'+obj,'tktCheck'+obj,'tktChoise'+obj);
+                break;
+              } // end if(order.elements[i].value==1)
+            } // end if(order.elements[i].name.substring(0,7)=='knowhow'||order.elements[i].name.substring(0,9)=='tktChoice')
+          } // end for(i=0;i<window.document.order.length;i++)
+        } // end function setTkt()
+
+
+        function open_tktData(url,arg){
+          window.open(url+arg,"desc","scrollbars=yes,resizable=yes,width=675,height=600");          
+        } // end function open_tktData(url,arg)
+
+
+        function setKnowhow(obj){
+          var objIndex = obj.name.substring(9,8);   
+          var name = obj.name.substring(1);     
+          var onTag = 0;
+          for(var i=0; i<window.document.getElementsByName(obj.name).length; i++){
+            if(window.document.getElementsByName(obj.name)[i].checked){
+              onTag = 1;
+            }
+          }
+          if(onTag == 0){ window.document.getElementsByName(name)[0].value = 0; }
+          if(obj.checked){
+            window.document.getElementsByName(name)[0].value = "1";
+          }
+        } // end function setKnowhow(obj)
+
+
+      //---- 靜態超連結 ---- Start
+        var win = null;
+        function newWindow(mypage,prodNo) {
+            var winl = (screen.width-w)/2;
+            var wint = (screen.height-h)/2;
+            var gopage = "";
+            var myname = "";
+            var w = 0;
+            var h = 0;
+            var features = "scrollbars=yes,menubar=no,resizable=yes";
+
+            if (winl < 0) winl = 0;
+            if (wint < 0) wint = 0;
+
+            if ( mypage == '1')
+            {
+                gopage = "http://www.eztravel.com.tw/ezec/htl_tw/htltw_htl_detail.jsp?prod_no=" + prodNo;
+                myname = "htlinfo";
+                w = 670;h = 600;
+            }
+            else if ( mypage == '2')
+            {
+                gopage = "http://www.eztravel.com.tw/ezReview/reviewCollect/reviewViewList.do?prodNo=" + prodNo;
+                myname = "review";
+                w = 760;h = 600;
+            }
+            else if ( mypage == '3')
+            {
+                gopage = "http://www.eztravel.com.tw/ezec/htl_tw/htltwMapQuery.jsp?sh=" + prodNo;
+                myname = "htlmap";
+                w = 600;h = 455;
+            }
+        	else if ( mypage == '4')
+            {
+                gopage = "http://www.eztravel.com.tw/ezec/htl_tw/htltw_tktDesc.jsp?tktProdNo=" + prodNo;
+                myname = "tktdesc";
+                w = 675;h = 600;
+            }
+
+            var settings = 'height=' + h + ',';
+            settings += 'width=' + w + ',';
+            settings += 'top=' + wint + ',';
+            settings += 'left=' + winl + ',';
+            settings += features;
+
+            win = window.open(gopage,myname,settings);
+            win.window.focus();
+        }
+        //---- 靜態超連結 ---- End
+
+//-->
+</script>

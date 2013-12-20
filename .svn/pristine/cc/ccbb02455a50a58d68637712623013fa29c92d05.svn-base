@@ -1,0 +1,23 @@
+/* For Radio Toolbar */
+
+.radio-toolbar input[type="radio"] {
+    display:none; 
+}
+
+.radio-toolbar label {
+	font-weight:normal;
+    display:inline-block;
+    background-color:#ddd;
+
+	height: 30px;
+	padding: 5px 10px;
+	font-size: 12px;
+	line-height: 1.5;
+	border-radius: 3px;
+}
+
+.radio-toolbar input[type="radio"]:checked + label { 
+	font-weight:bold;
+	font-size:14px;
+    background-color:#5cb85c;
+}

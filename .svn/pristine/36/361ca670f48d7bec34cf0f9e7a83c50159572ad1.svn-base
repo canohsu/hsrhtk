@@ -1,0 +1,34 @@
+@(orderNo: String, custNo: String, sessionId: String)
+@import models.enums.BusinessType
+@import eztravel.rest.util.common.StringUtils
+@main {
+
+    <div class="container crumb">
+        <div class="col-xs-6 col-md-6" style="padding-left: 0px;">
+            <h2><span class="tag-or">&gt;</span> 訂單編號：@orderNo</h2>
+            <h2><span class="tag-or">&gt;</span> 寫入訂單成功，即將進入付款頁，請稍後... </h2>
+        </div>
+        <div id="keyDataId" data-key='{"key1":"@StringUtils.Encode(custNo.getBytes())",
+								       "key2":"@StringUtils.Encode(orderNo.getBytes())",
+								       "key3":"@StringUtils.Encode("1".getBytes())",
+								       "key4":"@sessionId"}'>
+		</div>
+    </div>
+	<script>
+		//alert("轉至 payment 頁：\n\n傳入資訊：\norderNo：" + "@orderNo" + "\ncustNo：" + "@custNo");
+		var key1 = $("#keyDataId").data("key").key1;
+		var key2 = $("#keyDataId").data("key").key2;
+		var key3 = $("#keyDataId").data("key").key3;
+		var key4 = $("#keyDataId").data("key").key4;
+		//alert("key1：" + key1 + "\nkey2：" + key2 + "\nkey3：" + key3 + "\nkey4：" + key4);
+		//alert("http://test.eztravel.com.tw/ezec/bufferPage.jsp?key1=" + key1 + "&key2=" + key2 + "&key3=" + key3 + "&key4=" + key4)
+    	location.replace("http://test.eztravel.com.tw/ezec/bufferPage.jsp?key1=" + key1 + "&key2=" + key2 + "&key3=" + key3 + "&key4=" + key4);
+    </script>
+
+} {
+
+} {
+    @header()
+} {
+    @footer()
+}

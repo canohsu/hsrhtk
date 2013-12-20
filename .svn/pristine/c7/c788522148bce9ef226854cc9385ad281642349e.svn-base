@@ -1,0 +1,450 @@
+@(order: pojo.Order, member: pojo.Member, customer: pojo.Customer)
+@import models.enums.BusinessType
+@import eztravel.rest.util.common.StringUtils
+
+@main {
+
+    <div class="container crumb">
+        <div class="col-xs-6 col-md-6" style="padding-left: 0px;">
+            <h2><span class="tag-or">&gt;</span> 填寫訂購單</h2>
+        </div>
+        <div class="col-xs-6 col-md-6" style="text-align: right; padding-right: 0px;">
+            同步溝通
+        </div>
+    </div>
+
+<div class="container">
+
+<form name="order" id="orderForm" method="post" action="createorder" >
+	<fieldset>
+		  <input type="hidden" name="custNo"      value=""      />
+
+<!---------- 訂購明細 - Start ---------->
+@orderDetail(1, order) {
+	@if(BusinessType.B2E == order.getUser().getBusinessType()) {
+				<tr>
+					<th style="vertical-align:middle;">企業福委補助款<br>使用流程及注意事項</th>
+					<td>images待補</td>
+				</tr>
+	}
+}
+<!---------- 訂購明細 - End   ---------->
+
+
+
+
+<!---------- 填寫住宿旅客代表人 - Start ---------->
+@passenger(2, order.getUser().getBusinessType(), member, customer, order)
+<!---------- 填寫住宿旅客代表人 - End   ---------->
+
+
+
+
+<!---------- 加購票券 - Start ---------->
+@ticket()
+<!---------- 加購票券 - End   ---------->
+
+
+
+
+<!---------- 客服用-EC會員查詢 - Start ---------->
+@if(BusinessType.WEBORDER == order.getUser().getBusinessType()) {
+@searchCust()
+}
+<!---------- 客服用-EC會員查詢 - End   ---------->
+
+
+
+
+<!---------- 行程聯絡人 - Start ---------->
+@contact(3, order.getUser().getBusinessType(), customer)
+<!---------- 行程聯絡人 - End   ---------->
+
+
+
+
+<!---------- 聯絡方式偏好 - Start ---------->
+@contactWay(4, order.getUser().getBusinessType())
+<!---------- 聯絡方式偏好 - End   ---------->
+
+
+
+
+<!---------- 取件方式 - Start ---------->
+@pickup(5, order.getUser().getBusinessType())
+<!---------- 取件方式 - End   ---------->
+
+
+
+
+<!---------- 收據資料 - Start ---------->
+@receipt(6)
+<!---------- 收據資料 - End   ---------->
+
+
+
+
+<!---------- 服務區域 - Start ---------->
+@if(BusinessType.B2C == order.getUser().getBusinessType()) {
+@serviceArea(7)
+ }else{     
+  <input type="hidden" name="service" value="TPE" />
+ }
+<!---------- 服務區域 - End   ---------->
+
+
+
+
+<!---------- 國民旅遊卡 - Start ---------->
+@if(BusinessType.B2C == order.getUser().getBusinessType()) {
+@travelCard(8)
+}
+<!---------- 國民旅遊卡 - End   ---------->
+
+
+
+<!---------- 需協助事項 - Start ---------->
+@help(9)
+<!---------- 需協助事項 - End   ---------->
+
+
+
+
+<!---------- 客服用-廣告來源 - Start ---------->
+@if(BusinessType.WEBORDER == order.getUser().getBusinessType()) {
+@customerSource()
+}
+<!---------- 客服用-廣告來源 - End   ---------->
+
+
+
+
+<!---------- 客服用-OP聯絡事項 - Start ---------->
+@if(BusinessType.WEBORDER == order.getUser().getBusinessType()) {
+@contactOP()
+}
+<!---------- 客服用-OP聯絡事項 - End   ---------->
+
+
+	<br><br><br><br>
+
+
+
+	<div class="row">
+		<div class="col-xs-12" style="text-align:center;">
+			<button type="submit" class="btn btn-success btn-sm">送出訂購單資料</button>
+		</div>
+	</div>
+
+	</fieldset>
+	
+	<!-- 寫訂單需要的參數-->
+	<!-- 傳入的參數 -->
+	<div id="userDataId" data-user='{"role":"@order.getUser().getBusinessType()",
+									 "webOrder":"@BusinessType.WEBORDER",
+									 "b2c":"@BusinessType.B2C",
+									 "b2b":"@BusinessType.B2B",
+									 "b2e":"@BusinessType.B2E",
+									 "loginId":"@order.getUser().getLoginId().toUpperCase()",
+									 "custNo":"@StringUtils.Decode(order.getUser().getCustNo)"}'>
+	</div>
+
+	<!-- 訂購會員資料-->
+	<input type="hidden" name="customerInfo.custNo"/>
+
+	<!-- 主要聯絡人資料 -->
+	<input type="hidden" name="orderContact.name1"/>        
+    <input type="hidden" name="orderContact.mobile1"/>      
+    <input type="hidden" name="orderContact.telDay1"/>      
+    <input type="hidden" name="orderContact.telNight1" 		value=""/>    
+    <input type="hidden" name="orderContact.postZipCode1"/> 
+    <input type="hidden" name="orderContact.postAddr1"/>    
+    <input type="hidden" name="orderContact.email1"/>       
+    <input type="hidden" name="orderContact.fax1"/>         
+	
+	<!-- 次要聯絡人資料 -->
+	<input type="hidden" name="orderContact.name2"/>        
+    <input type="hidden" name="orderContact.mobile2"/>      
+    <input type="hidden" name="orderContact.telDay2"/>      
+    <input type="hidden" name="orderContact.telNight2" 		value=""/>    
+    <input type="hidden" name="orderContact.postZipCode2" 	value=""/> 
+    <input type="hidden" name="orderContact.postAddr2" 		value=""/>    
+    <input type="hidden" name="orderContact.email2"/>       
+    <input type="hidden" name="orderContact.fax2"/>
+
+	<!-- 聯絡方式偏好 -->
+	<input type="hidden" name="orderRelated"/>
+	
+    <!-- 收據資料 -->
+    <input type="hidden" name="orderReceipt.receiptTitleType"/>
+    <input type="hidden" name="orderReceipt.receiptSendType"/>
+    <input type="hidden" name="orderReceipt.titleId"/>
+    <input type="hidden" name="orderReceipt.titleName"/>  
+    <input type="hidden" name="orderReceipt.titleZipCode"/>
+    <input type="hidden" name="orderReceipt.titleAddr"/>
+	
+	<!-- 取件方式 -->
+    <input type="hidden" name="orderTake.takeType"/>
+    <input type="hidden" name="orderTake.takeStore"/>
+    
+    <!-- 國旅卡不需處理 -->
+    
+    <!-- 需協助事項 -->
+    <input type="hidden" name="remark"/>
+    
+    <!-- B2C, B2B, B2E-->
+	<input type="hidden" name="businessType"/>
+	
+	<!-- 客服拉單-->
+	<input type="hidden" name="webOrder.saleId"/>
+	<input type="hidden" name="webOrder.opMessage.message" value=""/>
+	<input type="hidden" name="webOrder.opMessage.opId[0]" value="003084"/>
+	<input type="hidden" name="webOrder.opMessage.opId[1]" value="003084"/>
+	
+    <!-- 服務地區-->
+	<input type="hidden" name="servicePlace"/>
+	
+	<!-- client ip-->
+	<input type="hidden" name="ip" value="@order.getUser().getIp()">
+	
+	<!-- 高鐵取票人資訊-->
+	<input type="hidden" name="orderHsrTake.name"/>
+	<input type="hidden" name="orderHsrTake.personId"/>
+	<input type="hidden" name="orderHsrTake.tel"/>
+	<input type="hidden" name="orderHsrTake.mobile"/>
+	<input type="hidden" name="orderHsrTake.fax"/>
+	<input type="hidden" name="orderHsrTake.email"/>
+	<input type="hidden" name="orderHsrTake.sex"/>
+	<input type="hidden" name="orderHsrTake.zipCd"/>
+	<input type="hidden" name="orderHsrTake.address"/>
+	
+	<!-- 旅客資料 -->
+	@for(i <- 0 to order.getTotalTicketQty()-1) {
+		<input type="hidden" name="customerData[@i].nameChnFirst"/>
+		<input type="hidden" name="customerData[@i].nameChnLast"/>
+		<input type="hidden" name="customerData[@i].nameEngFirst"		value=""/>
+		<input type="hidden" name="customerData[@i].nameEngLast"		value=""/>
+		<input type="hidden" name="customerData[@i].sex"/>
+		<input type="hidden" name="customerData[@i].personId"/>
+		<input type="hidden" name="customerData[@i].birYs"/>
+		<input type="hidden" name="customerData[@i].birMs"/>
+		<input type="hidden" name="customerData[@i].birDs"/>
+	}
+    
+	<!-- 廣告來源-->
+	<input type="hidden" name="orderAdSource"/>
+	
+	<!-- 訂單類別-->
+    <input type="hidden" name="orderType"/>
+    
+    <!-- 查詢高鐵、飯店資訊用-->
+	<input type="hidden" name="user.loginId" value="@order.getUser().getLoginId().toUpperCase()">
+	<input type="hidden" name="user.custNo" value="@order.getUser().getCustNo()">
+	<input type="hidden" name="user.businessType" value="@order.getUser().getBusinessType()">
+	<input type="hidden" name="user.sessionId" value="@order.getUser().getSessionId()">
+	<input type="hidden" name="placeFrom" value="@order.getPlaceFrom()">
+	<input type="hidden" name="arrCity" value="@order.getArrCity()">
+	<input type="hidden" name="placeTo" value="@order.getPlaceTo()">
+	<input type="hidden" name="carClass" value="@order.getCarClass()">
+	<input type="hidden" name="hotelNo" value="@order.getHotelNo()">
+	<input type="hidden" name="depDate" value="@dateSlash(order.getDepDate())">
+	<input type="hidden" name="travelDay" value="@order.getTravelDay()">
+	<input type="hidden" name="returnDate" value="@dateSlash(order.getReturnDate())">
+	@for(i <- 0 to order.getRooms().size() - 1) {
+		<input type="hidden" name="rooms[@i].roomType" value="@order.getRooms().get(i).getRoomType()">
+		<input type="hidden" name="rooms[@i].full" value="@order.getRooms().get(i).getFull()">
+		<input type="hidden" name="rooms[@i].children" value="@order.getRooms().get(i).getChildren()">
+		<input type="hidden" name="rooms[@i].half" value="@order.getRooms().get(i).getHalf()">
+		<input type="hidden" name="rooms[@i].senior" value="@order.getRooms().get(i).getSenior()">
+		<input type="hidden" name="rooms[@i].roomInfo.roomCd" value="@order.getRooms().get(i).getRoomInfo().getRoomCd()">
+	}
+	<input type='hidden' id='selDTrainNo' name="depSchedule.trainNo" value='@order.getDepSchedule().getTrainNo()'>
+	<input type='hidden' id='selRTrainNo' name="returnSchedule.trainNo" value='@order.getReturnSchedule().getTrainNo()'>
+	
+</form>
+</div>
+
+<script type="text/javascript">
+//<!--
+
+var role = $("#userDataId").data("user").role;
+var webOrder = $("#userDataId").data("user").webOrder;
+var b2c = $("#userDataId").data("user").b2c;
+var b2b = $("#userDataId").data("user").b2b;
+var b2e = $("#userDataId").data("user").b2e;
+//alert("role：" + role + "\nwebOrder：" + webOrder + "\nb2c：" + b2c+ "\nb2b：" + b2b + "\nb2e：" + b2e + "\nloginId：" + loginId);
+
+if( role!=webOrder ){
+//setAllAddress();
+//invSetPost();
+}
+
+//-->
+
+
+
+// 取件方式隱藏連動
+$(':input[name="pickUpMode"]').bind('click',function(){
+	var pickUpVal=$.trim($(this).val());
+	if(pickUpVal=="POST"){
+		$(':input[name="store_id"]').val('X');
+		$('#store_id').selectedIndex=0;
+		$('#store_id').attr('disabled',true);
+		$(':input[name="storeAddrBtn"]').attr('disabled',true);
+	}else if(pickUpVal=="STORE"){
+		$('#store_id').attr('disabled',false);
+		$(':input[name="storeAddrBtn"]').attr('disabled',false);
+	}else{}
+}); // end $(':input[name="pickUpMode"]').bind('click',function()
+	
+
+// 送出訂單
+$("#orderForm").submit(function(){
+	
+	//alert("開始檢核");
+	var checkSendOrder = true; // 表單檢核 - 極重要參數 (true:送出表單資料,false:不送出訂單資料)
+	//checkSendOrder = false;
+	
+	
+	
+	// 成立訂單參數轉換（開始）
+	//alert("成立訂單參數轉換");
+	// 訂購會員資料
+	//alert("custNo：" + $("#userDataId").data("user").custNo);
+	$("[name^=customerInfo][name$=custNo]").val($("#userDataId").data("user").custNo);
+	
+	// 主要聯絡人資料
+	//alert("姓名：" + $("[name=fdContName1]").val());
+	$("[name$=name1]").val($("[name=fdContName1]").val());
+	$("[name$=mobile1]").val($("[name=cMob1]").val());
+	$("[name$=telDay1]").val( $("[name=fdContTel11]").val() + $("[name=fdContTel12]").val() + $("[name=fdContTel13]").val());
+	$("[name$=postZipCode1]").val($("[name=cZip]").val());
+	$("[name$=postAddr1]").val($("[name=cAddress]").val());
+	$("[name$=email1]").val($("[name=cEmail1]").val());
+	$("[name$=fax1]").val($("[name=cFax1]").val());
+
+	// 次要聯絡人資料
+	$("[name$=name2]").val($("[name=fdContName2]").val());
+	$("[name$=mobile2]").val($("[name=cMob2]").val());
+	$("[name$=telDay2]").val( $("[name=fdContTel21]").val() + $("[name=fdContTel22]").val() + $("[name=fdContTel23]").val());
+	$("[name$=email2]").val($("[name=cEmail2]").val());
+	$("[name$=fax2]").val($("[name=cFax2]").val());
+	
+	// 聯絡方式偏好
+	//alert("聯絡方式偏好：" + $("[name=relateInfoRd]:checked").val());
+	if( $("[name=relateInfoRd]:checked").val()=="EMAIL_SMS" ){
+		$("[name=orderRelated]").val("EMAIL_SMS");
+	}else{
+		$("[name=orderRelated]").val($("[name=relateInfoVal]:checked").val());
+	}	
+
+	// 收據資料
+	//alert("收據方式：" + $("[name=receiptInfo]:checked").val());
+	if( $("[name=receiptInfo]:checked").val()=="不用寄送代收轉付收據" ){
+		$("[name$=receiptSendType]").val("X");
+	}else{
+		$("[name$=receiptSendType]").val("Y");
+		//alert("是否開抬頭：" + $("[name=rdInvTitleInfo]:checked").val());
+		if( $("[name=rdInvTitleInfo]:checked").val()=="要開立公司名稱" ){
+			$("[name$=receiptTitleType]").val("Y");
+			$("[name$=titleName]").val($("[name=inv_title]").val());	
+		}else{
+			$("[name$=receiptTitleType]").val("N");
+		}
+		$("[name$=titleId]").val($("[name=inv_no]").val());
+		$("[name$=titleZipCode]").val($("[name=iZip]").val());
+		$("[name$=titleAddr]").val($("[name=iAddress]").val());
+	}
+
+	// 取件方式
+	//alert("取件方式：" + $("[name=pickUpMode]:checked").val() + "\n門市：" + $("#store_id").val());
+	$("[name$=takeType]").val($("[name=pickUpMode]:checked").val());
+	if( $("[name=pickUpMode]:checked").val()!="POST" ){
+		$("[name$=takeStore]").val($("#store_id").val());
+	}
+	
+	// 國旅卡（不需處理）
+	
+	// 需協助事項
+	$("[name=remark]").val($("[name=taRemark]").val());
+	
+	// B2C, B2B, B2E
+	if( role==webOrder ){
+		$("[name=businessType]").val("WEBORDER");
+		$("[name^=webOrder][name$=saleId]").val(loginId);
+	}else if( role==b2b ){
+		$("[name=businessType]").val("B2B");
+	}else if( role==b2e ){
+		$("[name=businessType]").val("B2E");
+	}else{
+		//alert("EZ");
+		$("[name=businessType]").val("EZ");		
+	}
+	
+	// 客服拉單
+	var loginId = $("#userDataId").data("user").loginId;
+	//alert("loginId：" + loginId);
+	
+	// 服務地區
+	$("[name=servicePlace]").val($("[name=service]").val());
+
+	// client ip（不需處理）
+	
+	// 高鐵取票人資訊（抓取主要聯絡人、第一位旅客資訊）
+	//alert("高鐵取票人資訊：" + $("[name^=orderHsrTake][name$=name]").val());
+	// 抓取第一位旅客資訊	
+	$("[name^=orderHsrTake][name$=personId]").val($("[name=tPersonId]").eq(0).val());
+	$("[name^=orderHsrTake][name$=sex]").val($("[name=tSex]").eq(0).val());
+	// 抓取主要聯絡人資訊
+	$("[name^=orderHsrTake][name$=name]").val($("[name=fdContName1]").val());
+	$("[name^=orderHsrTake][name$=tel]").val( $("[name=fdContTel11]").val() + $("[name=fdContTel12]").val() + $("[name=fdContTel13]").val());
+	$("[name^=orderHsrTake][name$=mobile]").val($("[name=cMob1]").val());
+	$("[name^=orderHsrTake][name$=fax]").val($("[name=cFax1]").val());
+	$("[name^=orderHsrTake][name$=email]").val($("[name=cEmail1]").val());
+	$("[name^=orderHsrTake][name$=zipCd]").val($("[name=cZip]").val());
+	$("[name^=orderHsrTake][name$=address]").val($("[name=cAddress]").val());
+	
+	// 旅客資料
+	$("[name=tChnNameF]").each(function(index){
+		//alert("姓名：" + $(this).val() + "\n姓名：" + $("[name^=customerRepresent][name$=nameChnFirst]").eq(0).val());
+		$("[name^=customerData][name$=nameChnFirst]").eq(index).val($(this).val());
+		$("[name^=customerData][name$=nameChnLast]").eq(index).val($("[name=tChnNameL]").eq(index).val());
+		$("[name^=customerData][name$=sex]").eq(index).val($("[name=tSex]").eq(index).val());
+		$("[name^=customerData][name$=personId]").eq(index).val($("[name=tPersonId]").eq(index).val());
+		$("[name^=customerData][name$=birYs]").eq(index).val($("[name=tBirY]").eq(index).val());
+		$("[name^=customerData][name$=birMs]").eq(index).val($("[name=tBirM]").eq(index).val());
+		$("[name^=customerData][name$=birDs]").eq(index).val($("[name=tBirD]").eq(index).val());
+	}); 
+
+	// 廣告來源、訂單類別
+	if( role!=webOrder ){
+		$("[name=orderAdSource]").val("_1");
+		$("[name=orderType]").val("WEB");
+	}else{
+		$("[name=orderAdSource]").val($("[name=ad_source]").val());
+		$("[name=orderType]").val($("[name=order_type]").val());
+	}
+	// 成立訂單參數轉換（結束）
+	
+	return checkSendOrder;
+});
+          
+
+</script>
+
+    <script src="@routes.Assets.at("js/cityForZipCode.js")"></script>
+    <script src="@routes.Assets.at("js/placeholder.js")"></script>
+
+    <script src="@routes.Assets.at("js/order.js")"></script>
+    <script src="@routes.Assets.at("js/passenger.js")"></script>
+
+} {
+   <!-- Page Level CSS & JS Put Here -->
+    <link href="@routes.Assets.at("css/common/global.css")" rel="stylesheet">
+
+
+} {
+    @header()
+} {
+    @footer()
+}

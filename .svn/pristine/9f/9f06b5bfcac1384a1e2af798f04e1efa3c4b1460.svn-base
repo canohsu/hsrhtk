@@ -1,0 +1,394 @@
+@(titleCount: Integer, role: models.enums.BusinessType, customer: pojo.Customer)
+@import models.enums.BusinessType
+@star = {
+    @if(BusinessType.WEBORDER == role){
+    &nbsp;
+    } else {
+    <span class='txt-or'>*</span>
+    }
+}
+
+	<div class="row">
+		<div class="col-xs-12">
+		<h3>
+			<span class="tag-gn">@titleCount</span> 行程聯絡人：
+			<span class="txt-s">為行程接送服務相關事宜之聯絡對象</span>
+			<span class="txt-or txt-s">*為必填</span>
+		</h3>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12 col-sm-6">
+		<table class="tb-3">
+		<thead>
+		<tr>
+			<th class="txt-center">
+            @star 主要聯絡人
+            <!--同業會員 -->
+            @if(BusinessType.B2B == role){<br><span class='txt-or'>(請填寫同業聯絡方式)</span>}
+            <!--客服 -->
+            @if(BusinessType.WEBORDER == role){<br><span class='txt-or'>(客服人員訂購,可不填)</span>}
+            </th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td>
+				<p>
+					@star 姓<span style="margin-left:2em;">名</span>：
+					<input type="text" name="fdContName1" maxlength="12"/>
+                    <input type="hidden" name="memberName"  value="custName" />
+                    <!--同業會員印出公司名稱 -->
+                    @if(BusinessType.B2B == role){<span class="txt-blue">member.getTitleNM</span>}
+				</p>
+				<p>
+					@star 聯絡電話：手機
+					<input type="text" name="cMob1" maxlength="10"/>
+					<span class="txt-gr">(不用額外加886+-等符號，格式：0933123123)</span>
+				</p>
+				<p>
+					<span class="txt-gr txt-s" style="margin-left:1em;">(至少一個)</span>
+					<span style="margin-left:1em;">市話
+					<input type="text" name="fdContTel11" style="width:3em;" maxlength="5"/> -
+					<input type="text" name="fdContTel12" style="width:5em;" maxlength="9"/>
+					<span style="margin-left:0.1em"></span> 分&nbsp;機
+					<input type="text" name="fdContTel13" style="width:4em;" maxlength="5"/>
+				</span>
+				</p>
+				<p>
+					&nbsp; 傳<span style="margin-left:2em;">真</span>：
+					<input type="text" name="cFax1" maxlength="18" value="" />
+				</p>
+				<p>
+					@star 聯絡Email：
+					<input type="text" name="cEmail1" maxlength="50" value="" /><br>
+					<span class='txt-or'>(為避免收信阻擋，建議不要使用免費信箱，例如：Yahoo／Hotmail信箱)</span>
+				</p>
+				<p>
+                    @star 聯絡地址 ：
+					<select name="cState" onChange="setCity(this.form,this.selectedIndex,'C'); " >
+					<!---- 產生聯絡人的聯絡地址 - 縣市選單 ---->
+                        <option value='NO'>請選擇</option> 
+                        <option value='基隆市'>基隆市</option>
+                        <option value='台北市'>台北市</option>
+                        <option value='新北市'>新北市</option>
+                        <option value='桃園縣'>桃園縣</option>
+                        <option value='新竹市'>新竹市</option>
+                        <option value='新竹縣'>新竹縣</option>
+                        <option value='苗栗縣'>苗栗縣</option>
+                        <option value='台中市'>台中市</option>
+                        <option value='彰化縣'>彰化縣</option>
+                        <option value='南投縣'>南投縣</option>
+                        <option value='雲林縣'>雲林縣</option>
+                        <option value='嘉義市'>嘉義市</option>
+                        <option value='嘉義縣'>嘉義縣</option>
+                        <option value='台南市'>台南市</option>
+                        <option value='高雄市'>高雄市</option>
+                        <option value='屏東縣'>屏東縣</option>
+                        <option value='台東縣'>台東縣</option>
+                        <option value='花蓮縣'>花蓮縣</option>
+                        <option value='宜蘭縣'>宜蘭縣</option>
+                        <option value='澎湖縣'>澎湖縣</option>
+                        <option value='金門縣'>金門縣</option>
+                        <option value='連江縣'>連江縣</option>
+                        <option value='大陸地區'>大陸地區</option>
+                        <option value='港澳地區'>港澳地區</option>
+                        <option value='歐洲'>歐洲</option>
+                        <option value='亞洲'>亞洲</option>
+                        <option value='北美洲'>北美洲</option>
+                        <option value='中南美洲'>中南美洲</option>
+                        <option value='大洋洲'>大洋洲</option>
+                        <option value='非洲地區'>非洲地區</option>
+					</select>
+					<select name="cCity" onChange="setZip_cd(this.options[this.selectedIndex].value,'C');" >
+						<option value="NO">請選擇</option>
+					</select>
+                    <input type="hidden" name="cCityName"/>
+                    <!----(member.getTown)---->
+					<span style="margin-left:0.1em"></span>郵遞區號
+                    <input type="text" name="cZip" maxlength="5" style="width:3em"/>
+                    <!----(member.getZip)---->
+				</p>
+				<p>
+					<input type="text" name="cAddress" style="width:25.2em;margin-left:.5em"/>
+                    <!---- member.getAddress ---->
+				</p>
+			</td>
+		</tr>
+        </tbody>
+        <tfoot>
+        <tr><td></td></tr>
+		</tfoot>
+		</table>
+		<br>
+		</div>
+
+		<div class="col-xs-12 col-sm-6">
+		<table class="tb-3">
+		<thead>
+		<tr>
+			<th class="txt-center">
+                                次要聯絡人
+            <span style="margin-left:0.5em" class="txt-bk txt-s" >
+                <select name="selSubCont">
+                    <option value="" checked>請選擇</option>
+                    @for(i <- 1 to 5) { 
+                    <option value="@(i-1)">同第 @i 位旅客</option>
+                    }
+                </select>
+            </span>
+
+            <!--同業會員 -->
+            @if(BusinessType.B2B == role){<br><span class='txt-or'>(旅客連絡方式)</span>}
+            <!--客服-->
+            @if(BusinessType.WEBORDER == role){<br><span class='txt-or'>(客服人員訂購,可不填)</span>}
+            </th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td>
+				<p>
+					<span class="txt-or fdContName2Info">&nbsp;</span> 姓<span style="margin-left:2em;">名</span>：
+					<input type="text" name="fdContName2" maxlength="12" value="" />
+				</p>
+				<p>
+					<span class="txt-or cMob2Info">&nbsp;</span> 聯絡電話：手機
+					<input type="text" name="cMob2"  maxlength="10" value="" />
+					<span class="txt-gr">(不用額外加886+-等符號，格式：0933123123)</span>
+				</p>
+				<p>
+					<span class="txt-gr txt-s" style="margin-left:1em;">(至少一個)</span>
+					<span style="margin-left:1em;">市話
+					<input type="text" name="fdContTel21" style="width:3em;" maxlength="5" value="" /> -
+					<input type="text" name="fdContTel22" style="width:5em;" maxlength="9" value="" />
+					<span style="margin-left:0.1em"></span> 分&nbsp;機
+					<input type="text" name="fdContTel23" style="width:4em;" maxlength="5" value="" />
+				</span>
+				</p>
+				<p>
+					&nbsp; 傳<span style="margin-left:2.2em;">真</span>：
+					<input type="text" name="cFax2" maxlength="18" style="width:13.2em;"  />
+				</p>
+				<p>
+					<span class="txt-or cEmail2Info">&nbsp;</span> 聯絡Email：
+					<input type="text" name="cEmail2" style="width:19.5em;" maxlength="50" value="" /><br>
+					<span class='txt-or'>(為避免收信阻擋，建議不要使用免費信箱，例如：Yahoo／Hotmail信箱)</span>
+				</p>
+			</td>
+		</tr>
+        </tbody>
+        <tfoot>
+        <tr><td></td></tr>
+		</tfoot>
+		</table>
+		<br>
+		</div>
+	</div>
+	
+	<!-- 非客服人員才查詢旅客資料 -->
+	<div id="roleDataId" data-role='{"role":"@role", "webOrder":"@BusinessType.WEBORDER"}'></div>
+	@if(BusinessType.WEBORDER != role) {
+		<div id="contactDataId" data-contact='{"contactName":"@customer.getNameChnFirst()@customer.getNameChnLast()",
+													"contactTelMobile":"@customer.getTelMobile()",
+													"contactTelContAreaDay":"@customer.getTelContAreaDay()",
+													"contactTelContDay":"@customer.getTelContDay()",
+													"contactTelContExDay":"@customer.getTelContExDay()",
+													"fax1":"@customer.getFax1()",
+													"email1":"@customer.getEmail1()",
+													"cityCd":"@customer.getCityCd()",
+													"townCd":"@customer.getTownCd()",
+													"zipCdCon":"@customer.getZipCdCon()",
+													"addrCont":"@customer.getAddrCont()"}'>
+		</div>
+	}
+
+<script src="@routes.Assets.at("js/cityForZipCode.js")"></script>
+
+<script type="text/javascript">
+//<!--
+
+    var role = "@role";
+    var checkUser = false;
+    /* 有錯先幫您註解 by Joe 
+    if(BusinessType.WEBORDER == role){
+        checkUser = true;
+    }*/
+    var isAbroadInfo = false;
+    var star = !(checkUser)? "*" : "&nbsp;";
+    
+    
+    
+ 	// 聯絡人資料帶入預設值（「登入會員」之基本資料）（開始）
+ 	var role = $("#roleDataId").data("role").role;
+	var webOrder = $("#roleDataId").data("role").webOrder;
+	//alert("聯絡人頁\n角色：" + role + "\nwebOrder：" + webOrder);
+
+	if( role!=webOrder ){
+	    var contactName = $("#contactDataId").data("contact").contactName;
+	    var contactTelMobile = $("#contactDataId").data("contact").contactTelMobile;
+	    var contactTelContAreaDay = $("#contactDataId").data("contact").contactTelContAreaDay;
+		var contactTelContDay = $("#contactDataId").data("contact").contactTelContDay;
+		var contactTelContExDay = $("#contactDataId").data("contact").contactTelContExDay;
+		var fax1 = $("#contactDataId").data("contact").fax1;
+		var email1 = $("#contactDataId").data("contact").email1;
+		var cityCd = $("#contactDataId").data("contact").cityCd;
+		var townCd = $("#contactDataId").data("contact").townCd;
+		var zipCdCon = $("#contactDataId").data("contact").zipCdCon;
+		var addrCont = $("#contactDataId").data("contact").addrCont;
+			
+		//alert("聯絡人預設資料：\n\n姓名：" + contactName + "\n手機：" + contactTelMobile + "\n\n市話區域碼：" + contactTelContAreaDay + "\n市話：" + contactTelContDay + "\n市話分機：" + contactTelContExDay + 
+		//						"\n\n傳真：" + fax1 + "\nemail：" + email1 + "\n\n城市：" + cityCd + "\n鄉鎮市區：" + townCd + "\n區域碼：" + zipCdCon + "\n地址：" + addrCont );
+	
+		$("[name=fdContName1]").val(contactName);
+		$("[name=cMob1]").val(contactTelMobile);
+		$("[name=fdContTel11]").val(contactTelContAreaDay);
+		$("[name=fdContTel12]").val(contactTelContDay);
+		$("[name=fdContTel13]").val(contactTelContExDay);
+		$("[name=cFax1]").val(fax1);
+		$("[name=cEmail1]").val(email1);
+	
+		// 城市預設值帶入
+		$("[name=cState]").val(cityCd);
+		// 鄉鎮市區預設值帶入（/hsrhtl/public/js/cityForZipCode.js）
+		$("[name=cCityName]").val(townCd);
+		this.setAllAddress();
+		$("[name=cZip]").val(zipCdCon);
+		$("[name=cAddress]").val(addrCont);
+	}
+ 	// 聯絡人資料帶入預設值（「登入會員」之基本資料）（結束）
+	
+	
+
+
+	<!--◆◆◆◆◆◆◆		定義《旅客名單》內的各旅客所使用欄位的物件(開始)		◆◆◆◆◆◆◆ -->
+	       var $friendObj=$("select[name='friend']");								<!-- 好友名單下拉選單 -->
+
+    
+	var $tChnNameFObj=$(":input[name='tChnNameF']");						<!-- 該旅客中文姓 -->
+	var $tChnNameLObj=$(":input[name='tChnNameL']");						<!-- 該旅客中文名 -->
+	var $tEngNameFObj=(isAbroadInfo)?$(":input[name='tEngNameF']"):null;	<!-- 該旅客英文姓 -->
+	var $tEngNameLObj=(isAbroadInfo)?$(":input[name='tEngNameL']"):null;	<!-- 該旅客英文名 -->
+	var $tPersonIdObj=$(":input[name='tPersonId']");						<!-- 該旅客身份證字號 -->
+	var $tBirYObj=$(":input[name='tBirY']");								<!-- 該旅客出生日期【年】 -->
+	var $tBirMObj=$(":input[name='tBirM']");								<!-- 該旅客出生日期【月】 -->
+	var $tBirDObj=$(":input[name='tBirD']");								<!-- 該旅客出生日期【日】 -->
+	var $tSexObj=$("select[name='tSex']");									<!-- 該旅客性別 -->
+	       var $eatObj=$("select[name='eat']");									<!-- 該旅客飲食限制 -->
+	var $tPassportNoObj=$(":input[name='tPassportNo']");					<!-- 國內外機票 - 該旅客護照號碼 -->
+	var $tEndPassDtObj=$(":input[name='tPassportDt']");						<!-- 國內外機票 - 該旅客護照日期 -->
+	var $tMTPTypeObj=$("select[name='tMTPType']");							<!-- 國內外機票 - 該旅客其他證照類別 -->
+	var $tMTPNoObj=$(":input[name='tMTPNo']");								<!-- 國內外機票 - 該旅客證照號碼 -->
+	var $tEndMTPDtObj=$(":input[name='tMTPDt']");							<!-- 國內外機票 - 該旅客證照日期 -->
+	       var $tMainlandPersonCKObj=$(":checkbox[name='mainlandPersonCK']");		<!-- 國內機票 - 我是大陸人士(checkbox 元件) -->
+	       var $tForeignerCKObj=$(":checkbox[name='foreignerCK']");				<!-- 國內機票 - 我是其他外籍人士(checkbox 元件) -->
+	       var $tNationalObj=$(":input[name='nationality']");						<!-- 國內機票 - 國籍，"未勾選(即為本國人)"->"1","勾選我是大陸人士"->"2","勾選我是其他外籍人士"->"3"  -->
+	       var $tFareObj=$("select[name='fare']");									<!-- 國內機票 - 去程票種 -->
+	var $tBackFareObj=$("select[name='backFare']");							<!-- 國內機票 - 回程票種  -->
+
+	       var $subContObj=$("select[name='selSubCont']");							<!-- 次要聯絡人名單下拉選單 -->
+
+	$subContObj.bind('change',function(){
+		var selVal=$.trim($(this).val());
+		var subContInputFieldArr=["fdContName2","cMob2","fdContTel21","fdContTel22","fdContTel23","cFax2","cEmail2"];
+		if(selVal==""){ <!-- 下拉式名單是"請選擇"時 -->
+			$('.fdContName2Info').html('&nbsp;');		<!-- 【姓名】移除"*"號 -->
+			$('.cMob2Info').html('&nbsp;');			<!-- 【聯絡電話】移除"*"號 -->
+			$('.cEmail2Info').html('&nbsp;');			<!-- 【聯絡Email】移除"*"號 -->
+
+			<!-- 將所有的欄位清空及背景反白(開始) -->
+			$.each(subContInputFieldArr,function(index,eleName){
+				var checkField=":input[name='"+eleName+"']";
+				var $checkObj=$(checkField);
+				$checkObj.val('');
+				$checkObj.removeClass("input-warning");
+			}); // end $.each(subContInputFieldArr,function(index,eleName)
+			<!-- 將所有的欄位清空及背景反白(結束) -->
+
+			$(':input[name="fdContName2"],[name="cMob2"],[name="fdContTel21"],[name="fdContTel22"],[name="cEmail2"]').unbind('blur');
+
+			if (!checkUser) {
+				<!-- 次要聯絡人Email的格式檢核,並確認多個email之間是否以分號(;)做區隔(開始) -->
+				$('input[name="cEmail2"]').bind('blur',function(){
+					var emailVal=$.trim($(this).val());
+					if(!/^(\s*[_\.0-9a-z-]+@@([_0-9a-z-]+\.)+[a-z]{2,4})(\s*\;\s*[_\.0-9a-z-]+@@([_0-9a-z-]+\.)+[a-z]{2,4}\s*)*$/gi.test(emailVal) && emailVal!=""){
+						alert('請輸入正確的E-Mail！\n若欲填寫兩個以上電子信箱,請以分號(;)區隔,\n例如 aaa@@gamil.com;bbb@@hotmail.com');
+						$(this).focus();
+					} // end if
+				}); // end $ $('input[name="cEmail2"]').bind('blur',function()
+				<!-- 次要聯絡人Email的格式檢核(結束) -->
+			}
+
+		}else{ <!-- 下拉式名單有選擇"同第 X 位旅客"時 (開始)-->
+
+			var chnNameFVal=$.trim($tChnNameFObj.eq(selVal).val()); <!-- 該旅客中文姓 -->
+			var chnNameLVal=$.trim($tChnNameLObj.eq(selVal).val()); <!-- 該旅客中文名 -->
+
+			if(chnNameFVal=="" || chnNameLVal=="" ){	<!-- 中文姓或名沒有填寫完整資訊時 -->
+				alert("第"+(parseInt(selVal,10)+1)+"位旅客 尚未填寫完整中文姓名");
+				$subContObj[0].selectedIndex=0;			<!-- 次要聯絡人名單下拉選單(回到預設選項值)-->
+				if(chnNameFVal==""){
+					$tChnNameFObj.eq(selVal).focus();	<!-- 該旅客中文姓 -->
+				}else if(chnNameLVal==""){
+					$tChnNameLObj.eq(selVal).focus();	<!-- 該旅客中文名 -->
+				}else{}
+				$subContObj.triggerHandler('change');	<!-- 重新觸發次要聯絡人名單下拉選單-->
+			}else{	<!-- 中文姓名填寫完整資訊時 -->
+				$('.fdContName2Info').html(star);	<!-- 【姓名】加"*"號-->
+				$('.cMob2Info').html(star);			<!-- 【聯絡電話】加"*"號-->
+				$('.cEmail2Info').html(star);		<!-- 【聯絡Email】加"*"號-->
+
+				<!-- 將所有的欄位清空(開始)-->
+				$.each(subContInputFieldArr,function(index,eleName){
+					var checkField=":input[name='"+eleName+"']";
+					var $checkObj=$(checkField);
+					$checkObj.val('');
+				}); // end  $.each(subContInputFieldArr,function(index,eleName)
+				<!-- 將所有的欄位清空(結束)-->
+
+				var chnName=chnNameFVal+chnNameLVal;
+				$(':input[name="fdContName2"]').val(chnName);
+				$(':input[name="fdContName2"]').css({'background-color':'white'});
+
+				if (!checkUser) {	<!-- 客服流程不予以檢核，故不須要變更此欄位的背景-->
+					$(':input[name="cMob2"]').addClass("input-warning");			<!-- 手機   -->
+					$(':input[name="fdContTel21"]').addClass("input-warning");	<!-- 區域碼 -->
+					$(':input[name="fdContTel22"]').addClass("input-warning");	<!-- 電話 -->
+					$(':input[name="cEmail2"]').addClass("input-warning");		<!-- 聯絡Email -->
+
+					$(':input[name="fdContName2"],[name="cMob2"],[name="fdContTel21"],[name="fdContTel22"],[name="cEmail2"]').focus(function(){
+						$(this).removeClass("input-warning");
+					}).bind('blur',function(){
+						var eleName=$.trim($(this).attr('name'));	<!-- 欄位名稱 -->
+						if("cMob2,fdContTel21,fdContTel22".indexOf(eleName)!=-1){			<!-- 處理手機及市話只須輸入一組的欄位背景互動 -->
+							var cMob2Val=$.trim($(':input[name="cMob2"]').val());			<!-- 手機 -->
+							var fdContTel21Val=$.trim($(':input[name="fdContTel21"]').val());	<!-- 區域碼 -->
+							var fdContTel22Val=$.trim($(':input[name="fdContTel22"]').val());	<!-- 電話 -->
+							if(eleName=="fdContTel21" && fdContTel21Val!=""){				<!-- 點選的是區域碼，且該欄位有資料時 -->
+								 $(this).css({'background-color':'white'});
+							}else if(cMob2Val!="" || (fdContTel21Val!="" && fdContTel22Val!="") ){	<!-- 手機或市話其中有一項㯗位有資料時 -->
+								$(':input[name="cMob2"],[name="fdContTel21"],[name="fdContTel22"]').css({'background-color':'white'});
+							}else if("cMob2,fdContTel22".indexOf(eleName)!=-1 && fdContTel21Val!=""){	<!-- 點選的是手機或電話，且該區域碼欄位有資料時 -->
+								$(':input[name="cMob2"],[name="fdContTel22"]').css({'background-color':'#E9FFCD'});
+							}else{
+								$(':input[name="cMob2"],[name="fdContTel21"],[name="fdContTel22"]').css({'background-color':'#E9FFCD'});
+							}
+						}else{  <!-- 處理次要聯絡人姓名及聯絡Email的欄位背景互動 -->
+							if($.trim($(this).val())==''){
+								$(this).addClass("input-warning");
+							}else{
+								$(this).removeClass("input-warning");
+							}
+						}
+					}); // end $(':input[name="fdContName2"],[name="cMob2"],[name="fdContTel21"],[name="fdContTel22"],[name="cEmail2"]').focus(function()
+				} // end if(!checkuser)
+			}	<!-- 中文姓名填寫完整資訊時 -->
+		}	<!-- 下拉式名單有選擇"同第 X 位旅客"時 (結束)-->
+	});	// end $subContObj.bind('change',function()
+<!--◎◎◎ 次要聯絡人名單下拉選單（結束）◎◎◎-->
+<!--★★★ 處理行程聯絡人-主要及次要聯絡人 （結束）★★★-->
+
+
+//-->
+</script>

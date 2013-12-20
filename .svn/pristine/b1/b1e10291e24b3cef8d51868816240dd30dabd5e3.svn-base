@@ -1,0 +1,22 @@
+package configs;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import service.HsrService;
+import service.IdentifyService;
+import service.impl.HsrServiceImpl;
+import service.impl.IdentifyServiceImpl;
+
+@Configuration
+public class ServiceConfig {
+  @Bean
+  public HsrService hsrService() {
+    return new HsrServiceImpl();
+  }
+
+  @Bean
+  public IdentifyService identifyService() {
+    return new IdentifyServiceImpl();
+  }
+}

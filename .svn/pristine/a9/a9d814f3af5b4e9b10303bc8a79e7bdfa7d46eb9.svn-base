@@ -1,0 +1,14 @@
+/**
+ * 易遊網版權所有 ©2000 - 2013 ezTravel Co., Ltd. all rights reserved.
+ */
+package models;
+
+/**
+ * Business Type
+ * 
+ * @author CJWang
+ * 
+ */
+public enum BusinessType {
+  B2B, B2C, B2E, WEB_ORDER
+}

@@ -1,0 +1,127 @@
+@(memberList: List[pojo.Member])
+@if(null == memberList || memberList.size() <= 0) {
+        	  <script type="text/javascript" language="javascript" >
+        	    <!--
+        		  alert("查無此會員基本資料");
+          		  window.close("searchCustID");
+        	    -->
+        	  </script>
+}
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="Kiki Liu">
+
+	<title>高鐵自主行</title>
+
+	<!-- Bootstrap core CSS -->
+	<link href="@routes.Assets.at("css/bootstrap-3.0.2.css")" rel="stylesheet">
+
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script src="@routes.Assets.at("jslib/html5shiv-3.7.0.min.js")"></script>
+	<script src="@routes.Assets.at("jslib/respond-1.3.0.min.js")"></script>
+	<![endif]-->
+
+	<script src="@routes.Assets.at("jslib/jquery-1.9.1.min.js")"></script>
+
+	<!-- Custom styles for this page -->
+	<link href="@routes.Assets.at("css/carousel.css")" rel="stylesheet">
+</head>
+
+<body>
+    <script type="text/javascript" language="javascript" >
+      <!--
+        jQuery(document).ready(function(){
+            $(':input[name="selTheCustInfo"]').each(function(index){
+                $(this).click(function(){
+                  window.opener.document.getElementsByName("fdContName1")[0].value = $.trim($('span.css_name_chn').eq(index).text());
+                  window.opener.document.getElementsByName("memberName")[0].value = $.trim($('span.css_name_chn').eq(index).text());
+                  window.opener.document.getElementsByName("fdContTel11")[0].value = $.trim($('.css_tel_cont_area_day').eq(index).val());
+                  window.opener.document.getElementsByName("fdContTel12")[0].value = $.trim($('.css_tel_cont_day').eq(index).val());
+                  window.opener.document.getElementsByName("fdContTel13")[0].value = $.trim($('.css_tel_cont_ex_day').eq(index).val());
+                  window.opener.document.getElementsByName("cMob1")[0].value = $.trim($('span.css_mobile').eq(index).text());
+                  window.opener.document.getElementsByName("cEmail1")[0].value = $.trim($('span.css_email1').eq(index).text());
+                  window.opener.document.getElementsByName("cZip")[0].value = $.trim($('.css_zip_cd_con').eq(index).val());
+                  window.opener.document.getElementsByName("cAddress")[0].value = $.trim($('.css_addr_cont').eq(index).val());
+	              window.opener.document.getElementsByName("custNo")[0].value = $.trim($('.css_cust_no').eq(index).val()); // 會員編號   
+	              if( window.opener.document.getElementsByName("isB2E")[0] != undefined)
+	              window.opener.document.getElementsByName("isB2E")[0].value = $.trim($('.css_isB2Emember').eq(index).val()); // 是否適用EC會員
+	              window.close("searchCustID");
+                }); // end $(this).click();
+                
+              }); // end $(':input[name="selTheCustInfo"]').each();
+          
+        }); // end jQuery(document).ready();
+      -->
+    </script>
+	<div class="row">
+		<div class="col-xs-12 text-center">
+			<table class="tb-2">
+			<tr>
+				<th></th>
+				<th>身份證號碼</th>
+				<th>姓名</th>
+				<th>性別</th>
+				<th>電話</th>
+				<th>手機</th>
+				<th>E-MAIL</th>
+				<th>聯絡地址</th>
+				<th>會員類別/國籍</th>
+			</tr>
+			@for(i <- 0 to memberList.size() - 1) {
+			<tr>
+				<td>@(i + 1)</td>
+				<td class="text-center">
+                    <span class='css_person_id' >@memberList(i).getPersonId()</span><br>
+                    <input type="button" class="btn btn-success btn-xs" name="selTheCustInfo" value="確定">
+                </td>
+				<td><span class='css_name_chn' >@memberList(i).getNameChnFirst()@memberList(i).getNameChnLast()</span></td>
+				<td><span class='css_sex_cd' >@memberList(i).getSex()</span></td>
+				<td>
+					@if(org.springframework.util.StringUtils.hasText(memberList(i).getTelAreaDay())) {
+						@memberList(i).getTelAreaDay() - 
+					}
+					@memberList(i).getTelDay()
+					@if(org.springframework.util.StringUtils.hasText(memberList(i).getTelExDay())) {
+						#@memberList(i).getTelExDay()
+					}
+					<!-- 電話回傳值 -->
+					<input type='hidden' class='css_tel_cont_area_day' value='@memberList(i).getTelAreaDay()'   />
+					<input type='hidden' class='css_tel_cont_day' value='@memberList(i).getTelDay()'   />
+					<input type='hidden' class='css_tel_cont_ex_day' value='@memberList(i).getTelExDay()'   />
+					<!-- 電話回傳值 -->
+				</td>
+				<td><span class='css_mobile' >@memberList(i).getTelMobile()</span></td>
+				<td><span class='css_email1' >@memberList(i).getEmail1()</span></td>
+				<td>
+					@memberList(i).getZip() @memberList(i).getAddress()
+					<!-- 地址回傳值 -->
+					<input type='hidden' class='css_zip_cd_con' value='@memberList(i).getZip()'   />
+					<input type='hidden' class='css_addr_cont' value='@memberList(i).getAddress()'   />
+					<!-- 地址回傳值 -->
+					
+					<!-- CustNo回傳值 -->
+					<input type='hidden' class='css_cust_no' value='@memberList(i).getCustNo()'   />
+				</td>
+				<td>
+					@memberList(i).getCustType()<br>
+					/@if(org.springframework.util.StringUtils.hasText(memberList(i).getNationality())) {@memberList(i).getNationality()} else {--}
+					
+					<!-- 會員類別回傳值 -->
+					<input type='hidden' class='css_isB2Emember' value='@if(memberList(i).getCustType().startsWith("企業會員")) {Y} else {N}'   />
+				</td>
+			</tr>
+			}
+			</table>
+			<br>
+			<input type="button" class="btn btn-success btn-sm" value="取消" onclick="window.close();">
+		</div>
+	</div>
+</body>
+</html>

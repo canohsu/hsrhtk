@@ -1,0 +1,465 @@
+@(hsrHtl: HsrHtl)
+@main {
+	
+	<!-- For JQuery UI 套件 -->
+	<script src="@routes.Assets.at("js/jquery-ui.js")"></script>
+	<link href="@routes.Assets.at("css/jquery-ui.css")" rel="stylesheet">
+
+
+	<div class="row">
+		<div class="col-xs-9">
+			<a href="http://www.eztravel.com.tw/">首頁</a> &gt; 
+			<a href="http://www.eztravel.com.tw/package1/index.htm?in=tb4">國內旅遊</a> &gt; 
+			<a href="#">高鐵自主行</a> &gt; 
+			<a href="#">目的城市</a>
+		</div>
+		<div class="col-xs-1"><a href="javascript:window.print();">列印</a></div>
+		<div class="col-xs-1">轉寄</div>
+		<div class="col-xs-1">同步</div>
+	</div>
+
+<div class="well">
+	<div class="row">
+		<div class="col-xs-5">
+			<label class="control-label">高鐵往返資訊</label>
+			<div class="table-responsive">
+			<table class="table table-condensed">
+			<tbody>
+				<tr>
+					<th>出發</th>
+					<td>@hsrHtl.getDepHsrInfo().getFrom().getName() → @hsrHtl.getDepHsrInfo().getTo().getName()</td>
+					<td>@hsrHtl.getDepDate()</td>
+				</tr>
+				<tr>
+					<th>返回</th>
+					<td>@hsrHtl.getReturnHsrInfo().getFrom().getName() → @hsrHtl.getReturnHsrInfo().getTo().getName()</td>
+					<td>@hsrHtl.getReturnDate()</td>
+				</tr>
+				<tr>
+					<td colspan="3">
+						@if(hsrHtl.getFullTicketQty() > 0) {
+							成人票 @hsrHtl.getFullTicketQty() 張　
+						}
+						@if(hsrHtl.getSeniorTicketQty() > 0) {
+							資深公民票 @hsrHtl.getSeniorTicketQty() 張　
+						}
+						@if(hsrHtl.getHalfTicketQty() > 0) {
+							愛心票 @hsrHtl.getHalfTicketQty() 張　
+						}
+						@if(hsrHtl.getChildrenTicketQty() > 0) {
+							兒童票 @hsrHtl.getChildrenTicketQty() 張
+						}
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+		</div>
+
+		<div class="col-xs-5">
+			<label class="control-label">酒店　屏東</label>
+			<div class="table-responsive">
+			<table class="table table-condensed">
+			<tbody>
+				<tr>
+					<th>入住</th>
+					<td>@hsrHtl.getDepDate()</td>
+				</tr>
+				<tr>
+					<th>退房</th>
+					<td>@hsrHtl.getReturnDate()</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						@if(hsrHtl.getSgl() > 0) {
+							單人房 @hsrHtl.getSgl() 間　
+						}
+						@if(hsrHtl.getTwn() > 0) {
+							雙人房 @hsrHtl.getTwn() 間　
+						}
+						@if(hsrHtl.getTrp() > 0) {
+							三人房 @hsrHtl.getTrp() 間　
+						}
+						@if(hsrHtl.getQud() > 0) {
+							四人房 @hsrHtl.getQud() 間
+						}
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+		</div>
+
+		<div class="col-xs-2" style="text-align:center;vertical-align:middle;">
+			<button type="submit" class="btn btn-success btn-sm">重新搜尋</button>
+		</div>
+	</div>
+</div>
+
+
+<div class="well">
+	<div class="row">
+		<div class="col-xs-10">
+			<label class="control-label">高鐵班次</label>
+			@hsrHtl.getDepHsrInfo().getFrom().getName() → @hsrHtl.getDepHsrInfo().getTo().getName()  @hsrHtl.getDepDate() 出發 @hsrHtl.getReturnDate() 返回
+			<div class="table-responsive">
+			<table class="table table-condensed">
+			<tbody>
+				<tr>
+					<th>@hsrHtl.getDepSchedule().getTrainNo()</th>
+					<td>高鐵@hsrHtl.getDepHsrInfo().getFrom().getName()站 → 高鐵@hsrHtl.getDepHsrInfo().getTo().getName()站</td>
+					<td>
+						@String.format("%1$02d:%2$02d", Integer.valueOf(hsrHtl.getDepSchedule().getDepTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(hsrHtl.getDepSchedule().getDepTime().get(Calendar.MINUTE)))
+						-
+						@String.format("%1$02d:%2$02d", Integer.valueOf(hsrHtl.getDepSchedule().getArrTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(hsrHtl.getDepSchedule().getArrTime().get(Calendar.MINUTE)))
+					</td>
+				</tr>
+				<tr>
+					<th>@hsrHtl.getReturnSchedule().getTrainNo()</th>
+					<td>高鐵@hsrHtl.getReturnHsrInfo().getFrom().getName()站 → 高鐵@hsrHtl.getReturnHsrInfo().getTo().getName()站</td>
+					<td>
+						@String.format("%1$02d:%2$02d", Integer.valueOf(hsrHtl.getReturnSchedule().getDepTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(hsrHtl.getReturnSchedule().getDepTime().get(Calendar.MINUTE)))
+						-
+						@String.format("%1$02d:%2$02d", Integer.valueOf(hsrHtl.getReturnSchedule().getArrTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(hsrHtl.getReturnSchedule().getArrTime().get(Calendar.MINUTE)))
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+		</div>
+
+		<div class="col-xs-2" style="text-align:center;">
+			<button id="changeTrainNo" type="submit" class="btn btn-success btn-sm">修改班次</button>
+		</div>
+	</div>
+</div>
+
+	<div class="row">
+		<div class="col-xs-1">共50筆資料</div>
+		<div class="col-xs-8">
+			<div class="pagination pagination-centered">
+				<ul>
+					<li><a href="#">Prev</a></li>
+					<li><a href="#">1</a></li>
+					<li><a href="#">2</a></li>
+					<li><a href="#">3</a></li>
+					<li><a href="#">4</a></li>
+					<li><a href="#">5</a></li>
+					<li><a href="#">Next</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="col-xs-1">排序方式：</div>
+		<div class="col-xs-1">
+			<select id="order" name="order" class="form-control input-sm" style="width:100px;">
+					<option value="0">組合價格</option>
+					<option value="1">現省價格</option>
+					<option value="2">評鑑分數</option>
+					<option value="3">人氣</option>
+				</select>
+		</div>
+		<div class="col-xs-1"></div>
+	</div>
+
+@for(hotel <- hsrHtl.getHotelList()) {
+<div class="well">
+	<div class="row">
+		<div class="col-xs-10"><b>高鐵+酒店合購價：12,000</b>　現省 3,000</div>
+		<div class="col-xs-2" style="text-align:center;">
+			<button type="submit" class="btn btn-success btn-sm">立即訂購</button>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="table-responsive">
+			<table class="table table-condensed">
+			<tbody>
+				<tr>
+					<th rowspan="2" style="width:150px;">
+					<img src="http://www.eztravel.com.tw/ss_static/images/htl/more/HTLI000002098_m02.jpg" style="max-height: 100px;">
+					</th>
+					<td>
+					福華酒店<br>
+					台北市 XXXXXXXXXXXXXXXXXXXXXXX<br>
+					<a onclick="newWindow('1','HTLI000000310'); return false;" href="#">飯店介紹</a>　
+					<a onclick="newWindow('2','HTLI000000310'); return false;" href="#">評鑑：9/10 (100)</a>　
+					<a onclick="newWindow('3','HTLI000000310'); return false;" href="#">地圖</a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<table class="table table-condensed">
+						<tbody>
+						<tr>
+							<td>第1間：</td>
+							<td>成人2張</td>
+							<td>標準雙人房</td>
+							<td>一大床，含早</td>
+							<td>(說明)</td>
+							<td>修改房型</td>
+						</tr>
+						<tr>
+							<td>第2間：</td>
+							<td>敬老2張</td>
+							<td>標準雙人房</td>
+							<td>一大床</td>
+							<td>(說明)</td>
+							<td>修改房型</td>
+						</tr>
+						</tbody>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+		</div>
+	</div>
+</div>
+}
+
+<div id="dialog-form" title="修改高鐵班次">
+<p class="validateTips" style="display:none;">請選擇高鐵班次</p>
+<form>
+	<fieldset>
+
+		<div class="well well-green">
+			<div class="row">
+				<div class="col-xs-12">
+					<h6>
+						@hsrHtl.getDepHsrInfo().getFrom().getName() → @hsrHtl.getDepHsrInfo().getTo().getName()　@hsrHtl.getDepDate()　出發
+						@hsrHtl.getReturnHsrInfo().getFrom().getName() → @hsrHtl.getReturnHsrInfo().getTo().getName()　@hsrHtl.getReturnDate()　返回
+						@if(hsrHtl.getFullTicketQty() > 0) {
+							成人票 @hsrHtl.getFullTicketQty() 張　
+						}
+						@if(hsrHtl.getSeniorTicketQty() > 0) {
+							資深公民票 @hsrHtl.getSeniorTicketQty() 張　
+						}
+						@if(hsrHtl.getHalfTicketQty() > 0) {
+							愛心票 @hsrHtl.getHalfTicketQty() 張　
+						}
+						@if(hsrHtl.getChildrenTicketQty() > 0) {
+							兒童票 @hsrHtl.getChildrenTicketQty() 張
+						}
+					</h6>
+				</div>
+			</div>
+
+			<div class="well well-sm well-green2">
+				<div class="row">
+					<div class="col-xs-3">
+					<div  style="text-align:center;line-height:30px;">變更出發時段：</div></div>
+					<div class="col-xs-3">
+					<select class="form-control input-sm" id="depPeriod" name="depPeriod">
+					@for(period <- hsrHtl.getDepScheduleMap().keySet().iterator) {
+						<option value="[data-val='@period']" @if(period.equals(hsrHtl.getDepPeriod())) { selected }>@period</option>
+					}
+					</select>
+					</div>
+					<div class="col-xs-3">
+					<div  style="text-align:center;line-height:30px;">變更回程時段：</div></div>
+					<div class="col-xs-3">
+					<select class="form-control input-sm" id="returnPeriod" name="returnPeriod">
+					@for(period <- hsrHtl.getReturnScheduleMap().keySet().iterator){
+						<option value="[data-val='@period']" @if(period.equals(hsrHtl.getReturnPeriod())) { selected }>@period</option>
+					}
+					</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-12">
+					<label class="control-label">高鐵@hsrHtl.getDepHsrInfo().getFrom().getName()站 → 高鐵@hsrHtl.getDepHsrInfo().getTo().getName()站</label>
+					<div class="table-responsive">
+					<table class="table table-condensed" id="depPeriodList">
+					<thead>
+						<tr>
+							<th>訂位</th>
+							<th>班次</th>
+							<th>出發時間</th>
+							<th>抵達時間</th>
+							<th>行駛時間</th>
+						</tr>
+					</thead>
+					<tbody>
+                    @for(period <- hsrHtl.getDepScheduleMap().keySet().iterator) {
+						@for(schedule <- hsrHtl.getDepScheduleMap().get(period)) {
+						<tr data-val="@period">
+							<td><input type="radio" id="depTrainNo" name="depTrainNo" value="@schedule.getTrainNo()" @if(schedule.getTrainNo().equals(hsrHtl.getDepSchedule().getTrainNo())) { checked }></td>
+							<td>@schedule.getTrainNo()</td>
+							<td>@String.format("%1$02d:%2$02d", Integer.valueOf(schedule.getDepTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(schedule.getDepTime().get(Calendar.MINUTE)))</td>
+							<td>@String.format("%1$02d:%2$02d", Integer.valueOf(schedule.getArrTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(schedule.getArrTime().get(Calendar.MINUTE)))</td>
+							<td>@String.format("%1$02d:%2$02d", Integer.valueOf(schedule.getDuration().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(schedule.getDuration().get(Calendar.MINUTE)))</td>
+						</tr>
+						}
+                    }
+						<tr class="depPeriod empty">
+							<td colspan="5">沒有資料</td>
+						</tr>
+					</tbody>
+					</table>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-12">
+					<label class="control-label">高鐵@hsrHtl.getReturnHsrInfo().getFrom().getName()站 → 高鐵@hsrHtl.getReturnHsrInfo().getTo().getName()站</label>
+					<div class="table-responsive">
+                    <table class="table table-condensed" id="returnPeriodList">
+                    <thead>
+                        <tr>
+                            <th>訂位</th>
+                            <th>班次</th>
+                            <th>出發時間</th>
+                            <th>抵達時間</th>
+                            <th>行駛時間</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @for(period <- hsrHtl.getReturnScheduleMap().keySet().iterator) {
+						@for(schedule <- hsrHtl.getReturnScheduleMap().get(period)) {
+						<tr data-val="@period">
+							<td><input type="radio" id="returnTrainNo" name="returnTrainNo" value="@schedule.getTrainNo()" @if(schedule.getTrainNo().equals(hsrHtl.getReturnSchedule().getTrainNo())) { checked }></td>
+							<td>@schedule.getTrainNo()</td>
+							<td>@String.format("%1$02d:%2$02d", Integer.valueOf(schedule.getDepTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(schedule.getDepTime().get(Calendar.MINUTE)))</td>
+							<td>@String.format("%1$02d:%2$02d", Integer.valueOf(schedule.getArrTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(schedule.getArrTime().get(Calendar.MINUTE)))</td>
+							<td>@String.format("%1$02d:%2$02d", Integer.valueOf(schedule.getDuration().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(schedule.getDuration().get(Calendar.MINUTE)))</td>
+						</tr>
+						}
+                    }
+						<tr class="returnPeriod empty">
+							<td colspan="5">沒有資料</td>
+						</tr>
+					</tbody>
+					</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+</form>
+</div>
+
+<script>
+$(function() {
+
+	//---- 修改班次 ---- Start
+    // 過濾時段
+	$('#depPeriod, #returnPeriod').on('change', function() {
+		var sel = $(this).val();
+		var selid = $(this).attr("id");
+		var sel_filter = $("#" + selid + "List tbody tr").filter($(this).val());
+
+		if (sel_filter.length > 0)
+		{	$("#" + selid + "List tbody tr").hide().filter($(this).val()).show();	}
+		else
+		{	$("#" + selid + "List tbody tr").hide().filter('.empty').show();	}
+	});
+
+	// 預選推薦班次
+	function selChange() {
+		$("#depPeriod").val("[data-val='@hsrHtl.getDepPeriod()']").trigger('change');
+		$("#returnPeriod").val("[data-val='@hsrHtl.getReturnPeriod()']").trigger('change');
+    }
+
+	function checkForm()
+	{
+		var depTrainNoVal = $("input:radio[name=depTrainNo]:checked");
+		var returnTrainNoVal = $("input:radio[name=returnTrainNo]:checked");
+
+		if ( (depTrainNoVal.length > 0) && (returnTrainNoVal.length > 0) ) {
+			alert(depTrainNoVal.val());
+			alert(returnTrainNoVal.val());
+		}
+	}
+
+	$("#dialog-form").dialog({
+		autoOpen: false,
+		height: 500,
+		width: 740,
+		modal: true,
+		buttons: {
+			"確定": function() {
+				checkForm();
+				$( this ).dialog("close");
+			},
+			"取消": function() {
+				$( this ).dialog("close");
+			}
+		},
+		close: function() {
+
+		}
+    });
+
+	$("#changeTrainNo")
+		.button()
+		.click(function() {
+			$("#dialog-form").dialog("open");
+			selChange();
+		});
+
+    //---- 修改班次 ---- End
+
+});
+
+
+
+
+
+
+
+//---- 靜態超連結 ---- Start
+var win = null;
+function newWindow(mypage,prodNo) {
+    var winl = (screen.width-w)/2;
+    var wint = (screen.height-h)/2;
+    var gopage = "";
+    var myname = "";
+    var w = 0;
+    var h = 0;
+    var features = "scrollbars=yes,menubar=no,resizable=yes";
+
+    if (winl < 0) winl = 0;
+    if (wint < 0) wint = 0;
+
+    if ( mypage == '1')
+    {
+        gopage = "http://www.eztravel.com.tw/ezec/htl_tw/htltw_htl_detail.jsp?prod_no=" + prodNo;
+        myname = "htlinfo";
+        w = 670;h = 600;
+    }
+    else if ( mypage == '2')
+    {
+        gopage = "http://www.eztravel.com.tw/ezReview/reviewCollect/reviewViewList.do?prodNo=" + prodNo;
+        myname = "review";
+        w = 760;h = 600;
+    }
+    else if ( mypage == '3')
+    {
+        gopage = "http://www.eztravel.com.tw/ezec/htl_tw/htltwMapQuery.jsp?sh=" + prodNo;
+        myname = "htlmap";
+        w = 600;h = 455;
+    }
+
+    var settings = 'height=' + h + ',';
+    settings += 'width=' + w + ',';
+    settings += 'top=' + wint + ',';
+    settings += 'left=' + winl + ',';
+    settings += features;
+
+    win = window.open(gopage,myname,settings);
+    win.window.focus();
+}
+//---- 靜態超連結 ---- End
+
+</script>
+} {
+	@header()
+} {
+	@footer()
+}

@@ -1,0 +1,60 @@
+/**
+ * 易遊網版權所有 ©2000 - 2013 ezTravel Co., Ltd. all rights reserved.
+ */
+package controllers;
+
+import static play.data.Form.form;
+import static play.mvc.Results.ok;
+import models.HsrHtl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+import play.data.Form;
+import play.mvc.Result;
+import play.mvc.With;
+import service.HsrService;
+import tw.com.eztravel.ezlogger.Logger;
+import tw.com.eztravel.ezlogger.LoggerFactory;
+import actions.LogAction;
+
+/**
+ * 組合頁
+ * 
+ * @author CJWang
+ * 
+ */
+@With(LogAction.class)
+@Controller
+public class SearchListController {
+
+  /**
+   * 組合列表
+   * 
+   * @return
+   */
+  public Result searchList() {
+    Form<HsrHtl> hsrHtlForm = form(HsrHtl.class);
+    HsrHtl hsrHtl = hsrHtlForm.bindFromRequest().get();
+    logger.info("查詢高鐵酒店");
+    Object result = this.hsrService.search(hsrHtl);
+
+    if (null == result) {
+      logger.info("查無資料");
+      return ok(views.html.search.notFound.render());
+    }
+    return ok("ok");
+  }
+
+  private static Logger logger = LoggerFactory.getLogger(SearchListController.class);
+  @Autowired
+  private HsrService hsrService;
+
+  public HsrService getHsrService() {
+    return hsrService;
+  }
+
+  public void setHsrService(HsrService hsrService) {
+    this.hsrService = hsrService;
+  }
+}

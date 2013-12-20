@@ -1,0 +1,107 @@
+@(titleCount: Integer, order: pojo.Order)(b2eGrant: Html)
+@import models.enums.BusinessType
+@import eztravel.rest.enums.hsr.HsrStation
+@import java.lang.String
+@import utils.NumberUtils
+@import utils.PriceUtils
+    <div class="row">
+        <div class="col-xs-6 dotTitle"><span>@titleCount</span> 訂購明細：</div>
+        <div class="col-xs-6 text-right"><span class="txt-sGreen txt-bottom">單位： 新台幣 / 元</span></div>
+    </div>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<table class="table-green2">
+			<tbody>
+				<tr>
+					<th style="width:130px;">商品名稱</th>
+					<td>高鐵自主行@order.getTravelDay()天（@order.getHotel().getHotelName()　@order.getHotel().getEnglishName()）</td>
+				</tr>
+				<tr>
+					<th>高鐵班次</th>
+					<td>
+					@dateSlash(order.getDepDate())
+					@HsrStation.valueOf(order.getPlaceFrom()).getName()
+					-
+					@HsrStation.valueOf(order.getPlaceTo()).getName()
+					@String.format("%1$02d:%2$02d", Integer.valueOf(order.getDepSchedule().getDepTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(order.getDepSchedule().getDepTime().get(Calendar.MINUTE)))
+					-
+					@String.format("%1$02d:%2$02d", Integer.valueOf(order.getDepSchedule().getArrTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(order.getDepSchedule().getArrTime().get(Calendar.MINUTE)))
+					(@order.getDepSchedule().getTrainNo()班次)<br>
+					@dateSlash(order.getReturnDate())
+					@HsrStation.valueOf(order.getPlaceTo()).getName()
+					-
+					@HsrStation.valueOf(order.getPlaceFrom()).getName()
+					@String.format("%1$02d:%2$02d", Integer.valueOf(order.getReturnSchedule().getDepTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(order.getReturnSchedule().getDepTime().get(Calendar.MINUTE)))
+					-
+					@String.format("%1$02d:%2$02d", Integer.valueOf(order.getReturnSchedule().getArrTime().get(Calendar.HOUR_OF_DAY)), Integer.valueOf(order.getReturnSchedule().getArrTime().get(Calendar.MINUTE)))
+					(@order.getReturnSchedule().getTrainNo()班次)
+					</td>
+				</tr>
+				<tr>
+					<th>住宿日期</th>
+					<td>
+					入住日期 @dateSlash(order.getDepDate())，退房日期 @dateSlash(order.getReturnDate())
+					</td>
+				</tr>
+@for(i <- 0 to order.getHotel().getRoomList().size() - 1) {
+				<tr>
+					<th rowspan="3">房型@(i + 1)</th>
+					<td>
+					房型：@order.getHotel().getRoomList().get(i).getRoomInfo().getRoomtypeDesc()
+					</td>
+				</tr>
+				<tr>
+					<td>
+					高鐵票數：
+					@if(order.getHotel().getRoomList().get(i).getFull() > 0) {
+					成人票 @order.getHotel().getRoomList().get(i).getFull() 張　
+					}
+					@if(order.getHotel().getRoomList().get(i).getSenior() > 0) {
+					敬老票 @order.getHotel().getRoomList().get(i).getSenior() 張　
+					}
+					@if(order.getHotel().getRoomList().get(i).getChildren() > 0) {
+					孩童票 @order.getHotel().getRoomList().get(i).getChildren() 張　
+					}
+					@if(order.getHotel().getRoomList().get(i).getHalf() > 0) {
+					愛心票 @order.getHotel().getRoomList().get(i).getHalf() 張
+					}
+					</td>
+				</tr>
+				<tr>
+					<td>
+					@search.roomDescDetail(order.getHotel().getRoomList().get(i).getRoomDescriptionInfo())
+					</td>
+				</tr>
+}
+		@order match {
+			case order: pojo.Snapshot => {
+				<tr>
+					<th>總價</th>
+					<td>
+						<span class="txt-or">@NumberUtils.groupedFormat(order.getOrderAmt())</span> 元
+					</td>
+				</tr>
+			}
+			case _ => {
+				<tr>
+					<th>總價</th>
+					<td>
+						<span class="txt-or">@NumberUtils.groupedFormat(PriceUtils.calculateUnionPrice(order.getDepTicket(), order.getReturnTicket(), order.getHotel().getRoomList()))</span> 元
+					</td>
+				</tr>
+				@if(BusinessType.B2B == order.getUser().getBusinessType() || BusinessType.B2E == order.getUser().getBusinessType()) {
+				<tr>
+					<th>同業/企業優惠價</th>
+					<td>
+					<span class="txt-or">@NumberUtils.groupedFormat(PriceUtils.calculateFavorPrice(order.getDepTicket(), order.getReturnTicket(), order.getHotel().getRoomList()))</span> 元
+					</td>
+				</tr>
+				@b2eGrant
+				}
+			}
+		}
+			</tbody>
+			</table>
+		</div>
+	</div>

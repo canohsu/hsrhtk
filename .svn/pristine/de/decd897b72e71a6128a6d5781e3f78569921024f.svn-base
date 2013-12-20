@@ -1,0 +1,42 @@
+/**
+ * 易遊網版權所有 ©2000 - 2013 ezTravel Co., Ltd. all rights reserved.
+ */
+package context;
+
+import models.BusinessType;
+
+/**
+ * 保存現行HTTP連線之使用者資訊
+ * 
+ * @author CJWang
+ * 
+ */
+public class SecurityContext {
+  /**
+   * Business Type
+   */
+  private static final ThreadLocal<BusinessType> currentBusinessType =
+      new ThreadLocal<BusinessType>();
+
+  public static BusinessType getCurrentBusinessType() {
+    BusinessType businessType = currentBusinessType.get();
+    if (null == businessType) businessType = BusinessType.B2C;
+    return businessType;
+  }
+
+  /**
+   * Set current business type
+   * 
+   * @param businessType
+   */
+  public static void setCurrentBusinessType(BusinessType businessType) {
+    currentBusinessType.set(businessType);
+  }
+
+  /**
+   * Remove all ThreadLocal
+   */
+  public static void remove() {
+    currentBusinessType.remove();
+  }
+}

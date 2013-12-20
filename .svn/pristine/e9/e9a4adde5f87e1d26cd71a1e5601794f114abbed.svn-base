@@ -1,0 +1,21 @@
+/**
+ * 易遊網版權所有 ©2000 - 2013 ezTravel Co., Ltd. all rights reserved.
+ */
+package service.impl;
+
+import models.BusinessType;
+import play.mvc.Http.Request;
+import service.IdentifyService;
+
+/**
+ * @author CJWang
+ * 
+ */
+public class IdentifyServiceImpl implements IdentifyService {
+
+  @Override
+  public BusinessType identifyBusinessType(Request request) {
+    return BusinessType.B2C;
+  }
+
+}

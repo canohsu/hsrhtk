@@ -1,0 +1,138 @@
+@(order: pojo.Order)
+@import eztravel.rest.enums.hsr.HsrStation
+@import java.lang.String
+@import models.enums.BusinessType
+@main {
+
+<!-- 麵包屑 -->
+<div class="container">
+<div class="row breadcrumbs" style="padding: 15px 0px;">
+    <div class="col-xs-12 col-sm-6 dotTitleOrange">
+        <span class="tag-or">&gt;</span> 訂購明細與會員登入
+    </div>
+    <div class="hidden-xs col-sm-6 text-right">
+<a href="javascript:window.print();"><img src="@routes.Assets.at("images/common/icon_print.png")">列印本頁</a> | 
+<img src="@routes.Assets.at("images/common/icon_help.png")">同步溝通
+    </div>
+</div>
+</div>
+
+    <div class="container">
+	<!---------- 訂購明細 - Start ---------->
+	@orderDetail(1, order) {
+	}
+	<!---------- 訂購明細 - End   ---------->
+	
+	<!---------- 訂購需知 - Start ---------->
+	@odInfo(2) {
+		<div class="row" style="padding-top: 80px;">
+			<div class="col-xs-12 text-center">
+				<label class="txt-or txt-LL">
+				<input type="checkbox" id="readRequired" @if(BusinessType.B2B == order.getUser().getBusinessType() || BusinessType.WEBORDER == order.getUser().getBusinessType()) {checked} style="display:inline;width:20px;">
+				我已閱讀過完整的訂購須知(含個資聲明)，並接受所有規定事項</label>
+			</div>
+		</div>
+	}
+	<!---------- 訂購需知 - End   ---------->
+	
+	<!---------- 會員登入 - Start ---------->
+	@memberLogin(3, order.getUser())
+	<!---------- 會員登入 - End   ---------->
+	</div>
+	<!-- 傳到「填寫旅客資料」頁的參數 -->
+	<form id="sumitFrom" action="orderform" method="post">
+		<input type="hidden" id="sumitRole" name="role">
+		<input type="hidden" id="sumitStatus">
+		<input type="hidden" id="sumitToken" name="token">
+		<input type="hidden" id="sumitLoginId" name="loginId">
+		<input type="hidden" id="sumitCustNo">
+		<input type="hidden" name="placeFrom" value="@order.getPlaceFrom()">
+		<input type="hidden" name="arrCity" value="@order.getArrCity()">
+		<input type="hidden" name="placeTo" value="@order.getPlaceTo()">
+		<input type="hidden" name="carClass" value="@order.getCarClass()">
+		<input type="hidden" name="hotelNo" value="@order.getHotelNo()">
+		<input type="hidden" name="depDate" value="@dateSlash(order.getDepDate())">
+		<input type="hidden" name="travelDay" value="@order.getTravelDay()">
+		<input type="hidden" name="returnDate" value="@dateSlash(order.getReturnDate())">
+		@for(i <- 0 to order.getRooms().size() - 1) {
+		<input type="hidden" name="rooms[@i].roomType" value="@order.getRooms().get(i).getRoomType()">
+		<input type="hidden" name="rooms[@i].full" value="@order.getRooms().get(i).getFull()">
+		<input type="hidden" name="rooms[@i].children" value="@order.getRooms().get(i).getChildren()">
+		<input type="hidden" name="rooms[@i].half" value="@order.getRooms().get(i).getHalf()">
+		<input type="hidden" name="rooms[@i].senior" value="@order.getRooms().get(i).getSenior()">
+		<input type="hidden" name="rooms[@i].roomInfo.roomCd" value="@order.getRooms().get(i).getRoomInfo().getRoomCd()">
+		}
+		<input type='hidden' id='selDTrainNo' name="depSchedule.trainNo" value='@order.getDepSchedule().getTrainNo()'>
+		<input type='hidden' id='selRTrainNo' name="returnSchedule.trainNo" value='@order.getReturnSchedule().getTrainNo()'>
+	</form>
+} {
+<script type="text/javascript">
+
+
+
+$(document).ready(function(){	
+	$('#waitingRow').hide();
+
+	// 送出按鈕
+	$('#loginButton').click(function(){
+		if(checkAgree())
+			m2mlogin();		//	會員身份檢核ajax
+	});
+	$('#nextButton').click(function(){
+		if(checkAgree()) {
+			$("#sumitRole").val("B2B");
+			$("#sumitFrom").submit();
+		}
+	});
+	
+});
+
+// 會員身份檢核
+function m2mlogin(){
+    var id = $("#loginId").val();
+    var password = $("#loginPwd").val();
+    var role = $("#user").data("user").role;
+
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: "http://test.eztravel.com.tw/ezec/m2mlogin.jsp?id=" + id + "&password= " + password + "&role=" + role,
+        dataType: "jsonp",
+	    beforeSend:function(){
+	        $('#loginRow').hide();
+	        $('#buttonRow').hide();
+	        $('#waitingRow').show();
+	    }
+    });
+}
+
+// 會員身份檢核結果（範例：m2m({role:"B2C",status:-1,token:"null"});）
+function m2m(data){
+
+	if( data.status==0){
+		$("#sumitRole").val(data.role);
+		$("#sumitStatus").val(data.status);
+		$("#sumitToken").val(data.token);
+		$("#sumitLoginId").val($("#loginId").val());
+		$("#sumitFrom").submit();
+	}else{
+		alert("帳號密碼錯誤");
+        $('#waitingRow').hide();
+        $('#loginRow').show();
+        $('#buttonRow').show();
+	}
+}
+
+function checkAgree() {
+	if(!$("#readRequired").prop("checked")) {
+		alert("請先閱讀過完整的訂購須知(含個資聲明)，並接受所有規定事項");
+		return false;
+	}
+	return true;
+}
+</script>	
+} {
+    @header()
+} {
+    @footer()
+}

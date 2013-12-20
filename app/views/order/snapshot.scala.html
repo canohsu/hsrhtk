@@ -1,0 +1,26 @@
+@(order: pojo.Order)
+@import eztravel.rest.enums.hsr.HsrStation
+@import java.lang.String
+@main {
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12">
+			<span class="txt-s">您的訂單編號：</span>@order.getOrderNo
+		</div>
+	</div>
+<!---------- 訂購明細 - Start ---------->
+@orderDetail(1, order) {
+}
+<!---------- 訂購明細 - End   ---------->
+
+<!---------- 訂購需知 - Start ---------->
+@odInfo(2) {
+}
+<!---------- 訂購需知 - End   ---------->
+</div>
+} {	
+} {
+    @header()
+} {
+    @footer()
+}

@@ -1,0 +1,15 @@
+@(titleCount: Integer)(agreeCheck: Html)
+    <div class="row" style="padding-top: 18px;">
+        <div class="col-xs-12 dotTitle"><span>@titleCount</span> 訂購需知：
+        <font class="txt-sGreen">(為維護您的權益，請詳閱作業說明)</font>
+        </div>
+    </div>
+
+	<div class="row">
+		<div class="col-xs-12">
+		<!-- <iframe frameborder="0" id="htltw_att" name="htltw_att" src='@routes.Assets.at("html/odInfo_HSR.html")' width="100%" onload="dyniframesize('htltw_att')"></iframe> -->
+		@odInfoHSR()
+		</div>
+	</div>
+
+	@agreeCheck

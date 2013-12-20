@@ -1,0 +1,264 @@
+/**
+ * 易遊網版權所有 ©2000 - 2013 ezTravel Co., Ltd. all rights reserved.
+ */
+package service.impl;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+import models.BusinessType;
+import models.HsrHtl;
+import models.Page;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.client.RestTemplate;
+
+import play.Logger;
+import service.HsrService;
+import task.hrs.RequestHsrProdInfoTask;
+import task.htl.RequestHotelTask;
+import eztravel.rest.enums.hsr.HsrCarClass;
+import eztravel.rest.enums.hsr.HsrFareType;
+import eztravel.rest.enums.hsr.HsrStation;
+import eztravel.rest.pojo.hsr.HsrProductInfo;
+import eztravel.rest.pojo.hsr.HsrScheduleInfo;
+import eztravel.rest.pojo.htl.HotelInfo;
+
+/**
+ * @author 003050
+ * 
+ */
+public class HsrServiceImpl implements HsrService {
+  /**
+   * 高鐵站城市對應定義於js檔
+   */
+  // @Override
+  // public List<HsrStation> listStationInfo() {
+  // /**
+  // * TODO 1. 使用concurrency方式取得所有高鐵站<br>
+  // * 2. 使用concurrency方式取得都市鄰近高鐵站
+  // */
+  // return new ArrayList<HsrStation>();
+  // }
+
+  @Override
+  public HsrHtl search(HsrHtl hsrHtl, Page page) throws InterruptedException, ExecutionException,
+      ParseException {
+    HsrStation from = HsrStation.valueOf(hsrHtl.getPlaceFrom());
+    HsrStation to = HsrStation.valueOf(hsrHtl.getPlaceTo());
+    Date depDate = this.dateFormat.parse(hsrHtl.getDepDate());
+    Date returnDate = this.dateFormat.parse(hsrHtl.getReturnDate());
+    int totalTicket = hsrHtl.getTotalTicketQty();
+
+    // HsrFareType、HtlCustType只有分B2B, B2C, B2E
+    BusinessType businessType = hsrHtl.getBusinessType();
+    String fareTypeStr = null;
+    switch (businessType) {
+      default:
+        fareTypeStr = HsrFareType.B2C.toString();
+        break;
+      case B2B:
+        fareTypeStr = HsrFareType.B2B.toString();
+        break;
+      case B2E:
+        fareTypeStr = HsrFareType.B2E.toString();
+        break;
+    }
+    HsrFareType fareType = HsrFareType.valueOf(fareTypeStr);
+    HsrCarClass carClass = HsrCarClass.valueOf(hsrHtl.getCarClass());
+
+    // 查詢高鐵去程班次
+    Future<List<HsrProductInfo>> depHsr =
+        this.taskExecutor.submit(new RequestHsrProdInfoTask(this.restTemplate, from, to, depDate,
+            totalTicket, fareType, carClass));
+
+    // 查詢高鐵回程班次
+    Future<List<HsrProductInfo>> returnHsr =
+        this.taskExecutor.submit(new RequestHsrProdInfoTask(this.restTemplate, to, from,
+            returnDate, totalTicket, fareType, carClass));
+
+    // 查詢飯店
+    Future<List<HotelInfo>> hotelResult =
+        this.taskExecutor.submit(new RequestHotelTask(this.restTemplate, hsrHtl.getArrCity(),
+            depDate, returnDate, hsrHtl.getSgl(), hsrHtl.getTwn(), hsrHtl.getTrp(),
+            hsrHtl.getQud(), fareTypeStr, page.getStartIndex(), page.getPageSize(), page
+                .getOrderBy()));
+
+    // 等待並取得結果
+    List<HsrProductInfo> depHsrInfoList = depHsr.get();
+    List<HsrProductInfo> returnHsrInfoList = returnHsr.get();
+    List<HotelInfo> hotelList = hotelResult.get();
+
+    // 去程高鐵
+    if (null != depHsrInfoList && depHsrInfoList.size() > 0) {
+      HsrProductInfo info = depHsrInfoList.get(0);
+      hsrHtl.setDepHsrInfo(info);
+
+      // 班次分群
+      Map<String, List<HsrScheduleInfo>> scheduleMap = this.divideSchedule(info.getScheduleInfos());
+      hsrHtl.setDepScheduleMap(scheduleMap);
+
+      /**
+       * 去程推薦班次邏輯:<br>
+       * 當日07:00之後最早班次<br>
+       * 若完全沒車，取07:00以前最晚班次
+       */
+      HsrScheduleInfo schedule = null;
+      for (String period : scheduleMap.keySet()) {
+        if (!"00:00~07:00".equals(period)) {
+          List<HsrScheduleInfo> scheduleList = scheduleMap.get(period);
+          if (scheduleList.size() > 0) {
+            hsrHtl.setDepPeriod(period);
+            schedule = scheduleList.get(0);
+            break;
+          }
+        }
+      }
+      if (null == schedule) {
+        String period = "00:00~07:00";
+        List<HsrScheduleInfo> scheduleList = scheduleMap.get(period);
+        int size = scheduleList.size();
+        if (size > 0) {
+          hsrHtl.setDepPeriod(period);
+          schedule = scheduleList.get(size - 1);
+        }
+      }
+      hsrHtl.setDepSchedule(schedule);
+    }
+
+    // 回程高鐵
+    if (null != returnHsrInfoList && returnHsrInfoList.size() > 0) {
+      HsrProductInfo info = returnHsrInfoList.get(0);
+      hsrHtl.setReturnHsrInfo(info);
+
+      // 班次分群
+      Map<String, List<HsrScheduleInfo>> scheduleMap = this.divideSchedule(info.getScheduleInfos());
+      hsrHtl.setReturnScheduleMap(scheduleMap);
+
+      /**
+       * 回程推薦班次邏輯:<br>
+       * 當日15:00之後最早班次<br>
+       * 若完全沒車，取15:00以前最晚班次
+       */
+      boolean skip = true;
+      HsrScheduleInfo schedule = null;
+      for (String period : scheduleMap.keySet()) {
+        if ("15:00~19:00".equals(period)) skip = false;
+        if (!skip) {
+          List<HsrScheduleInfo> scheduleList = scheduleMap.get(period);
+          if (scheduleList.size() > 0) {
+            hsrHtl.setReturnPeriod(period);
+            schedule = scheduleList.get(0);
+            break;
+          }
+        }
+      }
+      if (null == schedule) {
+        Iterator<String> it = ((TreeSet<String>) scheduleMap.keySet()).descendingIterator();
+        skip = true;
+        while (it.hasNext()) {
+          String period = it.next();
+          if ("11:00~15:00".equals(period)) skip = false;
+          if (!skip) {
+            List<HsrScheduleInfo> scheduleList = scheduleMap.get(period);
+            int size = scheduleList.size();
+            if (size > 0) {
+              hsrHtl.setReturnPeriod(period);
+              schedule = scheduleList.get(size - 1);
+              break;
+            }
+          }
+        }
+      }
+      hsrHtl.setReturnSchedule(schedule);
+    }
+    hsrHtl.setHotelList(hotelList);
+    return hsrHtl;
+  }
+
+  /**
+   * 依照時段區分班次
+   * 
+   * @param list of HsrScheduleInfo
+   * @return
+   */
+  public TreeMap<String, List<HsrScheduleInfo>> divideSchedule(List<HsrScheduleInfo> schedules) {
+    @SuppressWarnings("unchecked")
+    List<HsrScheduleInfo>[] periods = new List[6];
+    for (int i = 0; i < periods.length; i++)
+      periods[i] = new ArrayList<HsrScheduleInfo>();
+
+    for (HsrScheduleInfo schedule : schedules) {
+      Calendar depTime = schedule.getDepTime();
+      int hour = depTime.get(Calendar.HOUR_OF_DAY);
+      int min = depTime.get(Calendar.MINUTE);
+      try {
+        int depTimeStr = Integer.parseInt(String.format("%1$02d%2$02d", hour, min));
+        if (depTimeStr < 700)// 00:00~07:00
+          periods[0].add(schedule);
+        else if (depTimeStr < 1100)// 07:00~11:00
+          periods[1].add(schedule);
+        else if (depTimeStr < 1500)// 11:00~15:00
+          periods[2].add(schedule);
+        else if (depTimeStr < 1900)// 15:00~19:00
+          periods[3].add(schedule);
+        else if (depTimeStr < 2300)// 19:00~23:00
+          periods[4].add(schedule);
+        else
+          // 23:00~00:00
+          periods[5].add(schedule);
+      } catch (Exception e) {
+        Logger.warn(e.getMessage(), e);
+      }
+    }
+    TreeMap<String, List<HsrScheduleInfo>> scheduleMap =
+        new TreeMap<String, List<HsrScheduleInfo>>();
+    scheduleMap.put("00:00~07:00", periods[0]);
+    scheduleMap.put("07:00~11:00", periods[1]);
+    scheduleMap.put("11:00~15:00", periods[2]);
+    scheduleMap.put("15:00~19:00", periods[3]);
+    scheduleMap.put("19:00~23:00", periods[4]);
+    scheduleMap.put("23:00~00:00", periods[5]);
+    return scheduleMap;
+  }
+
+  @Autowired
+  private RestTemplate restTemplate;
+  @Autowired
+  private ThreadPoolTaskExecutor taskExecutor;
+  private DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+
+  public RestTemplate getRestTemplate() {
+    return restTemplate;
+  }
+
+  public void setRestTemplate(RestTemplate restTemplate) {
+    this.restTemplate = restTemplate;
+  }
+
+  /**
+   * @return the taskExecutor
+   */
+  public ThreadPoolTaskExecutor getTaskExecutor() {
+    return taskExecutor;
+  }
+
+  /**
+   * @param taskExecutor the taskExecutor to set
+   */
+  public void setTaskExecutor(ThreadPoolTaskExecutor taskExecutor) {
+    this.taskExecutor = taskExecutor;
+  }
+}

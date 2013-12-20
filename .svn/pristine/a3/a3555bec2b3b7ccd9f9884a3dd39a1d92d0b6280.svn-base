@@ -1,0 +1,16 @@
+package configs;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
+
+import service.HsrService;
+import service.impl.HsrServiceImpl;
+
+@Configuration
+public class ServiceConfig {
+	@Bean
+	public HsrService hsrService(RestTemplate restTemplate) {
+		return new HsrServiceImpl();
+	}
+}

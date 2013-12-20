@@ -1,0 +1,38 @@
+@(titleCount: Integer, role: models.enums.BusinessType)
+@import models.enums.BusinessType
+	<div class="row">
+		<div class="col-xs-12">
+		<h3>
+			<span class="tag-gn">@titleCount</span> 聯絡方式偏好：@if(BusinessType.WEBORDER == role) {<h6>(客服人員訂購,可不填)</h6>}
+		</h3>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-xs-12">
+		<table width="100%" border="0" cellspacing="0" class="tb-1">
+		<tr>
+		  <td align="left" valign="middle" colspan="2">
+			<h4><input type="radio" name="relateInfoRd" value="EMAIL_SMS" checked/> Email 或簡訊</h4>
+		  </td>
+		</tr>
+		<tr>
+		  <td width="22%" align="left" valign="middle">
+			<h4><input type="radio" name="relateInfoRd" value="PHONE" /> 電話，較方便接聽的時間</h4>
+		  </td>
+		  <td>
+			<input type='radio' name='relateInfoVal' value='PHONE_09_12' disabled /> 電話09:00-12:00
+			 <span style='margin-left:1.7em'></span>
+			<input type='radio' name='relateInfoVal' value='PHONE_12_14' disabled /> 電話12:00:14:00
+			 <span style='margin-left:1.7em' ></span>
+			<input type='radio' name='relateInfoVal' value='PHONE_14_18' disabled /> 電話14:00-18:00
+			 <br>
+			<input type='radio' name='relateInfoVal' value='PHONE_18_22' disabled /> 電話18:00-22:00
+			 <span style='margin-left:1.7em' ></span>
+			<input type='radio' name='relateInfoVal' value='PHONE_ANY_TIME' disabled /> 電話以上時間內皆可
+		  </td>
+			<input type="hidden" name="relatedInfo" value="XX" />
+		</tr>
+		</table>
+		</div>
+	</div>
